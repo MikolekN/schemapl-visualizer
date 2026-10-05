@@ -1,0 +1,43 @@
+---
+stages:
+  - "image_builder"
+
+container-build:
+  image: "docker"
+  services:
+    - name: "docker:dind"
+      command:
+        - "--registry-mirror"
+        - "https://proxy.containers.task.gda.pl"
+  tags:
+    - "docker"
+    - "dind"
+  stage: "image_builder"
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    _TEMPLATE_DOCKERFILE_PATH_DEFAULT: "."
+    _TEMPLATE_CONTAINER_NAME_DEFAULT: "${CI_REGISTRY_IMAGE}"
+  before_script:
+    - "docker login --username gitlab-ci-token --password ${CI_JOB_TOKEN} ${CI_REGISTRY}"
+    - "_TEMPLATE_CONTAINER_NAME=${CONTAINER_NAME:-${_TEMPLATE_CONTAINER_NAME_DEFAULT}}"
+    - "_TEMPLATE_CONTAINER_TAG=${CONTAINER_TAG:-${_TEMPLATE_CONTAINER_TAG_DEFAULT}}"
+  script: |
+    docker pull "${_TEMPLATE_CONTAINER_NAME}:${_TEMPLATE_CONTAINER_TAG}" \
+    || docker pull "${_TEMPLATE_CONTAINER_NAME}:latest" \
+    || true
+    docker build \
+      --cache-from "${_TEMPLATE_CONTAINER_NAME}:${_TEMPLATE_CONTAINER_TAG}" \
+      --cache-from "${_TEMPLATE_CONTAINER_NAME}:latest" \
+      --tag ${_TEMPLATE_CONTAINER_NAME}:${_TEMPLATE_CONTAINER_TAG} \
+      ${DOCKERFILE_PATH:-${_TEMPLATE_DOCKERFILE_PATH_DEFAULT}}
+    docker push ${_TEMPLATE_CONTAINER_NAME}:${_TEMPLATE_CONTAINER_TAG}
+  rules:
+    - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
+      when: manual
+      variables:
+        _TEMPLATE_CONTAINER_TAG_DEFAULT: "latest"
+    - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE != "merge_request_event"'
+      when: manual
+      variables:
+        _TEMPLATE_CONTAINER_TAG_DEFAULT: "${CI_COMMIT_REF_NAME}"
+    - when: never

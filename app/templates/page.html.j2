@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title>
+<style>
+  :root {
+    --fg: #1c1c1e;
+    --muted: #6b7280;
+    --faint: #9ca3af;
+    --line: #e5e7eb;
+    --bg: #ffffff;
+    --panel: #f8fafc;
+    --label: #7c3aed;
+    --accent: #2563eb;
+    --chip-bg: #eef2ff;
+    --chip-fg: #3730a3;
+    --ok-bg: #ecfdf5; --ok-fg: #065f46; --ok-line: #a7f3d0;
+    --warn-bg: #fffbeb; --warn-fg: #92400e; --warn-line: #fde68a;
+    --info-bg: #eff6ff; --info-fg: #1e40af; --info-line: #bfdbfe;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.5;
+  }
+  .toolbar {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
+    padding: .6rem 1.25rem;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    font-size: .85rem;
+  }
+  .toolbar .doc-name { font-weight: 600; }
+  .toolbar .spacer { flex: 1; }
+  .toolbar label { display: inline-flex; gap: .35rem; align-items: center; color: var(--muted); cursor: pointer; }
+  .toolbar button {
+    font: inherit; font-size: .8rem; padding: .25rem .6rem;
+    border: 1px solid var(--line); border-radius: 6px; background: #fff; cursor: pointer; color: var(--fg);
+  }
+  .toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* page layout: ToC + content + metadata sidebar */
+  .layout { display: flex; gap: 2rem; align-items: flex-start; max-width: 1400px; margin: 0 auto; padding: 1.25rem; }
+  .content { flex: 1 1 auto; min-width: 0; }
+  .sidebar {
+    flex: 0 0 300px; position: sticky; top: 3.1rem; max-height: calc(100vh - 4rem);
+    overflow: auto; border-left: 1px solid var(--line); padding-left: 1rem; font-size: .82rem;
+  }
+  .sidebar h2 { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--faint); margin: 1.1rem 0 .4rem; }
+  .sidebar section.info h2 { margin-top: 0; }
+  .sidebar code { background: var(--panel); padding: .05rem .35rem; border-radius: 4px; }
+  .sidebar a { color: var(--accent); text-decoration: none; }
+  .sidebar a:hover { text-decoration: underline; }
+
+  /* table of contents (left panel) */
+  .toc {
+    flex: 0 0 260px; position: sticky; top: 3.1rem; max-height: calc(100vh - 4rem);
+    overflow: auto; overscroll-behavior: contain; font-size: .8rem;
+    border-right: 1px solid var(--line); padding-right: .9rem;
+  }
+  .toc h2 { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--faint); margin: 0 0 .4rem; }
+  .toc__link {
+    display: block; padding: .14rem .4rem; color: var(--fg); text-decoration: none;
+    border-left: 2px solid transparent; border-radius: 0 6px 6px 0; line-height: 1.35;
+  }
+  .toc__link:hover { background: var(--panel); }
+  .toc__link.active { border-left-color: var(--accent); color: var(--accent); background: var(--chip-bg); }
+  .toc__link--section { font-weight: 600; margin-top: .2rem; }
+  .toc__link--block { font-weight: 600; margin-top: .45rem; }
+  .toc__title { display: block; color: var(--muted); font-size: .74rem; }
+  .toc__link.active .toc__title { color: inherit; opacity: .85; }
+  .toc-d0 { padding-left: .4rem; }
+  .toc-d1 { padding-left: 1.0rem; }
+  .toc-d2 { padding-left: 1.6rem; }
+  .toc-d3 { padding-left: 2.2rem; }
+  .toc-d4 { padding-left: 2.8rem; }
+  .toc-d5 { padding-left: 3.4rem; }
+  .toc-d6 { padding-left: 4.0rem; }
+  .content [id] { scroll-margin-top: 3.4rem; }
+  #toc-toggle { display: none; }
+
+  @media (max-width: 1100px) {
+    .toc {
+      display: none; position: fixed; left: 0; top: 2.6rem; bottom: 0;
+      width: min(320px, 85vw); background: var(--bg); z-index: 20;
+      border-right: 1px solid var(--line); padding: 1rem; max-height: none;
+      box-shadow: 0 8px 28px rgba(0,0,0,.14);
+    }
+    .toc.toc--open { display: block; }
+    #toc-toggle { display: inline-block; }
+  }
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .sidebar { flex-basis: auto; width: 100%; position: static; max-height: none;
+      border-left: 0; border-top: 1px solid var(--line); padding: 1rem 0 0; }
+  }
+
+  .banner { padding: .6rem .85rem; border-radius: 8px; margin: 0 0 .5rem; font-size: .85rem; border: 1px solid; }
+  .banner--ok   { background: var(--ok-bg);   color: var(--ok-fg);   border-color: var(--ok-line); }
+  .banner--warn { background: var(--warn-bg); color: var(--warn-fg); border-color: var(--warn-line); }
+  .banner--info { background: var(--info-bg); color: var(--info-fg); border-color: var(--info-line); }
+  .banner details { margin-top: .4rem; }
+  .banner ul { margin: .4rem 0 0; padding-left: 1.1rem; }
+  .banner li { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .76rem; }
+
+  /* metadata panel (key/value) */
+  .meta-row { display: flex; gap: .4rem; padding: .12rem 0; }
+  .meta-key { flex: 0 0 8rem; color: var(--muted); overflow-wrap: anywhere; }
+  .meta-val { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .meta-group { margin: .15rem 0; }
+  .meta-group > summary { cursor: pointer; color: var(--muted); }
+  .metadata .meta-group { margin-left: .25rem; }
+  .meta-item { padding: .12rem 0; overflow-wrap: anywhere; }
+  .meta-extra { color: var(--faint); }
+
+  /* --- legal document content --- */
+  .content { font-family: Georgia, "Times New Roman", "Liberation Serif", serif; }
+  .doc-type { text-align: center; text-transform: uppercase; font-weight: 700; letter-spacing: .04em; margin-top: .5rem; }
+  .doc-author { text-align: center; text-transform: uppercase; letter-spacing: .04em; margin: .1rem 0; }
+  .doc-date { text-align: center; color: var(--muted); margin: .15rem 0; }
+  .doc-signature { text-align: center; color: var(--muted); margin: .15rem 0; }
+  .doc-designation { text-align: right; color: var(--muted); font-size: .85rem; }
+  .doc-title { text-align: center; font-weight: 700; font-size: 1.15rem; margin: .35rem 0 1.6rem; }
+  .heading { text-align: center; margin: 1.6rem 0 .9rem; }
+  .heading__marker { display: block; font-weight: 700; }
+  .heading__title { display: block; text-transform: uppercase; letter-spacing: .02em; font-size: .95rem; }
+  .wrapper { display: contents; }
+  .unit { display: flex; align-items: baseline; gap: .5rem; margin: .3rem 0; }
+  .unit__marker { flex: none; font-weight: 700; min-width: 1.5rem; }
+  .unit[class*="unit--artykul"] > .unit__marker,
+  .unit[class*="unit--paragraf"] > .unit__marker,
+  .unit[class*="unit--nie-ztp-artykul"] > .unit__marker,
+  .unit[class*="unit--nie-ztp-paragraf"] > .unit__marker { min-width: 3.4rem; }
+  .unit__body { flex: 1 1 auto; min-width: 0; }
+  .unit__body > .p:first-child { margin-top: 0; }
+  /* state cues (stan-jednostki: uchylony / utracil-moc / uznany-za-niewazny) */
+  [class*=" stan--"] { color: var(--muted); }
+  .definicja { font-style: italic; }
+
+  /* collapsible units & sections (editorial + systematization) */
+  .unit.collapsible > .unit__marker { cursor: pointer; }
+  .unit.collapsible > .unit__marker::before {
+    content: "\25BE"; color: var(--faint); font-size: .7em; margin-right: .25em;
+    display: inline-block; transition: transform .12s;
+  }
+  .unit.collapsed > .unit__marker::before { transform: rotate(-90deg); }
+  .unit.collapsed > .unit__body { display: none; }
+  .sect.collapsible > .heading { cursor: pointer; }
+  .sect.collapsed > .heading { opacity: .65; }
+  .sect.collapsed > .sect__body { display: none; }
+  .common-part { margin: .3rem 0; }
+  sup, sub { line-height: 0; }
+
+  /* amendment-instruction marker + hover popup (instrukcje nowelizacyjne) */
+  .nowela { position: relative; cursor: help; }
+  .nowela__mark { color: var(--accent); font-size: .7em; vertical-align: super; }
+  /* the readable label above quoted amendment content — visible but quiet */
+  .nowela--block { display: block; margin: 0 0 .2rem; }
+  .nowela__pill {
+    display: inline-block; font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: .68rem; color: var(--muted); background: var(--panel);
+    border: 1px solid var(--line); border-radius: 999px; padding: .02rem .55rem;
+    letter-spacing: .01em;
+  }
+  .nowela--block .nowela__popup { top: 1.7em; }
+  .nowela__popup {
+    display: none; position: absolute; left: 0; top: 1.3em; z-index: 30;
+    width: max-content; max-width: 22rem; background: #fff; color: var(--fg);
+    border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,.14);
+    padding: .5rem .6rem; font-size: .75rem; font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    white-space: normal;
+  }
+  .nowela:hover .nowela__popup, .nowela:focus-within .nowela__popup { display: block; }
+  .nowela__title { display: block; margin-bottom: .3rem; color: var(--accent); }
+  .nowela__row { display: flex; gap: .4rem; }
+  .nowela__key { color: var(--muted); flex: 0 0 8rem; overflow-wrap: anywhere; }
+  .nowela__val { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+
+  /* prose, quotations, references, footnotes */
+  .p { margin: .45rem 0; }
+  blockquote.cytat { margin: .5rem 0 .5rem 1rem; padding: .2rem 0 .2rem .8rem;
+    border-left: 3px solid var(--line); }
+  .cytat--inline { font-style: italic; }
+  a.ref { color: var(--accent); text-decoration: none; }
+  a.ref:hover { text-decoration: underline; }
+  sup.fn-ref a { color: var(--accent); text-decoration: none; }
+  .footnotes { margin-top: 2rem; font-size: .85rem; color: var(--muted); }
+  .footnotes hr { border: 0; border-top: 1px solid var(--line); margin: 0 0 .75rem; }
+  .footnote { display: flex; gap: .4rem; margin: .35rem 0; }
+  .footnote__symbol { color: var(--accent); }
+  .footnote__body { display: inline; }
+  .footnote__back { text-decoration: none; color: var(--faint); }
+
+  /* --- generic fallback tree (elements without a dedicated renderer) --- */
+  .node { margin: .15rem 0; }
+  .node__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem; cursor: default; }
+  .node.collapsible > .node__head { cursor: pointer; }
+  .node.collapsible > .node__head::before {
+    content: "\25BE"; color: var(--faint); font-size: .7rem; width: .8em; display: inline-block; transition: transform .12s;
+  }
+  .node.collapsible.collapsed > .node__head::before { transform: rotate(-90deg); }
+  .node__label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .72rem; letter-spacing: .02em; color: var(--label); white-space: nowrap;
+  }
+  .node__body { margin-left: 1rem; padding-left: .75rem; border-left: 1px solid var(--line); }
+  .node.collapsed > .node__body { display: none; }
+  .leaf { display: flex; flex-wrap: wrap; gap: .4rem; align-items: baseline; padding: .1rem 0; }
+  .text { color: var(--fg); }
+  .empty { color: var(--faint); font-style: italic; font-size: .8rem; }
+  .rich { }
+  .inline > .node__label { font-size: .65rem; opacity: .7; margin-right: .15rem; }
+  .attrs { display: inline-flex; flex-wrap: wrap; gap: .25rem; }
+  .attr {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .68rem; background: var(--chip-bg); color: var(--chip-fg);
+    padding: .02rem .35rem; border-radius: 4px; white-space: nowrap;
+  }
+  .attr b { font-weight: 600; }
+
+  /* special content */
+  figure.grafika, figure.grafika-wektorowa { margin: .5rem 0; }
+  figure.grafika img { max-width: 100%; height: auto; border: 1px solid var(--line); }
+  figure.grafika figcaption, figure.grafika-wektorowa figcaption { color: var(--muted); font-size: .78rem; }
+  .grafika-wektorowa svg { max-width: 100%; height: auto; }
+  .math { margin: .35rem 0; }
+  .math--inline { display: inline; }
+  table.tabela { border-collapse: collapse; margin: .5rem 0; }
+  table.tabela td, table.tabela th { border: 1px solid var(--line); padding: .3rem .5rem; vertical-align: top; }
+  table.tabela th { background: var(--panel); font-weight: 600; }
+  table.tabela .text-block { margin: .15rem 0; }
+  .cell-header { font-weight: 600; text-align: center; }
+  .cell-center { text-align: center; }
+  .cell-number { text-align: right; }
+  .cell-indent-1, .cell-list-1 { margin-left: 1rem; }
+  .cell-indent-2, .cell-list-2 { margin-left: 2rem; }
+  .cell-indent-3, .cell-list-3 { margin-left: 3rem; }
+  .cell-list-4 { margin-left: 4rem; }
+
+  /* math formulas with symbol descriptions (wzor-mat) */
+  figure.wzor-mat { margin: .6rem 0; }
+  .wzor-mat__opis { display: flex; gap: .5rem; align-items: baseline; margin: .2rem 0; }
+  .wzor-mat__symbol { flex: none; min-width: 2.5rem; }
+  .wzor-mat__objasnienie { flex: 1; min-width: 0; }
+  .wzor-mat__wprowadzenie { margin: .3rem 0; }
+  .opis-tabeli { font-size: .85rem; color: var(--muted); margin: .2rem 0 .6rem; }
+
+  /* text blocks (podstawa-prawna, fragment, tytuły sekcji, podpisy, ...) */
+  .text-block { margin: .45rem 0; }
+  .unit-title { font-weight: 700; margin: .2rem 0 .35rem; }
+  .podstawa-prawna { margin: .8rem 0 1rem; }
+  .podpis { text-align: right; margin: .35rem 0; }
+  .podpisujacy { margin: 1rem 0; }
+  .podpisujacy .osoba { display: block; }
+
+  /* the cover letter of a bill (projekt ustawy / kodeksu) */
+  .winieta { font-weight: 700; text-transform: uppercase; letter-spacing: .03em; margin: .5rem 0 0; }
+  .kadencja { margin: 0 0 .8rem; }
+  .druk { text-align: right; font-weight: 700; margin: 0; }
+  .miejsce-i-data { text-align: right; margin: .8rem 0; }
+  .adresat-pisma { text-align: right; font-weight: 700; margin: 0; }
+  .zalacznik-do { text-align: right; color: var(--muted); font-size: .9rem; }
+  .zalacznik-nr { text-align: right; font-weight: 700; margin: 1.2rem 0 .3rem; }
+  .zalacznik-binarny { margin: .5rem 0; }
+  .tytul-zalacznika, .tytul-uzasadnienia { text-align: center; font-weight: 700; margin: .8rem 0; }
+  .tytul-sekcji { font-weight: 700; margin: .9rem 0 .4rem; }
+  .tytul-tabeli { text-align: center; font-weight: 600; margin: .6rem 0 .25rem; }
+  .uchylenie-OTJ { font-style: italic; }
+  .sedzia { margin: .15rem 0; }
+  .sedzia__rola { color: var(--muted); font-style: italic; }
+  .protokolant { margin: .3rem 0; }
+  div.specjalny { margin: .3rem 0; }
+
+  /* block containers (preambula, uzasadnienie, załączniki, orzeczenie TK) */
+  .block { margin: .6rem 0; }
+  .block--zalacznik, .block--uzasadnienie { border-top: 1px solid var(--line); margin-top: 1.6rem; padding-top: .8rem; }
+  .block--preambula { font-style: italic; margin: 1rem 0; }
+  .block--podpisy-blok { text-align: right; }
+  .block--sekcja-uzasadnienia { margin: .8rem 0; }
+  .block--czesc-zatytulowana, .block--upowaznienie { margin: 1rem 0; }
+  .block--odnosnik-cyt { font-size: .85em; color: var(--muted); border-left: 2px solid var(--line); padding-left: .6rem; }
+
+  /* inline formatting from the schema's typography toolbox */
+  .wersaliki { text-transform: uppercase; }
+  .rozstrzelone { letter-spacing: .18em; }
+  .petit { font-size: .85em; }
+  .pole { border-bottom: 1px dotted var(--faint); }
+  .komentarz { background: var(--warn-bg); border-radius: 4px; padding: 0 .25rem; cursor: help; }
+  .komentarz--zamkniety { opacity: .6; }
+  .unit__marker .komentarz, .heading__marker .komentarz { margin-left: .3rem; font-weight: 400; }
+  .odeslanie-tytul { font-style: italic; }
+
+  /* quotation marks driven by the cudzyslowy attribute */
+  .cytat__open { float: left; margin-right: .06rem; }
+  .cytat__close { display: block; }
+
+  /* amendment content blocks and electronic signatures */
+  .nowela-block { display: block; }
+  .e-podpis { margin-top: 1.5rem; font-size: .85rem; color: var(--muted); }
+  .e-podpis > summary { cursor: pointer; }
+  .render-error { color: #b91c1c; font-size: .8rem; font-family: ui-monospace, monospace; }
+</style>
+{% if needs_mathjax %}
+<script>
+  window.MathJax = { options: { skipHtmlTags: ["script","noscript","style","textarea","pre","code"] } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/mml-chtml.js" async></script>
+{% endif %}
+</head>
+<body>
+<div class="toolbar">
+  <span class="doc-name">{{ source_name }}</span>
+  {% if toc %}
+  <button type="button" id="toc-toggle">Spis treści</button>
+  {% endif %}
+  <span class="spacer"></span>
+  <button type="button" id="expand-all">Rozwiń wszystko</button>
+  <button type="button" id="collapse-all">Zwiń wszystko</button>
+</div>
+<div class="layout">
+  {% if toc %}
+  <nav class="toc" id="toc" aria-label="Spis treści">
+    <h2>Spis treści</h2>
+    {{ toc|safe }}
+  </nav>
+  {% endif %}
+  <main class="content"><div id="tree">{{ body|safe }}</div></main>
+  <aside class="sidebar">
+    <section class="info">
+      <h2>Dokument</h2>
+      <div class="meta-row"><span class="meta-key">wygenerowano</span><span class="meta-val">{{ generated }}</span></div>
+    </section>
+
+    {% if not validated %}
+      <div class="banner banner--info">Walidacja XSD pominięta{% if schema_error %} ({{ schema_error }}){% endif %}.</div>
+    {% elif valid %}
+      <div class="banner banner--ok">Dokument zgodny ze schematem XSD.</div>
+    {% else %}
+      <div class="banner banner--warn">
+        Dokument niezgodny ze schematem &mdash; {{ errors|length }} błąd(ów).
+        <details><summary>Pokaż błędy</summary><ul>
+          {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+        </ul></details>
+      </div>
+    {% endif %}
+
+    {% if metadata %}
+    <section class="metadata">
+      <h2>Metadane</h2>
+      {{ metadata|safe }}
+    </section>
+    {% endif %}
+  </aside>
+</div>
+<script>
+  (function () {
+    var tree = document.getElementById("tree");
+    if (tree) {
+      tree.addEventListener("click", function (ev) {
+        // A reference to the act's own provision: jump there, opening collapsed units on the way.
+        var ref = ev.target.closest('a.ref[href^="#"]');
+        if (ref) {
+          var target = document.getElementById(decodeURIComponent(ref.getAttribute("href").slice(1)));
+          if (target) {
+            ev.preventDefault();
+            for (var p = target; p; p = p.parentElement) {
+              if (p.classList) p.classList.remove("collapsed");
+            }
+            target.scrollIntoView(); // respects scroll-margin-top
+            if (history.pushState) history.pushState(null, "", ref.getAttribute("href"));
+          }
+          return;
+        }
+        if (ev.target.closest(".nowela")) return;
+        var head = ev.target.closest(".node__head");
+        if (head && head.parentElement.classList.contains("collapsible")) {
+          head.parentElement.classList.toggle("collapsed"); return;
+        }
+        var marker = ev.target.closest(".unit__marker");
+        if (marker && marker.parentElement.classList.contains("collapsible")) {
+          marker.parentElement.classList.toggle("collapsed"); return;
+        }
+        var heading = ev.target.closest(".heading");
+        if (heading && heading.parentElement.classList.contains("collapsible")) {
+          heading.parentElement.classList.toggle("collapsed"); return;
+        }
+      });
+    }
+    function setAll(collapsed) {
+      var nodes = document.querySelectorAll(".node.collapsible, .unit.collapsible, .sect.collapsible");
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].classList.toggle("collapsed", collapsed);
+      }
+    }
+    var ea = document.getElementById("expand-all");
+    var ca = document.getElementById("collapse-all");
+    if (ea) ea.addEventListener("click", function () { setAll(false); });
+    if (ca) ca.addEventListener("click", function () { setAll(true); });
+  })();
+
+  /* Table of contents: jump-with-expand, scrollspy, mobile toggle. */
+  (function () {
+    var toc = document.getElementById("toc");
+    if (!toc) return;
+
+    var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
+    var byId = {};
+    var targets = [];
+    links.forEach(function (link) {
+      var id = decodeURIComponent(link.getAttribute("href").slice(1));
+      var el = document.getElementById(id);
+      if (el) { byId[id] = link; targets.push(el); }
+    });
+
+    // A collapsed ancestor would swallow the jump — expand the chain first.
+    function expandTo(el) {
+      for (var p = el; p; p = p.parentElement) {
+        if (p.classList) p.classList.remove("collapsed");
+      }
+    }
+    toc.addEventListener("click", function (ev) {
+      var link = ev.target.closest('a[href^="#"]');
+      if (!link) return;
+      var id = decodeURIComponent(link.getAttribute("href").slice(1));
+      var el = document.getElementById(id);
+      if (el) {
+        // Explicit jump: the default anchor action does nothing when the hash
+        // is unchanged, and the target may sit inside a collapsed unit.
+        ev.preventDefault();
+        expandTo(el);
+        el.scrollIntoView(); // respects scroll-margin-top
+        if (history.replaceState) history.replaceState(null, "", "#" + id);
+      }
+      setActive(link);
+      pinned = link; // an explicit choice sticks until the user scrolls away
+      if (window.matchMedia("(max-width: 1100px)").matches) toc.classList.remove("toc--open");
+    });
+    if (location.hash) {
+      var initial = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (initial) expandTo(initial);
+    }
+
+    // Scrollspy: highlight the last target above the reading line. The line
+    // sits just below scroll-margin-top, so a jumped-to unit counts as current.
+    var active = null;
+    var pinned = null; // set by a ToC click, cleared by real user scrolling
+    ["wheel", "touchmove", "keydown"].forEach(function (type) {
+      window.addEventListener(type, function () { pinned = null; }, { passive: true });
+    });
+    function setActive(link) {
+      if (link === active) return;
+      if (active) active.classList.remove("active");
+      active = link;
+      if (active) {
+        active.classList.add("active");
+        var top = active.offsetTop, bottom = top + active.offsetHeight;
+        if (top < toc.scrollTop + 40 || bottom > toc.scrollTop + toc.clientHeight - 40) {
+          toc.scrollTop = top - toc.clientHeight / 2;
+        }
+      }
+    }
+    function highlight() {
+      if (pinned) return;
+      var line = window.scrollY + 60;
+      var current = null;
+      for (var i = 0; i < targets.length; i++) {
+        var el = targets[i];
+        if (el.offsetParent === null) continue; // hidden inside a collapsed unit
+        var top = el.getBoundingClientRect().top + window.scrollY;
+        if (top <= line) current = el; else break;
+      }
+      setActive(current ? byId[current.id] : (links.length ? links[0] : null));
+    }
+    var lastRun = 0, trailing = null;
+    function onScroll() {
+      var now = Date.now();
+      if (now - lastRun > 100) {
+        lastRun = now;
+        highlight();
+      } else if (!trailing) {
+        trailing = setTimeout(function () { trailing = null; lastRun = Date.now(); highlight(); }, 120);
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("hashchange", onScroll);
+    window.addEventListener("load", onScroll);
+    document.addEventListener("click", onScroll); // collapse/expand moves content
+    // Safety net for environments that throttle scroll events away.
+    var lastSeenY = -1;
+    setInterval(function () {
+      if (window.scrollY !== lastSeenY) { lastSeenY = window.scrollY; highlight(); }
+    }, 250);
+    highlight();
+
+    var toggle = document.getElementById("toc-toggle");
+    if (toggle) toggle.addEventListener("click", function () { toc.classList.toggle("toc--open"); });
+  })();
+</script>
+</body>
+</html>

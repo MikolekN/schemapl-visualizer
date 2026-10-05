@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Konwerter aktów prawnych</title>
+<style>
+  :root {
+    --fg: #1c1c1e; --muted: #5b6472; --line: #e5e7eb; --bg: #f6f7f9; --card: #ffffff;
+    --accent: #2563eb; --accent-fg: #ffffff; --accent-soft: #eff4ff; --accent-line: #bfd3fe;
+    --ok-bg: #ecfdf5; --ok-fg: #065f46; --ok-line: #a7f3d0;
+    --err-bg: #fef2f2; --err-fg: #991b1b; --err-line: #fecaca;
+    --focus: 0 0 0 3px rgba(37, 99, 235, .35);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fg: #e5e7eb; --muted: #a1a9b6; --line: #2f3542; --bg: #111418; --card: #1a1f26;
+      --accent: #6b9bff; --accent-fg: #0b1220; --accent-soft: #1b2740; --accent-line: #33508a;
+      --ok-bg: #0f2a22; --ok-fg: #a7f3d0; --ok-line: #1f5c48;
+      --err-bg: #2c1515; --err-fg: #fecaca; --err-line: #6b2a2a;
+      --focus: 0 0 0 3px rgba(107, 155, 255, .45);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.5;
+         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 2.5rem 1rem 3rem; }
+  header h1 { font-size: 1.6rem; margin: 0 0 .35rem; letter-spacing: -.01em; }
+  header p { margin: 0; color: var(--muted); }
+  .pipeline { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: .9rem 0 0;
+              padding: 0; list-style: none; font-size: .85rem; color: var(--muted); }
+  .pipeline li { display: flex; align-items: center; gap: .4rem; }
+  .pipeline li + li::before { content: "→"; }
+  .pipeline span { padding: .1rem .55rem; border: 1px solid var(--line); border-radius: 999px; background: var(--card); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem; margin-top: 1.5rem;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, .04); }
+  .step + .step { margin-top: 1.6rem; }
+  .step > h2, legend { font-size: 1rem; font-weight: 600; margin: 0 0 .6rem; padding: 0; }
+  .step-number { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; margin-right: .45rem;
+                 border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: .8rem; }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .hint { color: var(--muted); font-size: .85rem; margin: .35rem 0 0; }
+
+  /* the file: a drop zone that is the file input's label */
+  .drop { display: flex; align-items: center; gap: 1rem; padding: 1.25rem; border: 2px dashed var(--line);
+          border-radius: 12px; cursor: pointer; transition: border-color .15s, background .15s; }
+  .drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+  .file-input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .file-input:focus-visible + .drop { box-shadow: var(--focus); border-color: var(--accent); }
+  .drop svg { flex: none; color: var(--accent); }
+  .drop strong { display: block; }
+  .drop .badge { display: inline-block; margin-left: .4rem; padding: 0 .45rem; border-radius: 6px; font-size: .75rem;
+                 font-weight: 600; background: var(--accent-soft); color: var(--accent); vertical-align: 1px; }
+
+  /* the result: tiles that are radio buttons */
+  .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+  .tile { position: relative; }
+  .tile input { position: absolute; opacity: 0; }
+  .tile label { display: flex; gap: .7rem; height: 100%; padding: .85rem 1rem; border: 1.5px solid var(--line);
+                border-radius: 12px; cursor: pointer; transition: border-color .15s, background .15s; }
+  .tile label:hover { border-color: var(--accent-line); }
+  .tile input:checked + label { border-color: var(--accent); background: var(--accent-soft); }
+  .tile input:focus-visible + label { box-shadow: var(--focus); }
+  .tile input:disabled + label { opacity: .45; cursor: not-allowed; }
+  .tile svg { flex: none; margin-top: .1rem; color: var(--accent); }
+  .tile strong { display: block; }
+  .tile small { color: var(--muted); font-size: .82rem; }
+
+  .option { display: flex; gap: .6rem; align-items: flex-start; }
+  .option input { margin: .3rem 0 0; width: 1.05rem; height: 1.05rem; accent-color: var(--accent); }
+  .option + .option { margin-top: .9rem; }
+  .option input:disabled + div { opacity: .55; }
+  .schema { margin: .7rem 0 0 1.65rem; }
+  .schema[hidden] { display: none; }
+  .drop.compact { padding: .75rem 1rem; gap: .75rem; border-width: 1.5px; }
+  .file-list { margin: .5rem 0 0; padding: 0; list-style: none; font-size: .85rem; color: var(--muted); }
+  .file-list li::before { content: "· "; }
+
+  .actions { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; margin-top: 1.6rem; }
+  button, .button { font: inherit; font-weight: 600; padding: .65rem 1.2rem; border-radius: 10px; border: 1.5px solid transparent;
+                    cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; }
+  .primary { background: var(--accent); color: var(--accent-fg); }
+  .primary:disabled { opacity: .5; cursor: not-allowed; }
+  .secondary { background: transparent; color: var(--accent); border-color: var(--accent-line); }
+  button:focus-visible, .button:focus-visible { outline: none; box-shadow: var(--focus); }
+
+  /* what happens after "Konwertuj" */
+  .status { margin-top: 1.4rem; padding: 1rem 1.1rem; border-radius: 12px; border: 1px solid var(--line); }
+  .status[hidden] { display: none; }
+  .status.working { background: var(--accent-soft); border-color: var(--accent-line); }
+  .status.done { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-fg); }
+  .status.error { background: var(--err-bg); border-color: var(--err-line); color: var(--err-fg); }
+  .status h3 { margin: 0 0 .3rem; font-size: 1rem; }
+  .status p { margin: .2rem 0 0; }
+  .status .actions { margin-top: .9rem; }
+  .status code { white-space: pre-wrap; word-break: break-word; font-size: .85rem; }
+  .spinner { width: 1rem; height: 1rem; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%;
+             display: inline-block; vertical-align: -2px; margin-right: .5rem; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } * { transition: none !important; } }
+
+  footer { margin-top: 1.5rem; color: var(--muted); font-size: .8rem; text-align: center; }
+  footer code { font-size: .78rem; }
+  @media (max-width: 560px) {
+    main { padding-top: 1.5rem; }
+    .tiles { grid-template-columns: 1fr; }
+    .card { padding: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Konwerter aktów prawnych</h1>
+    <p>Przetwarza akt prawny zapisany w DOCX zgodnym z szablonem lub XML zgodnym ze standardem na interaktywny HTML lub PDF – w układzie dziennika urzędowego lub w wersji dostępnej dla osób niedowidzących.</p>
+  </header>
+
+  <form class="card" id="form" action="/convert/file" method="post" enctype="multipart/form-data">
+    <section class="step">
+      <h2><span class="step-number" aria-hidden="true">1</span>Plik z aktem</h2>
+      <input class="file-input" id="file" type="file" name="file" accept=".xml,.docx,text/xml,application/xml,{{ docx_media_type }}" required>
+      <label class="drop" id="drop" for="file">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 18v-6M9.5 14.5 12 12l2.5 2.5"/></svg>
+        <span id="drop-text"><strong>Upuść tutaj plik XML lub DOCX</strong>albo kliknij, aby go wybrać</span>
+      </label>
+    </section>
+
+    <fieldset class="step">
+      <legend><span class="step-number" aria-hidden="true">2</span>Oczekiwany wynik</legend>
+      <div class="tiles">
+        <div class="tile">
+          <input id="out-html" type="radio" name="output" value="html" checked>
+          <label for="out-html">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 13l-2 2 2 2M16 13l2 2-2 2"/></svg>
+            <span><strong>HTML</strong></span>
+          </label>
+        </div>
+        <div class="tile">
+          <input id="out-pdf" type="radio" name="output" value="pdf">
+          <label for="out-pdf">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>
+            <span><strong>PDF</strong></span>
+          </label>
+        </div>
+        <div class="tile">
+          <input id="out-pdf-a11y" type="radio" name="output" value="pdf-accessible">
+          <label for="out-pdf-a11y">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="4.5" r="1.8"/><path d="M5 8.5l7 1.5 7-1.5M12 10v5M12 15l-3 6M12 15l3 6"/></svg>
+            <span><strong>PDF dostępny</strong></span>
+          </label>
+        </div>
+        <div class="tile">
+          <input id="out-xml" type="radio" name="output" value="xml">
+          <label for="out-xml">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
+            <span><strong>XML</strong></span>
+          </label>
+        </div>
+      </div>
+    </fieldset>
+
+    <section class="step">
+      <h2><span class="step-number" aria-hidden="true">3</span>Opcje dodatkowe</h2>
+      <div class="option">
+        <input id="refs" type="checkbox" name="odeslania" value="true" checked aria-describedby="refs-hint">
+        <div>
+          <label for="refs">Wyszukaj odesłania do aktów</label>
+          <p class="hint" id="refs-hint">Odesłania w treści aktu staną się linkami do przepisów, do których odsyłają.</p>
+        </div>
+      </div>
+      <div class="option">
+        <input id="validate" type="checkbox" name="walidacja" value="true" aria-describedby="validate-hint" aria-controls="schema">
+        <div>
+          <label for="validate">Sprawdź zgodność ze schematem XSD</label>
+          <p class="hint" id="validate-hint"></p>
+        </div>
+      </div>
+      <div class="schema" id="schema">
+        <input class="file-input" id="schema-files" type="file" name="schema_file" accept=".xsd,.zip" multiple>
+        <label class="drop compact" id="schema-drop" for="schema-files">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 18v-6M9.5 14.5 12 12l2.5 2.5"/></svg>
+          <span id="schema-text"><strong>Dodaj pliki schematu</strong>Kilka plików .xsd albo archiwum .zip</span>
+        </label>
+        <ul class="file-list" id="schema-list" aria-label="Wybrane pliki schematu"></ul>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button class="primary" id="submit" type="submit">Konwertuj</button>
+    </div>
+
+    <div class="status" id="status" role="status" aria-live="polite" hidden></div>
+  </form>
+
+  <footer>
+    Dla programów: <code>POST /convert/file</code> (pole <code>file</code>, <code>output</code>: html, pdf, pdf-accessible, xml; <code>odeslania</code>; <code>walidacja</code> i <code>schema_file</code>)
+  </footer>
+</main>
+
+<script>
+(function () {
+  var form = document.getElementById("form");
+  var input = document.getElementById("file");
+  var drop = document.getElementById("drop");
+  var dropText = document.getElementById("drop-text");
+  var refs = document.getElementById("refs");
+  var validate = document.getElementById("validate");
+  var validateHint = document.getElementById("validate-hint");
+  var schema = document.getElementById("schema");
+  var schemaInput = document.getElementById("schema-files");
+  var schemaDrop = document.getElementById("schema-drop");
+  var schemaText = document.getElementById("schema-text");
+  var schemaList = document.getElementById("schema-list");
+  var xmlTile = document.getElementById("out-xml");
+  var submit = document.getElementById("submit");
+  var status = document.getElementById("status");
+  var controller = null, timer = null, resultUrl = null;
+
+  function kind(file) {
+    if (!file) return null;
+    return /\.docx$/i.test(file.name) ? "DOCX" : "XML";
+  }
+  function size(bytes) {
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + " kB";
+    return (bytes / 1024 / 1024).toFixed(1).replace(".", ",") + " MB";
+  }
+  function escapeText(text) {
+    var div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // XML is a result only when something happens to the file: DOCX -> XML, or the references found
+  function refresh() {
+    var file = input.files[0];
+    var type = kind(file);
+    if (file) {
+      dropText.innerHTML = "<strong>" + escapeText(file.name) + '<span class="badge">' + type + "</span></strong>" +
+        size(file.size) + " · kliknij, aby wybrać inny plik";
+    }
+    var xmlPossible = type === "DOCX" || refs.checked;
+    xmlTile.disabled = !xmlPossible;
+    if (!xmlPossible && xmlTile.checked) document.getElementById("out-html").checked = true;
+    // validation shows only in the HTML view: the option is there for HTML only
+    var html = form.querySelector('input[name="output"]:checked').value === "html";
+    validate.disabled = !html;
+    validateHint.textContent = html ? ""
+                                    : "Tylko konwersja do HTML wykonuje walidację i prezentuje jej wyniki.";
+    schema.hidden = !(html && validate.checked);
+    var files = Array.prototype.slice.call(schemaInput.files);
+    schemaList.innerHTML = files.map(function (f) { return "<li>" + escapeText(f.name) + " (" + size(f.size) + ")</li>"; }).join("");
+    schemaText.innerHTML = files.length
+      ? "<strong>Wybrano: " + files.length + (files.length === 1 ? " plik" : files.length < 5 ? " pliki" : " plików") +
+        "</strong>Kliknij, aby wybrać inne"
+      : "<strong>Dodaj pliki schematu</strong>Kilka plików .xsd naraz albo archiwum .zip";
+  }
+  input.addEventListener("change", refresh);
+  refs.addEventListener("change", refresh);
+  validate.addEventListener("change", refresh);
+  schemaInput.addEventListener("change", refresh);
+  form.querySelectorAll('input[name="output"]').forEach(function (radio) { radio.addEventListener("change", refresh); });
+  schemaDrop.addEventListener("dragover", function (ev) { ev.preventDefault(); schemaDrop.classList.add("over"); });
+  schemaDrop.addEventListener("dragleave", function () { schemaDrop.classList.remove("over"); });
+  schemaDrop.addEventListener("drop", function (ev) {
+    ev.preventDefault();
+    schemaDrop.classList.remove("over");
+    if (ev.dataTransfer.files.length) { schemaInput.files = ev.dataTransfer.files; refresh(); }
+  });
+
+  ["dragenter", "dragover"].forEach(function (name) {
+    drop.addEventListener(name, function (ev) { ev.preventDefault(); drop.classList.add("over"); });
+  });
+  ["dragleave", "drop"].forEach(function (name) {
+    drop.addEventListener(name, function () { drop.classList.remove("over"); });
+  });
+  drop.addEventListener("drop", function (ev) {
+    ev.preventDefault();
+    if (ev.dataTransfer.files.length) { input.files = ev.dataTransfer.files; refresh(); }
+  });
+
+  function steps() {
+    var list = [];
+    if (kind(input.files[0]) === "DOCX") list.push("DOCX → XML");
+    if (refs.checked) list.push("wyszukiwanie odesłań");
+    if (!validate.disabled && validate.checked && schemaInput.files.length) list.push("walidacja XSD");
+    var output = form.querySelector('input[name="output"]:checked').value;
+    list.push({ html: "HTML", pdf: "składanie PDF", "pdf-accessible": "składanie PDF dostępnego", xml: "XML" }[output]);
+    return list.join(" → ");
+  }
+  function show(state, html) {
+    status.className = "status " + state;
+    status.innerHTML = html;
+    status.hidden = false;
+  }
+  function busy(on) {
+    submit.disabled = on;
+    form.setAttribute("aria-busy", on ? "true" : "false");
+    if (timer) { clearInterval(timer); timer = null; }
+  }
+  function fileName(response) {
+    var header = response.headers.get("content-disposition") || "";
+    var star = /filename\*=UTF-8''([^;]+)/i.exec(header);
+    if (star) return decodeURIComponent(star[1]);
+    var plain = /filename="([^"]+)"/i.exec(header);
+    if (plain) return plain[1];
+    var stem = (input.files[0] ? input.files[0].name : "dokument").replace(/\.[^.]+$/, "");
+    return stem + ".html";
+  }
+
+  form.addEventListener("submit", function (ev) {
+    if (!window.fetch || !input.files.length) return; // without the file or fetch: the plain form
+    ev.preventDefault();
+    if (resultUrl) { URL.revokeObjectURL(resultUrl); resultUrl = null; }
+    controller = new AbortController();
+    var started = Date.now();
+    var plan = steps();
+    function tick() {
+      var seconds = Math.round((Date.now() - started) / 1000);
+      show("working", '<h3><span class="spinner" aria-hidden="true"></span>Trwa konwersja…</h3>' +
+        "<p>" + escapeText(plan) + '</p><p><span id="elapsed" aria-hidden="true">' + seconds + " s</span>" +
+        (kind(input.files[0]) === "DOCX" ? " · konwersja DOCX zwykle trwa do minuty" : "") + "</p>" +
+        '<div class="actions"><button type="button" class="secondary" id="cancel">Anuluj</button></div>');
+      document.getElementById("cancel").onclick = function () { controller.abort(); };
+    }
+    busy(true);
+    tick();
+    timer = setInterval(function () {
+      // only the counter changes, hidden from screen readers: the status is not re-announced every second
+      var counter = document.getElementById("elapsed");
+      if (counter) counter.textContent = Math.round((Date.now() - started) / 1000) + " s";
+    }, 1000);
+
+    fetch(form.action, { method: "POST", body: new FormData(form), signal: controller.signal })
+      .then(function (response) {
+        return response.blob().then(function (blob) { return { response: response, blob: blob }; });
+      })
+      .then(function (result) {
+        busy(false);
+        if (!result.response.ok) {
+          return result.blob.text().then(function (page) {
+            var doc = new DOMParser().parseFromString(page, "text/html");
+            var detail = doc.querySelector("code");
+            show("error", "<h3>Nie udało się przetworzyć dokumentu</h3><p><code>" +
+              escapeText(detail ? detail.textContent : "Serwer odpowiedział błędem " + result.response.status + ".") + "</code></p>");
+          });
+        }
+        var name = fileName(result.response);
+        var seconds = Math.round((Date.now() - started) / 1000);
+        resultUrl = URL.createObjectURL(result.blob);
+        show("done", "<h3>Gotowe</h3><p>" + escapeText(name) + " · " + size(result.blob.size) + " · " + seconds + " s</p>" +
+          '<div class="actions">' +
+          '<a class="button primary" href="' + resultUrl + '" target="_blank" rel="noopener">Otwórz</a>' +
+          '<a class="button secondary" href="' + resultUrl + '" download="' + escapeText(name) + '">Pobierz</a></div>');
+      })
+      .catch(function (error) {
+        busy(false);
+        if (error.name === "AbortError") {
+          show("error", "<h3>Konwersja przerwana</h3><p>Możesz zmienić ustawienia i spróbować ponownie.</p>");
+        } else {
+          show("error", "<h3>Brak połączenia z serwerem</h3><p>Sprawdź, czy usługa działa, i spróbuj ponownie.</p>");
+        }
+      });
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>
