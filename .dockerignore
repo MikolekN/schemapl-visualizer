@@ -1,0 +1,14 @@
+# Secrets never belong in an image layer — they are injected at run time.
+.env
+
+.git
+.gitignore
+.idea
+__pycache__
+**/__pycache__
+*.py[cod]
+output
+.env.example
+Dockerfile
+.dockerignore
+README.md

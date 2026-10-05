@@ -1,93 +1,87 @@
-# XML 2 HTML converter
+# XML → HTML / PDF converter
 
+Turns XML schema (schemaPL - Polish legal acts) into readable, self-contained HTML,
+or into PDF in two layouts:
 
+- `pdf` – the act as published in Dziennik Ustaw / Monitor Polski: the RCL Word
+  template's paragraph styles, Times New Roman, the journal's masthead with the
+  emblem, running header and footnotes, links to cited acts;
+- `pdf-accessible` – the same document made easier to read for visually impaired
+  readers: large print (18 pt text, the whole layout scaled with it) in a
+  sans-serif face (Atkinson Hyperlegible, drawn for readers with low vision; the
+  masthead keeps the journal's face), 1.5 line spacing, text set flush left
+  without hyphenation, links underlined, stronger table rules, and a tagged
+  PDF/UA-1 file (the title, chapters and annexes as headings, footnotes as notes,
+  table headers, alternative texts for formulas and pictures).
 
-## Getting started
+Both PDFs carry the act's structure as a bookmark tree (the table of contents a
+PDF viewer shows): chapters, articles, ustępy, points, letters and tirets, each
+leading to its unit. References to the act's own provisions are links to them.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+The XML is always the source: DOCX is first converted to XML, and HTML and PDF
+are both made from the XML (PDF never goes through HTML).
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Running
 
-## Add your files
+CLI:
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+    python convert.py <file-or-folder> [-o OUTPUT] [-f html|pdf|pdf-accessible] [--schema schema.xsd]
 
-```
-cd existing_repo
-git remote add origin https://projects.task.gda.pl/caise/NLP/kisi/rcl/xml-2-html-converter.git
-git branch -M main
-git push -uf origin main
-```
+WEB:
 
-## Integrate with your tools
+    uvicorn app.service:app --reload
 
-* [Set up project integrations](https://projects.task.gda.pl/caise/NLP/kisi/rcl/xml-2-html-converter/-/settings/integrations)
+## Web service
 
-## Collaborate with your team
+One form, one pipeline:
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+    XML  ─────────────────┐                     ┌─→ HTML
+                          ├─→ (references) ─────┼─→ PDF (official look)
+    DOCX ─→ XML ──────────┘                     ├─→ PDF (accessible)
+                                                └─→ XML
 
-## Test and Deploy
+The start page has a single form: a file to drop or choose (XML or DOCX, told
+apart by its content), the result as tiles (HTML, PDF, PDF dostępny, XML), the
+reference lookup and the XSD validation as options (validation for the HTML
+result only: it is where its result shows). The conversion runs on the page: its
+progress, any error, then the result to open or download. Without JavaScript the
+form posts as usual and the browser shows the result.
 
-Use the built-in continuous integration in GitLab.
+The form posts to `POST /convert/file`: `file`, `output` (`html`, `pdf`,
+`pdf-accessible`, `xml`), `odeslania` (`true` to look up references), and
+`walidacja` (`true` to validate) with `schema_file` (any number of `.xsd` files or
+a `.zip`). Validation runs for HTML only, the one result that shows it. A DOCX is posted to the
+converter and its XML continues as if uploaded; `xml` returns the intermediate
+XML (with the references found). PDF is available for schemaPL documents.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+The earlier endpoints remain for programs: `POST /convert` (XML, with
+references), `POST /convert/no-refs` (XML, without) and `POST /convert/docx`
+(DOCX, with references), each with `output` and `schema_file`.
 
-***
+## PDF output
 
-# Editing this README
+`app/profiles/schemapl_pdf.py` walks the schemaPL document and writes Typst code:
+the paragraphs of the act, each with the RCL paragraph style Word gives it in the
+publication (`PKT`, `Z_LIT/UST(§)`, ...), its marker and its place in the structure.
+The Typst template `app/templates/pdf/dziennik.typ` draws them — as published, or
+in its accessible version (the template input `uklad: "dostepny"`) — and
+[Typst](https://typst.app) compiles the PDF (`app/typst.py`). MathML formulas
+become Typst math (`app/mathml.py`).
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+`app/templates/pdf/rcl-styles.typ` holds the RCL template's paragraph styles. It
+is generated from a publication DOCX:
 
-## Suggestions for a good README
+    python scripts/rcl_styles.py <publication.docx>
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+The PDF layout needs its fonts installed (the Docker image has them): Times New
+Roman or Liberation Serif, Cambria Math or TeX Gyre Termes Math, and for the
+accessible version Atkinson Hyperlegible (else Verdana, Arial or Liberation Sans).
 
-## Name
-Choose a self-explaining name for your project.
+## Adding support for another schema
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+1. Copy `app/profiles/schemapl.py` to `app/profiles/<your_schema>.py`.
+2. Change the namespace URLs and the element handling to match your vocabulary.
+   `dispatch(element, state, inline)` returns the HTML for an element, or `None`
+   to let the engine fall back.
+3. Register it in `app/profiles/__init__.py`: add its `PROFILE` to `_PROFILES`
+   and give it a `root_namespaces` set.
