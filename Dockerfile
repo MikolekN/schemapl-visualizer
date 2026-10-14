@@ -25,7 +25,8 @@ FROM ghcr.io/astral-sh/uv:0.12.2-python3.11-dhi AS runtime
 
 ENV PYTHONPATH="/app/site-packages:/app" \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    TZ="Europe/Warsaw"
 
 COPY --from=build /fonts/ /usr/share/fonts/caise/
 COPY --from=build --chown=65532:65532 \
