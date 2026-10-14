@@ -371,8 +371,9 @@ uv run python source/scripts/paragraph_styles.py <publication.docx>
 | `POST /convert/no-refs` | Form: XML `file`, `output`, optional `schema_file` | The result, without references |
 
 Validation runs for HTML only, the one result that shows it. PDF is available
-for schemaPL documents; other XML is shown as HTML by a generic view. Errors
-are answered with HTTP 400 and a page explaining them.
+for schemaPL documents; other XML is shown as HTML by a generic view. A
+document nested deeper than 100 levels of elements is refused (real acts go
+about 25 deep). Errors are answered with HTTP 400 and a page explaining them.
 
 ### Python API
 
@@ -385,6 +386,7 @@ are answered with HTTP 400 and a page explaining them.
 | `ValidationResult` | The outcome of validating one document. | `status`, `errors`, `schema_error`, `validated`, `is_valid` |
 | `UnsupportedDocumentError` | Raised for PDF of a document no PDF profile handles. | None |
 | `PdfError` | Raised when Typst cannot typeset the document. | None |
+| `DocumentTooDeepError` | Raised for a document nested deeper than `MAX_DEPTH` (100) levels. | None |
 
 #### Functions
 

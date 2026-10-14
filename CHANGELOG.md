@@ -38,6 +38,7 @@ a wersjonowanie zgodne z Semantic Versioning.
 ### Naprawiono
 - PDF nie powstawał, gdy przypis zaczynał się tabelą
 - strona HTML z kontenera podaje czas wygenerowania w strefie Europe/Warsaw zamiast UTC (`TZ` w obrazie)
+- dokument zagnieżdżony głębiej niż 100 poziomów elementów jest odrzucany wyjątkiem `DocumentTooDeepError` (w usłudze HTTP błąd 400) zamiast błędu 500 i wielotysięcznego wpisu w logu; parser znów stosuje ograniczenia libxml2 (bez `huge_tree`)
 
 ### Usunięto
 - plik `.env.example`; zmienne konfiguracji opisuje README

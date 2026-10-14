@@ -368,7 +368,9 @@ uv run python source/scripts/paragraph_styles.py <publikacja.docx>
 
 Walidacja działa tylko dla HTML, jedynego wyniku, który ją pokazuje. PDF jest
 dostępny dla dokumentów schemaPL; inny XML jest pokazywany jako HTML w widoku
-ogólnym. Błędy są zwracane z kodem HTTP 400 i stroną z wyjaśnieniem.
+ogólnym. Dokument zagnieżdżony głębiej niż 100 poziomów elementów jest
+odrzucany (rzeczywiste akty mają około 25 poziomów). Błędy są zwracane z kodem
+HTTP 400 i stroną z wyjaśnieniem.
 
 ### API Python
 
@@ -381,6 +383,7 @@ ogólnym. Błędy są zwracane z kodem HTTP 400 i stroną z wyjaśnieniem.
 | `ValidationResult` | Wynik walidacji jednego dokumentu. | `status`, `errors`, `schema_error`, `validated`, `is_valid` |
 | `UnsupportedDocumentError` | Zgłaszany dla PDF dokumentu, którego nie obsługuje żaden profil PDF. | None |
 | `PdfError` | Zgłaszany, gdy Typst nie może złożyć dokumentu. | None |
+| `DocumentTooDeepError` | Zgłaszany dla dokumentu zagnieżdżonego głębiej niż `MAX_DEPTH` (100) poziomów. | None |
 
 #### Funkcje
 

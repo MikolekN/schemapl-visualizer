@@ -14,7 +14,7 @@ from lxml import etree
 
 from .html.engine import RenderState, render_document_body, render_toc
 from .html.page import render_full_page
-from .parsing import parse_xml
+from .parsing import DocumentTooDeepError, parse_xml
 from .pdf.typst import compile_pdf
 from .profiles import select_pdf_profile, select_profile
 from .validation import SchemaValidator, ValidationResult
@@ -48,7 +48,8 @@ def convert_bytes(
     """Convert the XML in ``data`` into ``output_format``.
 
     ``source_name`` names the document in the HTML page; ``validator``,
-    when given, validates it first.
+    when given, validates it first. A document nested too deeply raises
+    DocumentTooDeepError.
     """
     root = parse_xml(data)
     validation = (
@@ -64,7 +65,13 @@ def convert_bytes(
             f"Available: {available}."
         )
         raise ValueError(message)
-    return build_output(root, source_name, validation)
+    try:
+        return build_output(root, source_name, validation)
+    except RecursionError as exc:
+        # nesting that recurses harder per level than the depth limit
+        # allows for
+        message = "The document is nested too deeply to convert."
+        raise DocumentTooDeepError(message) from exc
 
 
 def convert_file(

@@ -4,9 +4,12 @@ from pathlib import Path
 
 import pytest
 from lxml import etree
+from pytest_mock import MockerFixture
 
 from schemapl_visualizer import (
+    MAX_DEPTH,
     ConversionResult,
+    DocumentTooDeepError,
     SchemaValidator,
     UnsupportedDocumentError,
     available_formats,
@@ -109,6 +112,44 @@ def test_entities_are_not_resolved() -> None:
     result = convert_bytes(document, source_name="doc.xml")
 
     assert "root:" not in result.text
+
+
+def _nested(depth: int) -> bytes:
+    """A document ``depth`` levels deep, its root included."""
+    inner = "<x>" * (depth - 1) + "t" + "</x>" * (depth - 1)
+    return f'<doc xmlns="urn:example">{inner}</doc>'.encode()
+
+
+def test_nesting_up_to_the_limit_is_converted() -> None:
+    """Converts a document exactly MAX_DEPTH levels deep."""
+    result = convert_bytes(_nested(MAX_DEPTH), source_name="doc.xml")
+
+    assert result.text.startswith("<!DOCTYPE html>")
+
+
+def test_deeper_nesting_is_refused() -> None:
+    """Refuses a document nested deeper than MAX_DEPTH levels."""
+    with pytest.raises(DocumentTooDeepError, match=str(MAX_DEPTH)):
+        convert_bytes(_nested(MAX_DEPTH + 1), source_name="doc.xml")
+
+
+def test_parser_keeps_its_depth_limit() -> None:
+    """Leaves libxml2's own limit on nesting in place."""
+    with pytest.raises(etree.XMLSyntaxError, match="depth"):
+        convert_bytes(_nested(300), source_name="doc.xml")
+
+
+def test_runaway_recursion_is_refused(
+    mocker: MockerFixture, generic_xml: bytes
+) -> None:
+    """Reports nesting the renderer cannot follow as too deep."""
+    mocker.patch.dict(
+        "schemapl_visualizer.conversion.OUTPUT_FORMATS",
+        {"html": mocker.Mock(side_effect=RecursionError)},
+    )
+
+    with pytest.raises(DocumentTooDeepError):
+        convert_bytes(generic_xml, source_name="doc.xml")
 
 
 def test_validation_result_is_shown(

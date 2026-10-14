@@ -10,11 +10,14 @@ from .conversion import (
     convert_bytes,
     convert_file,
 )
+from .parsing import MAX_DEPTH, DocumentTooDeepError
 from .pdf.typst import PdfError
 from .validation import SchemaValidator, ValidationResult, load_validator
 
 __all__ = [
+    "MAX_DEPTH",
     "ConversionResult",
+    "DocumentTooDeepError",
     "PdfError",
     "SchemaValidator",
     "UnsupportedDocumentError",

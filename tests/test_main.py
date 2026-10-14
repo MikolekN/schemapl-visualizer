@@ -129,6 +129,8 @@ def test_failed_reference_lookup(
     [
         (b"<akt>", "html", "Niepoprawny XML"),
         (b'<doc xmlns="urn:example"/>', "pdf", "schemaPL"),
+        (b"<a>" * 101 + b"</a>" * 101, "html", "zbyt głęboko"),
+        (b"<a>" * 2000 + b"</a>" * 2000, "html", "Niepoprawny XML"),
         (b"<akt/>", "docx", "Nieznany format"),
     ],
 )

@@ -26,6 +26,8 @@ from settings import settings
 from upstream import UpstreamError
 
 from schemapl_visualizer import (
+    MAX_DEPTH,
+    DocumentTooDeepError,
     PdfError,
     UnsupportedDocumentError,
     __version__,
@@ -168,6 +170,11 @@ async def _convert_xml(
         )
     except etree.XMLSyntaxError as exc:
         return _failed("Niepoprawny XML", exc)
+    except DocumentTooDeepError:
+        return _error_response(
+            "Dokument jest zagnieżdżony zbyt głęboko (dopuszczalne jest "
+            f"{MAX_DEPTH} poziomów elementów)."
+        )
     except UnsupportedDocumentError:
         return _error_response(
             "PDF można utworzyć tylko z dokumentu w schemacie schemaPL."
