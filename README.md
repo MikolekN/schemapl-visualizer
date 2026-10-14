@@ -2,7 +2,7 @@
 
 ![Standard](https://img.shields.io/badge/readme_style-standard-brightgreen?style=for-the-badge) ![English](https://img.shields.io/badge/selected_language-english-blue?style=for-the-badge) [![Polish](https://img.shields.io/badge/dostępny_język-polski-red?style=for-the-badge)](README.pl.md) ![Python](https://img.shields.io/badge/python_3.11-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-schemaPL Visualizer converts Polish legal acts in schemaPL XML into interactive HTML or PDF (official journal layout or accessible PDF/UA).
+Converts Polish legal acts in schemaPL XML into interactive HTML or PDF (official journal layout or accessible PDF/UA).
 
 It can be used as a FastAPI HTTP service, as the `schemapl-visualizer`
 command, or as the `schemapl_visualizer` Python library. The XML is always

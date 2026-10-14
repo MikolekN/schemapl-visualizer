@@ -2,7 +2,7 @@
 
 ![Standard](https://img.shields.io/badge/styl_readme-standardowy-brightgreen?style=for-the-badge) ![Polski](https://img.shields.io/badge/wybrany_język-polski-red?style=for-the-badge) [![Angielski](https://img.shields.io/badge/available_language-english-blue?style=for-the-badge)](README.md) ![Python](https://img.shields.io/badge/python_3.11-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-schemaPL Visualizer przetwarza akty prawne zapisane w XML zgodnym ze schematem schemaPL na interaktywny HTML lub PDF (w układzie dziennika urzędowego albo dostępny PDF/UA).
+Przetwarza akty prawne zapisane w XML zgodnym ze schematem schemaPL na interaktywny HTML lub PDF (w układzie dziennika urzędowego albo dostępny PDF/UA).
 
 Może być używany jako usługa HTTP oparta na FastAPI, jako polecenie
 `schemapl-visualizer` lub jako biblioteka Python `schemapl_visualizer`.
