@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<akt-prawny
+        xmlns="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/1.0"
+        xmlns:now="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/now"
+        xmlns:gd="https://projects.task.gda.pl/caise/NLP/kisi/rcl/GUIDs/1.0"
+        xmlns:tpg="https://projects.task.gda.pl/caise/NLP/kisi/rcl/typografia/1.0"
+        xmlns:kmn="https://projects.task.gda.pl/caise/NLP/kisi/rcl/komentarze/1.0"
+        xmlns:mml="http://www.w3.org/1998/Math/MathML"
+        xmlns:ktg="https://projects.task.gda.pl/caise/NLP/kisi/rcl/ktg/1.0">
+    <ustawa>
+        <metadane>
+            <ELIaktu>
+                <ELI>DU/2028/1</ELI>
+            </ELIaktu>
+            <gd:GUIDwersji>b72381da-a2a7-4559-9b04-5be745c943b3</gd:GUIDwersji>
+            <Wydawnictwo>DU</Wydawnictwo>
+            <Rok>2028</Rok>
+            <Pozycja>1</Pozycja>
+            <AdresWyswietlany>Dz.U. 2028 poz. 1</AdresWyswietlany>
+            <Tytul>Ustawa z dnia 2 stycznia 2028 r. o testowaniu</Tytul>
+            <Rodzaj>USTAWA</Rodzaj>
+            <Status>akt obowiązujacy</Status>
+            <CzyObowiazuje>NOT_IN_FORCE</CzyObowiazuje>
+            <DataOgloszenia>2028-01-02</DataOgloszenia>
+            <DataAktu>
+                <DataWydania>2028-01-02</DataWydania>
+            </DataAktu>
+            <Organy>
+                <Organ gd:GUID="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                       rola="wydajacy"
+                       eliURI="https://eli.gov.pl/resource/authority/legal-institution/Sejm">
+                    <Nazwa>SEJM</Nazwa>
+                </Organ>
+                <Organ gd:GUID="b2c3d4e5-f6a7-8901-bcde-f12345678901"
+                       rola="podpisujacy"
+                       eliURI="https://eli.gov.pl/resource/authority/legal-institution/Prezydent">
+                    <Nazwa>Prezydent Rzeczypospolitej Polskiej</Nazwa>
+                    <OrganPodpisujacy>Prezydent Rzeczpospolitej Polskiej</OrganPodpisujacy>
+                    <OsobaPodpisujaca>
+                        <imie>Karol</imie> <nazwisko>Nawrocki</nazwisko></OsobaPodpisujaca>
+                </Organ>
+            </Organy>
+            <SlowaKluczowe>
+                <Termin>test</Termin>
+            </SlowaKluczowe>
+            <TekstyAktu>
+                <TekstAktu>
+                    <NazwaPliku>D20280001.pdf</NazwaPliku>
+                    <TypTekstu>O</TypTekstu>
+                </TekstAktu>
+                <TekstAktu>
+                    <NazwaPliku>D20280001.pdf</NazwaPliku>
+                    <TypTekstu>I</TypTekstu>
+                </TekstAktu>
+                <TekstAktu>
+                    <NazwaPliku>D20280001L.pdf</NazwaPliku>
+                    <TypTekstu>T</TypTekstu>
+                </TekstAktu>
+            </TekstyAktu>
+        </metadane>
+        <rodzaj-aktu>Ustawa</rodzaj-aktu>
+        <data>z dnia 2 stycznia 2028 r.</data>
+        <tytul>o testowaniu.</tytul>
+        <!--Testowy zapis jednostki redakcyjnej ze wzorami-->
+        <nie-ztp-artykul eId="DU/2028/1__art_1" gd:GUID="01a0e3e7-2264-735d-b01c-b614061bcb2b">
+            <nr>1</nr>
+            <p>
+                <zdanie nr="1" fragment="1">Poniższe jednostki są odpowiednikami art. 39 ust. 11 i 12 dodawane przez art. 1 pkt 14 lit. e projektu X.2821</zdanie>
+            </p>
+            <nie-ztp-ustep eId="DU/2028/1__art_1__ust_11" gd:GUID="e1a10001-0000-4000-8000-000000000005">
+                <nr>11</nr>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000006" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000007">
+                        W przypadku gdy po dniu złożenia oferty, która wygrała aukcję, informacje lub oświadczenie, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2015/478/art_83/ust_1/pkt_5" gd:refGUID="e1a10001-0000-4000-8000-000000000008">art. 83 ust. 1 pkt 5</ref>, stały się nieaktualne albo zostały złożone zgodnie z <ref href="https://eli.gov.pl/eli/DU/2015/478/art_83/ust_1b" gd:refGUID="e1a10001-0000-4000-8000-000000000009">art. 83 ust. 1b</ref>, wytwórca, o którym mowa w <ref href="https://eli.gov.pl/eli/DU/2015/478/art_72/ust_1" gd:refGUID="e1a10001-0000-4000-8000-00000000000a">art. 72 ust. 1</ref>, najpóźniej w dziesiątym dniu miesiąca następującego po upływie miesiąca, w którym nastąpiła zmiana powodująca konieczność zaktualizowania tych informacji lub tego oświadczenia, albo złożenia tych informacji lub oświadczenia zgodnie z art. 83 ust. 1b, przekazuje nowe informacje zgodnie z art. 83 ust. 1b, albo zaktualizowane informacje lub oświadczenie, o których mowa w art. 83 ust. 1 pkt 5, oraz oświadczenie wytwórcy zawierające wartość pomocy, o której mowa w ust. 1, przeliczoną zgodnie z ust. 3, datę jej udzielenia, wskazanie podmiotu udzielającego pomocy inwestycyjnej oraz cenę skorygowaną obliczoną według następującego wzoru:
+                    </zdanie>
+                </p>
+                <wzor-mat gd:GUID="e1a10001-0000-4000-8000-00000000000b">
+                    <wzor gd:GUID="01a0e3e7-2264-7b04-ba94-4172465aa0f9">
+                        <mml:math>
+                            <mml:mrow>
+                                <mml:mi>Cs</mml:mi>
+                                <mml:mo>=</mml:mo>
+                                <mml:mi>Co</mml:mi>
+                                <mml:mo>-</mml:mo>
+                                <mml:mfrac>
+                                    <mml:msub><mml:mi>PI</mml:mi><mml:mi>c</mml:mi></mml:msub>
+                                    <mml:mi>I</mml:mi>
+                                </mml:mfrac>
+                            </mml:mrow>
+                        </mml:math>
+                    </wzor>
+                    <wprowadzenie-do-opisu gd:GUID="01a0e974-e2f4-77d7-9bdf-743adc28bb85">gdzie poszczególne symbole oznaczają:</wprowadzenie-do-opisu>
+                    <opis gd:GUID="01a0e3e7-2264-746e-b8b4-5587518985d8">
+                        <symbol-mat gd:GUID="01a0e3e7-2264-77b5-a86f-effe14ea7eb2"><mml:math><mml:mi>Cs</mml:mi></mml:math></symbol-mat>
+                        <objasnienie gd:GUID="01a0e3e7-2264-76dc-9e59-ade30d5091aa">
+                            <p>
+                                <zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-00000000000c" gd:fragmentGUID="e1a10001-0000-4000-8000-00000000000d">cenę skorygowaną energii elektrycznej, wyrażoną w zł/MWh, z uwzględnieniem <ref href="https://eli.gov.pl/eli/DU/2015/478/art_92/ust_10" gd:refGUID="c1a10002-0000-4000-8000-000000000001">art. 92 ust. 10</ref>, obowiązującą od miesiąca następującego po miesiącu złożenia nowych informacji lub nowego oświadczenia, o których mowa w art. 83 ust. 1b, albo zaktualizowanych informacji lub zaktualizowanego oświadczenia, o których mowa w art. 83 ust. 1 pkt 5, lub od miesiąca następującego po miesiącu, w którym wytwórca był obowiązany do złożenia tego oświadczenia, stanowiącą podstawę obowiązku zakupu energii elektrycznej, o którym mowa w <ref href="https://eli.gov.pl/eli/DU/2015/478/art_92/ust_1" gd:refGUID="c1a10002-0000-4000-8000-000000000002">art. 92 ust. 1</ref>, lub podstawę wypłaty ujemnego salda zgodnie z <ref href="https://eli.gov.pl/eli/DU/2015/478/art_93/ust_1/pkt_4" gd:refGUID="c1a10002-0000-4000-8000-000000000003">art. 93 ust. 1 pkt 4</ref> albo <ref href="https://eli.gov.pl/eli/DU/2015/478/art_93/ust_2/pkt_3" gd:refGUID="c1a10002-0000-4000-8000-000000000004">ust. 2 pkt 3</ref>,</zdanie>
+                            </p>
+                        </objasnienie>
+                    </opis>
+
+                    <opis gd:GUID="c1a10002-0000-4000-8000-000000000005">
+                        <symbol-mat gd:GUID="c1a10002-0000-4000-8000-000000000006"><mml:math><mml:mi>Co</mml:mi></mml:math></symbol-mat>
+                        <objasnienie gd:GUID="c1a10002-0000-4000-8000-000000000007">
+                            <p>
+                                <zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-00000000000e" gd:fragmentGUID="e1a10001-0000-4000-8000-00000000000f">cenę, o której mowa w <ref href="https://eli.gov.pl/eli/DU/2015/478/art_79/ust_3/pkt_3" gd:refGUID="c1a10002-0000-4000-8000-000000000008">art. 79 ust. 3 pkt 3</ref>, wynikającą z oferty, wyrażoną w zł/MWh,</zdanie>
+                            </p>
+                        </objasnienie>
+                    </opis>
+
+                    <opis gd:GUID="c1a10002-0000-4000-8000-000000000009">
+                        <symbol-mat gd:GUID="c1a10002-0000-4000-8000-00000000000a"><mml:math><mml:mi>I</mml:mi></mml:math></symbol-mat>
+                        <objasnienie gd:GUID="c1a10002-0000-4000-8000-00000000000b">
+                            <p>
+                                <zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000010" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000011">ilość energii elektrycznej, o której mowa w <ref href="https://eli.gov.pl/eli/DU/2015/478/art_79/ust_3/pkt_3" gd:refGUID="c1a10002-0000-4000-8000-00000000000c">art. 79 ust. 3 pkt 3</ref>, wyrażoną w MWh, wynikającą z oferty,</zdanie>
+                            </p>
+                        </objasnienie>
+                    </opis>
+
+                    <opis gd:GUID="c1a10002-0000-4000-8000-00000000000d">
+                        <symbol-mat gd:GUID="c1a10002-0000-4000-8000-00000000000e"><mml:math><mml:msub><mml:mi>PI</mml:mi><mml:mi>c</mml:mi></mml:msub></mml:math></symbol-mat>
+                        <objasnienie gd:GUID="c1a10002-0000-4000-8000-00000000000f">
+                            <p>
+                                <zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000012" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000013">sumę wartości pomocy inwestycyjnej, o której mowa w ust. 1, wyrażoną w złotych, obliczoną na dzień złożenia oferty, według następującego wzoru:</zdanie>
+                            </p>
+                            <wzor-mat gd:GUID="e1a10001-0000-4000-8000-000000000014">
+                                <wzor gd:GUID="01a0e3e7-2264-7503-9983-4a32a1075508">
+                                    <mml:math>
+                                        <mml:mrow>
+                                            <mml:msub><mml:mi>PI</mml:mi><mml:mi>c</mml:mi></mml:msub>
+                                            <mml:mo>=</mml:mo>
+                                            <mml:mrow>
+                                                <mml:munderover>
+                                                    <mml:mo>&#8721;</mml:mo>
+                                                    <mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mi>u</mml:mi></mml:mrow>
+                                                    <mml:mi>j</mml:mi>
+                                                </mml:munderover>
+                                                <mml:mrow>
+                                                    <mml:mo>[</mml:mo>
+                                                    <mml:msub><mml:mi>PI</mml:mi><mml:mi>i</mml:mi></mml:msub>
+                                                    <mml:mo>&#8901;</mml:mo>
+                                                    <mml:munderover>
+                                                        <mml:mo>&#8719;</mml:mo>
+                                                        <mml:mrow><mml:mi>m</mml:mi><mml:mo>=</mml:mo><mml:mi>i</mml:mi></mml:mrow>
+                                                        <mml:mi>j</mml:mi>
+                                                    </mml:munderover>
+                                                    <mml:mrow>
+                                                        <mml:mo>(</mml:mo>
+                                                        <mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:msub><mml:mi>r</mml:mi><mml:mi>m</mml:mi></mml:msub>
+                                                        <mml:mo>)</mml:mo>
+                                                    </mml:mrow>
+                                                    <mml:mo>]</mml:mo>
+                                                </mml:mrow>
+                                            </mml:mrow>
+                                            <mml:mo>+</mml:mo>
+                                            <mml:mrow>
+                                                <mml:munderover>
+                                                    <mml:mo>&#8721;</mml:mo>
+                                                    <mml:mrow><mml:mi>k</mml:mi><mml:mo>=</mml:mo><mml:mi>j</mml:mi></mml:mrow>
+                                                    <mml:mi>s</mml:mi>
+                                                </mml:munderover>
+                                                <mml:mrow>
+                                                    <mml:mo>[</mml:mo>
+                                                    <mml:msub><mml:mi>PI</mml:mi><mml:mi>k</mml:mi></mml:msub>
+                                                    <mml:mo>&#8901;</mml:mo>
+                                                    <mml:munderover>
+                                                        <mml:mo>&#8719;</mml:mo>
+                                                        <mml:mrow><mml:mi>n</mml:mi><mml:mo>=</mml:mo><mml:mi>j</mml:mi></mml:mrow>
+                                                        <mml:mi>k</mml:mi>
+                                                    </mml:munderover>
+                                                    <mml:mfrac>
+                                                        <mml:mn>1</mml:mn>
+                                                        <mml:mrow><mml:mo>(</mml:mo><mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:msub><mml:mi>r</mml:mi><mml:mi>n</mml:mi></mml:msub><mml:mo>)</mml:mo></mml:mrow>
+                                                    </mml:mfrac>
+                                                    <mml:mo>]</mml:mo>
+                                                </mml:mrow>
+                                            </mml:mrow>
+                                        </mml:mrow>
+                                    </mml:math>
+                                </wzor>
+                                <wprowadzenie-do-opisu gd:GUID="01a0e974-e2f4-72c0-97ca-963d9cd63e7f">gdzie poszczególne symbole oznaczają:</wprowadzenie-do-opisu>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-000000000010">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-000000000011"><mml:math><mml:mi>j</mml:mi></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-000000000012">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000015" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000016">rok kalendarzowy, w którym wytwórca złożył ofertę,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-000000000013">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-000000000014"><mml:math><mml:mi>i</mml:mi></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-000000000015">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000017" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000018">kolejne lata kalendarzowe liczone od roku kalendarzowego „u” do roku kalendarzowego „j”,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-000000000016">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-000000000017"><mml:math><mml:mi>u</mml:mi></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-000000000018">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000019" gd:fragmentGUID="e1a10001-0000-4000-8000-00000000001a">rok kalendarzowy, w którym po raz pierwszy udzielono pomocy inwestycyjnej, o której mowa w ust. 1, oznaczonej symbolem PIi,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-000000000019">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-00000000001a"><mml:math><mml:msub><mml:mi>PI</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-00000000001b">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-00000000001b" gd:fragmentGUID="e1a10001-0000-4000-8000-00000000001c">wartość w roku „i” pomocy inwestycyjnej, o której mowa w ust. 1, udzielonej od dnia 1 października 2005 r. do dnia złożenia oferty, wyrażoną w złotych, udzieloną w danym roku „i”,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-00000000001c">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-00000000001d"><mml:math><mml:mi>m</mml:mi></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-00000000001e">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-00000000001d" gd:fragmentGUID="e1a10001-0000-4000-8000-00000000001e">kolejne lata między rokiem otrzymania danej pomocy „i” a rokiem „j”,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-00000000001f">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-000000000020"><mml:math><mml:msub><mml:mi>r</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-000000000021">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-00000000001f" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000020">stopę referencyjną wyrażoną w ułamku dziesiętnym, będącą spadkiem lub wzrostem średniorocznego wskaźnika cen towarów i usług konsumpcyjnych ogółem w roku „m” określonego w komunikacie Prezesa GUS, ogłoszonym w Dzienniku Urzędowym Rzeczypospolitej Polskiej „Monitor Polski”, przy czym wartość rm dla roku kalendarzowego „j” wynosi 0,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-000000000022">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-000000000023"><mml:math><mml:mi>s</mml:mi></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-000000000024">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000021" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000022">rok kalendarzowy, w którym została udzielona ostatnia uwzględniona pomoc, o której mowa w ust. 1,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-000000000025">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-000000000026"><mml:math><mml:mi>k</mml:mi></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-000000000027">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000023" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000024">kolejne lata kalendarzowe liczone od roku kalendarzowego „j” do roku kalendarzowego „s”,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-000000000028">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-000000000029"><mml:math><mml:msub><mml:mi>PI</mml:mi><mml:mi>k</mml:mi></mml:msub></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-00000000002a">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000025" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000026">wartość w roku „k” pomocy inwestycyjnej, o której mowa w ust. 1, udzielonej po dniu złożenia oferty, wyrażoną w złotych, udzieloną w danym roku „k”,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-00000000002b">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-00000000002c"><mml:math><mml:mi>n</mml:mi></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-00000000002d">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000027" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000028">kolejne lata między rokiem „j” a rokiem otrzymania danej pomocy „k”,</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                                <opis gd:GUID="c1a10002-0000-4000-8000-00000000002e">
+                                    <symbol-mat gd:GUID="c1a10002-0000-4000-8000-00000000002f"><mml:math><mml:msub><mml:mi>r</mml:mi><mml:mi>n</mml:mi></mml:msub></mml:math></symbol-mat>
+                                    <objasnienie gd:GUID="c1a10002-0000-4000-8000-000000000030">
+                                        <p><zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000029" gd:fragmentGUID="e1a10001-0000-4000-8000-00000000002a">stopę referencyjną wyrażoną w ułamku dziesiętnym, będącą spadkiem lub wzrostem średniorocznego wskaźnika cen towarów i usług konsumpcyjnych ogółem w roku „n” określonego w komunikacie Prezesa GUS, ogłoszonym w Dzienniku Urzędowym Rzeczypospolitej Polskiej „Monitor Polski”, przy czym wartość rn dla roku kalendarzowego „j” wynosi 0, a w przypadku gdy w dniu złożenia lub upływu terminu złożenia, zgodnie z niniejszym przepisem, oświadczenia wytwórcy, w zakresie pomocy inwestycyjnej, o której mowa w ust. 1, stopa referencyjna w roku „n” nie została opublikowana, należy przyjąć spadek lub wzrost wskaźnika cen towarów i usług konsumpcyjnych z listopada roku „n-1”, w ujęciu rok do roku.</zdanie></p>
+                                    </objasnienie>
+                                </opis>
+                            </wzor-mat>
+                        </objasnienie>
+                    </opis>
+                </wzor-mat>
+            </nie-ztp-ustep>
+            <!--Testowy zapis nowelizacji wzoru i opisu wzoru-->
+            <nie-ztp-ustep eId="DU/2028/1__art_1__ust_12" gd:GUID="e1a10001-0000-4000-8000-00000000002b">
+                <nr>12</nr>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-00000000002c" gd:fragmentGUID="e1a10001-0000-4000-8000-00000000002d">
+                        W przypadku gdy po dniu złożenia, zgodnie z <ref href="https://eli.gov.pl/eli/DU/2015/478/art_39/ust_11" gd:refGUID="e1a10001-0000-4000-8000-00000000002e">ust. 11</ref>, oświadczenia wytwórcy, w zakresie pomocy inwestycyjnej, o której mowa w ust. 1, zostanie udzielona nowa pomoc inwestycyjna, o której mowa w ust. 1, lub wzrośnie wartość pomocy wskazanej w oświadczeniu, stosuje się przepis ust. 7.
+                    </zdanie>
+                </p>
+            </nie-ztp-ustep>
+        </nie-ztp-artykul>
+
+        <!--Przykład nowelizacji jednostki ze wzorami-->
+        <nie-ztp-artykul eId="DU/2028/1__art_2" gd:GUID="01a0e3e7-2264-70ce-938f-7e1302d81b4a">
+            <nr>2</nr>
+            <p>
+                <zdanie nr="1" fragment="1" gd:zdGUID="01a0e3e7-2264-7a9a-af27-9850691a9845"  gd:fragmentGUID="01a0e3e7-2264-77c8-af40-8c257b9aa407">
+                    Wprowadza się zmiany we wzorach:
+                </zdanie>
+            </p>
+            <nie-ztp-punkt eId="DU/2028/1__art_2__pkt_1" gd:GUID="01a0e3e7-2264-7ae5-b6c3-a4ae9c87a9fb">
+                <nr>1</nr>
+                <p>
+                    <zdanie nr="1" fragment="2" gd:zdGUID="01a0e3e7-2264-7a9a-af27-9850691a9845"  gd:fragmentGUID="01a0e3e7-2264-78f6-8fa2-c58f289cd3cf">w art. 1 wzór matematyczny otrzymuje brzmienie:</zdanie>
+                    <cytat-blok cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/DU/2028/1" element-eId="DU/2028/1__art_1" funkcja="zastap" gd:GUIDcelu="01a0e3e7-2264-7b04-ba94-4172465aa0f9">
+                        <wzor gd:GUID="01a0e3e7-2264-7f27-bd53-488eca7d748a">
+                            <mml:math>
+                                <mml:mrow>
+                                    <mml:mi>Cs</mml:mi>
+                                    <mml:mo>=</mml:mo>
+                                    <mml:mi>Co</mml:mi>
+                                    <mml:mo>-</mml:mo>
+                                    <mml:mfrac>
+                                        <mml:msub><mml:mi>PI</mml:mi><mml:mi>c</mml:mi></mml:msub>
+                                        <mml:mi>Ihaa</mml:mi>
+                                    </mml:mfrac>
+                                </mml:mrow>
+                            </mml:math>
+                        </wzor>
+                    </cytat-blok>
+                </p>
+            </nie-ztp-punkt>
+
+            <nie-ztp-punkt eId="DU/2028/1__art_2__pkt_2" gd:GUID="01a0e3e7-2264-2f27-bd53-488eca7d748a">
+                <nr>2</nr>
+                <p>
+                    <zdanie nr="1" fragment="3" gd:zdGUID="01a0e3e7-2264-7a9a-af27-9850691a9845"  gd:fragmentGUID="01a0e3e7-2264-79c8-8583-2cd8697adf3d">w art. 1 opis symbolu matematycznego otrzymuje brzmienie:</zdanie>
+                    <cytat-blok cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/DU/2028/1" element-eId="DU/2028/1__art_1" funkcja="zastap" gd:GUIDcelu="c1a10002-0000-4000-8000-000000000009">
+                        <opis gd:GUID="a1a10002-0000-4000-8000-000000000009">
+                            <symbol-mat gd:GUID="c1a10002-1000-4000-8000-00000000000a"><mml:math><mml:mi>Ihaa</mml:mi></mml:math></symbol-mat>
+                            <objasnienie gd:GUID="c1a10002-2000-4000-8000-00000000000b">
+                                <p>
+                                    <zdanie nr="1" fragment="1" gd:zdGUID="e1a10001-0000-4000-8000-000000000010" gd:fragmentGUID="e1a10001-0000-4000-8000-000000000011">ilość energii elektrycznej, o której mowa w <ref href="https://eli.gov.pl/eli/DU/2015/478/art_79/ust_3/pkt_3" gd:refGUID="c1a10002-0000-4000-8000-00000000000c">art. 79 ust. 3 pkt 3</ref>, wyrażoną w godzinach pracy koni pociągowych, wynikającą z oferty,</zdanie>
+                                </p>
+                            </objasnienie>
+                        </opis>
+                    </cytat-blok>
+                </p>
+            </nie-ztp-punkt>
+            <!--W analogiczny sposób można nowelizować inne elementy wzoru. Sam konkretny wzór, wprowadzenie do opisu, opis, symbole matematyczne, ich objaśnienia i zdania w objaśnieniach posiadają GUIDy, można je więc adresować za pośrednictwem gd:GUIDcelu.-->
+
+            <!--Przykład rozwiązania problemu treści ustrukturyzowanej, potrzebnej np. przy ślubowaniach.-->
+            <nie-ztp-punkt eId="DU/2028/1__art_2__pkt_3" gd:GUID="01a0e974-e2f4-7a9e-9c08-392b1ce58f76">
+                <nr>3</nr>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:fragmentGUID="01a0e974-e2f4-7758-998c-27edfca2ff6e" gd:zdGUID="01a0e974-e2f4-780f-8c7f-f584cf791334">
+                        Składa się następujące ślubowanie:
+                        <tresc-strukt cudzyslowy="oba" gd:GUID="03efbbf1-585a-42e5-a6fd-51fbdcc12e8b">
+                            <p>
+                                <zdanie nr="1" fragment="1" gd:zdGUID="01a0e974-e2f4-7554-9527-e503ec4a02bd" gd:fragmentGUID="01a0e974-e2f4-7ab6-87d8-287af52aa2a5">
+                                    Niniejszym uroczyście ślubuję:
+                                </zdanie>
+                            </p>
+                            <punkt>
+                                <nr>1</nr>
+                                <p>
+                                    <zdanie nr="1" fragment="2" gd:zdGUID="01a0e974-e2f4-7554-9527-e503ec4a02bd" gd:fragmentGUID="01a0e974-e2f4-70b2-9e0b-8b041adcb86f">
+                                        przestrzegać punktu pierwszego,
+                                    </zdanie>
+                                </p>
+                            </punkt>
+                            <punkt>
+                                <nr>2</nr>
+                                <p>
+                                    <zdanie nr="1" fragment="3" gd:zdGUID="01a0e974-e2f4-7554-9527-e503ec4a02bd" gd:fragmentGUID="01a0e974-e2f4-71ba-b0df-41c782d34ce0">
+                                        nie popełnić punktu drugiego,
+                                    </zdanie>
+                                </p>
+                            </punkt>
+                            <czesc-wspolna-punkt>
+                                <p>
+                                    <zdanie nr="1" fragment="4" gd:zdGUID="01a0e974-e2f4-7554-9527-e503ec4a02bd" gd:fragmentGUID="01a0e974-e2f4-7ea2-b0f9-a50f5c64540b">
+                                        oraz szanować ZTP.
+                                    </zdanie>
+                                </p>
+                            </czesc-wspolna-punkt>
+                        </tresc-strukt>
+                    </zdanie>
+                </p>
+            </nie-ztp-punkt>
+
+            <nie-ztp-punkt eId="DU/2028/1__art_2__pkt_4" gd:GUID="f7b0d4db-0822-4499-ad72-2bd814aa931e">
+                <nr>4</nr>
+                <p>
+                    <zdanie nr="1" fragment="4" gd:zdGUID="7477388a-0d74-4f00-a7fa-800de1923628" gd:fragmentGUID="2bad5828-2910-459b-99e5-45b77c24a9e1">
+                        Wykaz okręgów wyborczych, ich siedzib oraz liczby mandatów określa poniższa tabela:
+                    </zdanie>
+                </p>
+                <tytul-tabeli gd:GUID="a6210cf0-388b-495b-abd7-0b48c5f16444">Tabela nr 1. Okręgi wyborcze</tytul-tabeli>
+                <tabela gd:GUID="7d6feb55-f51d-4745-a25e-f20b035cd8cd" width="100%">
+                    <tbody>
+                        <tr naglowek="tak" gd:GUID="de16a5b3-8970-4e01-b71d-231c10c02eb1">
+                            <td gd:GUID="d13fb8a5-2909-40e2-89b9-333db9707e0e">
+                                <tytul-kolumny>Nr okręgu</tytul-kolumny>
+                            </td>
+                            <td gd:GUID="3a043a93-3f2c-4620-b8a2-f10454efec40">
+                                <tytul-kolumny>Siedziba okręgowej komisji wyborczej</tytul-kolumny>
+                            </td>
+                            <td gd:GUID="703477d0-9d64-4947-81f0-f383d7b8764d">
+                                <tytul-kolumny>Liczba mandatów</tytul-kolumny>
+                            </td>
+                            <td gd:GUID="6b84ec70-7987-4c97-a675-0a640f7cdbec">
+                                <tytul-kolumny>Liczba mieszkańców</tytul-kolumny>
+                            </td>
+                        </tr>
+                        <tr gd:GUID="4c6c74d4-3a3e-4329-8045-f1601988d8f5">
+                            <td gd:GUID="4f90446d-a124-4b7e-ba92-31d9a4b86475">
+                                <liczba>1</liczba>
+                            </td>
+                            <td gd:GUID="fc2f3186-7045-4a37-98e2-a40234407ffb">
+                                <tekst-zwykly>Warszawa</tekst-zwykly>
+                            </td>
+                            <td gd:GUID="140aa6dc-394d-4c3a-ad5d-b73ab7638d2f">
+                                <liczba>12</liczba>
+                            </td>
+                            <td gd:GUID="3d801bde-8272-4e53-8417-5323304c1ffe">
+                                <liczba>720 000</liczba>
+                            </td>
+                        </tr>
+                        <tr gd:GUID="38d06cb6-417c-44aa-96ef-a2129aa9f544">
+                            <td gd:GUID="ca302990-f0ac-4c1d-a3fb-adb702d7a31a">
+                                <liczba>2</liczba>
+                            </td>
+                            <td gd:GUID="4677397a-6823-482d-98f0-22008fda2c3b">
+                                <tekst-zwykly>Kraków</tekst-zwykly>
+                            </td>
+                            <td gd:GUID="7ea78f1b-b3df-4857-8cc5-634fc9f7ab45">
+                                <liczba>9</liczba>
+                            </td>
+                            <td gd:GUID="0321e825-ced8-4f26-b348-1ecbd1970b52">
+                                <liczba>540 000</liczba>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <opis-tabeli gd:GUID="01a0e974-e2f4-7050-9141-0fc0fc173ef8">Tutaj zamieszczam opis przykładowej tabeli.</opis-tabeli>
+                </tabela>
+            </nie-ztp-punkt>
+
+            <nie-ztp-punkt eId="DU/2028/1__art_2__pkt_5" gd:GUID="01a0e974-e2f4-7d33-b2cd-388d64ccffba" przepis-zmieniajacy="true">
+                <nr>5</nr>
+                <p>
+                    <zdanie nr="1" fragment="3" gd:zdGUID="01a0e3e7-2264-7a9a-af27-9850691a9845"  gd:fragmentGUID="01a0e3e7-2264-79c8-8583-2cd8697adf3d">
+                        <now:zamien-tekst stary-tekst="9" nowy-tekst="6" akt="DU/2028/1__art_2__pkt_4" gd:GUIDcelu="7ea78f1b-b3df-4857-8cc5-634fc9f7ab45" gd:nowGUID="01a0e974-e2f4-7958-b35e-21b0ec157b07"/>We wcześniejszym punkcie w tabeli liczbę mandatów właściwych dla Krakowa zmnienia się na 6.
+                    </zdanie>
+                    <!--W tym miejscu użyto zwykłej instrukcji nowelizacyjnej adresującej konkretną komórkę. Zamianę wiersza, kolumny czy całej tabeli można przeprowadzić używając cytat-blok, podobnie jak wcześniej dla wzoru matematycznego.-->
+                </p>
+            </nie-ztp-punkt>
+            <!--W podobny sposób jak nowelizowanie wzorów matematycznych czy tabel, z użyciem cytat-blok można nowelizować grafikę.-->
+            <nie-ztp-punkt eId="DU/2028/1__art_2__pkt_6" gd:GUID="090c8725-19b3-4606-89e3-a4fd3c8df6c3">
+                <nr>6</nr>
+                <p>
+                    <zdanie nr="1" fragment="1"  gd:zdGUID="76ab9cbd-981d-4923-a740-bda148a5ed19" gd:fragmentGUID="278f52ff-d502-4970-bf22-a081e123d175">
+                        W ustawie z dnia 5 stycznia 2011 r. – Kodeks wyborczy (Dz. U. z 2025 r. poz. 365) w załączniku nr 3 grafika przedstawiająca mapę okręgu wyborczego nr 7 otrzymuje brzmienie:
+                    </zdanie>
+                    <cytat-blok cudzyslowy="brak" now:akt="https://eli.gov.pl/eli/DU/2026/1261" gd:nowGUID="fa501ea7-1a78-43c9-a1dd-ca7322275a9d" gd:GUIDcelu="9d29467e-3e4c-438c-abaf-61186fa0fc6c" funkcja="zastap">
+                        <grafika gd:GUID="08444bb3-d7a3-4a4d-a90f-b21424013e74" href="zalaczniki/mapa-okr-7-2028.svg" width="100%">
+                            <opis-grafiki>Mapa okręgu wyborczego nr 7</opis-grafiki>
+                        </grafika>
+                    </cytat-blok>
+                </p>
+            </nie-ztp-punkt>
+        </nie-ztp-artykul>
+    </ustawa>
+</akt-prawny>

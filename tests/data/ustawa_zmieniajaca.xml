@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<akt-prawny
+        xmlns="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/1.0"
+        xmlns:now="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/now">
+    <ustawa>
+        <metadane>
+            <ELIaktu>
+                <ELI>https://eli.gov.pl/eli/DU/2027/3</ELI>
+            </ELIaktu>
+            <GUIDwersji>30ae90f9-8c82-4708-84d3-bd04485b7c81</GUIDwersji>
+            <Wydawnictwo>DU</Wydawnictwo>
+            <Rok>2027</Rok>
+            <Pozycja>3</Pozycja>
+            <Rodzaj>USTAWA</Rodzaj>
+            <DataWejsciaWZycie>2027-02-22</DataWejsciaWZycie>
+            <DataOgloszenia>2027-02-07</DataOgloszenia>
+            <DataAktu>
+                <DataWydania>2027-02-02</DataWydania>
+            </DataAktu>
+            <Organy>
+                <Organ>
+                    <Nazwa>Sejm</Nazwa>
+                </Organ>
+            </Organy>
+        </metadane>
+        <rodzaj-aktu>Ustawa</rodzaj-aktu>
+        <data>z dnia 2 lutego 2027 r.</data>
+        <tytul>o zmianie ustawy o testowaniu nowelizacji aktów normatywnych</tytul>
+        <artykul eId="art_1" GUID="6c4f2708-54b1-4be9-bc72-77d5d803e716" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+            <nr>1</nr>
+            <ustep-n GUID="de5f5bc0-8b45-4177-9565-433569829b00">
+                <p>
+                    <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="1" fragmentGUID="929ab1a6-d087-4dab-abe6-efe07e5f5127" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                        W ustawie z dnia 2 stycznia 2027 r. o testowaniu nowelizacji aktów normatywnych (Dz. U. poz. 1) wprowadza się następujące zmiany:
+                    </zdanie>
+                </p>
+                <punkt eId="art_1__pkt_1" GUID="4b1209c5-d89a-47a5-bf84-ddcdf76712e1" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>1</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="2" fragmentGUID="3e7dc73e-6520-493f-a6bf-a01fc112581c" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            w art. 1 dodaje się ust. 3 w brzmieniu:
+                            <cytat-strukt cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="55d98d77-fe45-4375-acaf-f1e259e6bd53" element-eId="art_1" funkcja="dodaj-w">
+                                <ustep eId="art_1__ust_3" GUID="59ec4f6b-4a0f-43ca-98a4-be971c0b2d87" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                                    <nr>3</nr>
+                                    <p>
+                                        <zdanie nr="1" zdGUID="afb10107-ea6b-4eb2-8ece-c0b90de4a378" fragment="1" fragmentGUID="bbdade2d-4fa8-4463-a178-b61e1537b8cc" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                        </zdanie>
+                                    </p>
+                                </ustep>
+                            </cytat-strukt>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_2" GUID="4eabe4bd-af7d-45c9-8ecb-ca3221c01022" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>2</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="3" fragmentGUID="d22b0cf4-5ea0-4ea3-a185-535d619f0b32">
+                            w art. 2 po ust. 1 dodaje się ust. 1a w brzmieniu:
+                            <cytat-strukt cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="ee4d3c86-0928-4262-ad98-2c774fc594a0" element-eId="art_2__ust_1" funkcja="dodaj-po">
+                                <ustep eId="art_2__ust_1a" GUID="a8a095b9-0934-4fe4-bdc2-a2d0750c29aa" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                                    <nr>1a</nr>
+                                    <p>
+                                        <zdanie nr="1" zdGUID="2d12b284-6d7a-4106-9969-40c5f9dee24a" fragment="1" fragmentGUID="5a42ab60-9e62-499b-b929-313583c0eb0b">Aenean tristique erat ut laoreet lacinia, integer id dapibus est, sed hendrerit risus.</zdanie>
+                                    </p>
+                                </ustep>
+                            </cytat-strukt>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_3" GUID="c417beb0-bd23-499d-b1c1-a4f4d559ca59" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>3</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="4" fragmentGUID="fc467a9f-f596-4ca8-a349-ad88f5170831">
+                            art. 3 otrzymuje brzmienie:
+                            <cytat-strukt cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="2de79724-1cb5-4c8f-ac4d-ef59cfcb9972" element-eId="art_3" funkcja="zastap">
+                                <artykul eId="art_3" GUID="28d5d690-f391-44a1-b6bc-a4eab82e7afb" wejscie-w-zycie="2027-01-22" status-jednostki="obowiazuje">
+                                    <nr>3</nr>
+                                    <ustep-n>
+                                        <p>
+                                            <zdanie nr="1" zdGUID="9841fe41-77a8-4aed-a2fb-fe6f59d9f861" fragment="1" fragmentGUID="732c0e8e-6b8b-4e99-8a73-dafacb7e56c6" wejscie-w-zycie="2027-01-22" status-jednostki="obowiazuje">
+                                                Morbi nec sapien magna, qui aquam caudam turbat?
+                                            </zdanie>
+                                        </p>
+                                    </ustep-n>
+                                </artykul>
+                            </cytat-strukt>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_4" GUID="2c328b57-4a28-4681-8bf0-36dfd96ebd5d" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>4</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="5" fragmentGUID="f934972e-3532-4f03-a4dd-78d4462d1dbe">
+                            w art. 4 po zdaniu pierwszym dodaje się zdanie drugie w brzmieniu:
+                            <cytat-w-tekscie cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="90759fca-710e-4e9d-a0b4-abfef66933d1" element-eId="art_4" zdanieGUID="061dfe53-6a24-497e-9e22-1b2027c1a88d" funkcja="dodaj-po-tekscie">
+                                <zdanie nr="2" zdGUID="b0ab0b94-1fdd-4854-81f8-33bb3d9fefa4" fragment="1" fragmentGUID="81858340-2e71-4527-9453-e07d21209a4d" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                                    Ut ut viverra mi.
+                                </zdanie>
+                            </cytat-w-tekscie>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_5" GUID="30284807-ed0f-409f-b048-86137918bf78" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>5</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="6" fragmentGUID="e1b5848e-f5b5-45f1-abc7-84c469c15bef" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            w art. 5 zdanie drugie otrzymuje brzmienie:
+                            <cytat-w-tekscie cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="bdef21c8-6935-46ce-9d1f-9e4c3975a5f9" element-eId="art_5" zdanieGUID="e1b5848e-f5b5-45f1-abc7-84c469c15bef" funkcja="zastap-tekst">
+                                <tekst>Duis placerat efficitur velit, in cauda venemum.</tekst>
+                            </cytat-w-tekscie>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_6" GUID="08e62b47-1f6a-45e0-a1e6-6e4fb5ead0a6" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>6</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="7" fragmentGUID="01a62ee5-5365-44ea-ab74-6838562c979c" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            w art. 6 trzeci przecinek zastępuje się kropką <now:zamien-tekst stary-tekst="," now:wystapienie="trzecie" nowy-tekst="." element-eId="art_6" akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="ba5e1755-3383-4e8a-bb26-08f4193c609b"/> i skreśla się słowa:
+                            <cytat-w-tekscie cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="78d2f69d-700d-4bfe-b846-e6772f808040" element-eId="art_6" zdanieGUID="927f90d2-b138-463f-bc98-94bff7ed1d46" funkcja="uchyl-tekst">
+                                <tekst>non luctus nisl nibh sed tortor.</tekst>
+                            </cytat-w-tekscie>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_7" GUID="9966f6e5-f01e-4990-a3d1-0cd3f8e0fc1f" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>7</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="8" fragmentGUID="f422fe16-699d-4a62-9370-295c0466defb" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            w art. 7 po co drugim słowie dodaje się na słowo
+                            <cytat-w-tekscie cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="7ff2cfe3-1f30-4d2b-8f29-17782ec723c2" element-eId="art_7" zdanieGUID="b217cbae-9df3-4dec-a72a-2b43ee7478e7" funkcja="dodaj-recznie">
+                                <tekst>asinus</tekst>
+                            </cytat-w-tekscie>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_8" GUID="9318cb49-6bd5-438a-8d74-7ce64b631dbb" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>8</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="9" fragmentGUID="d7dcc326-5adb-4e61-b359-22b8329ed2b8" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            w art. 8 drugie i czwarte słowo zastępuje się słowem
+                            <cytat-w-tekscie cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="bd72e456-dcf1-49e6-bb71-55b7aae3b2fa" element-eId="art_8" zdanieGUID="3b847182-1c7a-4020-aa40-2e95ebc3c756" funkcja="zastap-recznie">
+                                <tekst>canis</tekst>
+                            </cytat-w-tekscie>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_9" GUID="d8f11199-b312-4328-83b8-18013b466549" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>9</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="10" fragmentGUID="a5fabd10-8c25-4710-a5cb-260c757396aa" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            w art. 9 skreśla się wszystkie wystąpienia słowa
+                            <cytat-w-tekscie cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="5c2bd917-71a7-470b-8f42-7caf6082613d" element-eId="art_9" zdanieGUID="ad302b7f-1b57-44a0-8927-0d4839acabf9" funkcja="uchyl-recznie">
+                                <tekst>diam</tekst>
+                            </cytat-w-tekscie>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_10" GUID="c07a08b1-acd6-444b-b87a-cb9b035a1349" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>10</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="11" fragmentGUID="75bd5a89-6c3d-431b-8be5-fb57db0bf1f9" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            w art. 10 skreśla się ust. 2<now:uchyl akt="https://eli.gov.pl/eli/DU/2027/1" element-eId="art_10__ust_2" nowGUID="9e3cc8c2-5f80-4de3-938a-5128ead73f69"/>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+
+                <punkt eId="art_1__pkt_11" GUID="942b71ad-58ab-41f5-b1ec-9a798201f980" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>11</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="12" fragmentGUID="866c55ec-45f2-4a1c-bacf-ace87f3a42c9" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            dotychczasową treść art. 11 ujmuje się w ust. 1<now:dodaj-ustep element-eId="art_11" ustep-n-GUID="60c3249d-0471-4d80-81ae-2d964ce4fe7b" akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="2e05122a-2d39-4552-956e-4ec3282ee372"/>, po czym dodaje się ust. 2 i 3 w brzmieniu:
+                            <cytat-strukt cudzyslowy="3" now:akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="697b7cee-d6e8-4bf7-b707-e2c85b89ab8e" element-eId="art_11" funkcja="dodaj-w">
+                                <ustep eId="art_11_ust_2" GUID="68131192-5589-4f88-9e96-f0313dbe6a2b" wejscie-w-zycie="2027-01-22" status-jednostki="obowiazuje">
+                                    <nr>2</nr>
+                                    <p>
+                                        <zdanie nr="1" zdGUID="c0beb7f0-d1e8-4b5a-b02f-61a386d6cf8d" fragment="1" fragmentGUID="a4a22cb1-15d9-4514-a373-2dbc3a994017" wejscie-w-zycie="2027-01-22" status-jednostki="obowiazuje">
+                                            Ut tincidunt porta ante, et vestibulum turpis lacinia id.
+                                        </zdanie>
+                                    </p>
+                                </ustep>
+                                <ustep eId="art_11_ust_3" GUID="fb1418d5-6f2b-4153-b62b-96b319c861b7" wejscie-w-zycie="2027-01-22" status-jednostki="obowiazuje">
+                                    <nr>2</nr>
+                                    <p>
+                                        <zdanie nr="1" zdGUID="64a2c661-88c2-4f92-90a6-629983541cec" fragment="1" fragmentGUID="15dcc17b-86f9-4f8d-a670-13b9f59073fd" wejscie-w-zycie="2027-01-22" status-jednostki="obowiazuje">
+                                            Fusce eleifend ante in est maximus, vel hendrerit arcu consequat.
+                                        </zdanie>
+                                    </p>
+                                </ustep>
+                            </cytat-strukt>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="art_1__pkt_12" GUID="a07adbbc-d910-4295-86f6-eab10514da38" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>12</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="13" fragmentGUID="866c55ec-45f2-4a1c-bacf-ace87f3a42c9" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            w art. 12 uchyla się oznaczenie ust. 1<now:usun-ustep element-eId="art_12" akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="ad20fcc5-2d00-40e1-aa49-f5bad3126531"/> oraz ust. 2<now:uchyl akt="https://eli.gov.pl/eli/DU/2027/1" element-eId="art_12__ust_2" nowGUID="626e8603-405c-4945-9ee0-78ac72e056b1"/>.
+                            ;</zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="art_1__pkt_13" GUID="9e3f4d1a-4efd-48d1-b6f5-a92590e358c1" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>13</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="14" fragmentGUID="75a01ccb-5d0d-474c-b85b-4b33fa9152b2" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                            preambuła otrzymuje następujące brzmienie:
+                            <now:zastap element-eId="preambula" akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="bc4dd7c9-1dda-4390-9b21-563fdb677da1">
+                                <preambula>
+                                    <p>
+                                        <zdanie nr="1" zdGUID="70564ecb-df29-447a-a605-6aa8123bbf39" fragment="1" fragmentGUID="6274360e-e3e3-4221-a810-2f858627dc90" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                                            Integer purus nisl, gravida at feugiat id, pharetra in mauris.
+                                        </zdanie>
+                                        <zdanie nr="2" zdGUID="1e7ab4a2-a21b-465c-b7f0-2d3d29528145" fragment="1" fragmentGUID="cf80699e-8d6e-45d3-80f7-09f90a4b09b0" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">>
+                                            Cras molestie neque vel dolor dapibus, laoreet ornare ligula mattis.
+                                        </zdanie>
+                                        <zdanie nr="3" zdGUID="6fcb2901-a42a-4836-8590-9df82eadc00b" fragment="1" fragmentGUID="f11b176c-db7e-4a9b-b1e8-5faf76444ae4" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">>
+                                            Suspendisse pretium scelerisque tortor varius viverra.
+                                        </zdanie>
+                                    </p>
+                                </preambula>
+                            </now:zastap>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="art_1__pkt_14" GUID="44435d2e-45ea-4271-b4b2-3aa87c537f1a" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>14</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="15" fragmentGUID="2ae62945-78c6-49a4-bba5-85d801ab89c4">
+                            w art. 13 oznaczenie ust. 3 zmienia się na ust. 2<now:zastap-numer element-eId="art_13__ust_3" element-eId-nowy="art_13__ust_2" akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="56c75780-93ed-4be0-b8ca-29b195cf024d"/>.
+                        </zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="art_1__pkt_15" GUID="462abd32-0611-4cac-a383-e9938b38c086" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    <nr>15</nr>
+                    <p>
+                        <zdanie nr="1" zdGUID="43cb8e67-03c9-41fd-bd73-719370eef485" fragment="16" fragmentGUID="58723a15-faa9-4680-ba8b-135d35672fb1">
+                            w art. 14 słowa "pulvinar dui" zastępuje się słowami "aenean lorem massa, tempor a libero ac, tristique viverra dui"
+                            <now:zamien-tekst stary-tekst="pulvinar dui" nowy-tekst="aenean lorem massa, tempor a libero ac, tristique viverra dui" element-eId="art_14" zdanieGUID="756d1d8f-73d7-4946-b88e-bc7e6b0c3e2c" akt="https://eli.gov.pl/eli/DU/2027/1" nowGUID="255be0ba-d130-4819-acb5-c3ad3b6fde49"/>.
+                        </zdanie>
+                    </p>
+                </punkt>
+
+            </ustep-n>
+        </artykul>
+
+        <artykul eId="art_2" GUID="d85b135e-cade-445e-ba66-b22c70d123b4" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje" >
+            <nr>2</nr>
+            <p>
+                <zdanie nr="1" zdGUID="4ed18217-db78-4cfa-98c8-681e05649ae4" fragment="1" fragmentGUID="c8b9adf2-cfd3-491d-8384-5995542c8f36" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    Traci moc ustawa ustawę z dnia 3 stycznia 2027 r. o sposobach uchylania aktów normatywnych (Dz. U. poz. 2) z wyjątkiem art. 3.
+                    <now:uchyl-akt akt="https://eli.gov.pl/eli/DU/2027/2" nowGUID="2fcbfd69-7e07-4164-ab87-eac1ed9ec241">
+                        <now:oprocz element-eId="art_3" obowiazuje-do="2027-03-17"/>
+                    </now:uchyl-akt>
+                </zdanie>
+            </p>
+        </artykul>
+        
+        <artykul eId="3" GUID="9fabc409-a316-4769-b927-14d48d79b399" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+            <nr>3</nr>
+            <p>
+                <zdanie nr="1" zdGUID="22200060-8931-4524-a25a-9c7b46208d00" fragment="1" fragmentGUID="9afa5660-1887-4ff7-afa8-353c6b75488b" wejscie-w-zycie="2027-02-22" status-jednostki="obowiazuje">
+                    Ustawa wchodzi w życie po upływie 14 dni od dnia ogłoszenia.
+                </zdanie>
+            </p>
+        </artykul>
+    </ustawa>
+</akt-prawny>

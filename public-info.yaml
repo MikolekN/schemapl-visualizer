@@ -1,0 +1,31 @@
+---
+# public-info.yaml
+apiVersion: "backstage.io/v1alpha1"
+kind: "Component"
+
+metadata:
+  name: "schemapl-visualizer"
+  title: "Usługa 67: Wizualizacja aktów prawnych schemaPL"
+
+  description: "Wizualizacja aktów prawnych przetwarza akt prawny zapisany w XML zgodnym ze schematem schemaPL na interaktywny HTML lub PDF – w układzie dziennika urzędowego albo w wersji dostępnej dla osób niedowidzących."
+
+  tags:
+    - "legal-acts"
+    - "xml"
+    - "html"
+    - "pdf"
+    - "accessibility"
+    - "lex-nlp"
+    - "caise"
+
+  links:
+    - url: "https://schemapl-visualizer.lex.nlp.caise.pl/docs"
+      title: "Dokumentacja API"
+
+  annotations:
+    caise.org/license-spx: "AGPL-3.0-only"
+
+spec:
+  type: "service"
+  lifecycle: "production"
+  owner: "user:default/mikolajnadzieja"

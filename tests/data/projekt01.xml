@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="utf-8"?>
+<akt-prawny
+        xmlns:now="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/now"
+        xmlns="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/1.0"
+        xmlns:gd="https://projects.task.gda.pl/caise/NLP/kisi/rcl/GUIDs/1.0"
+        xmlns:tpg="https://projects.task.gda.pl/caise/NLP/kisi/rcl/typografia/1.0"
+        xmlns:kmn="https://projects.task.gda.pl/caise/NLP/kisi/rcl/komentarze/1.0">
+    <projekt-ustawy>
+        <metadane>
+            <ELIDL>https://eli.gov.pl/eli/10/2026/2887</ELIDL><!--To jest zmyślony ELIDL.-->
+            <Kadencja>10</Kadencja>
+            <NumerDruku>2887</NumerDruku>
+            <LinkDruku>https://sejm.gov.pl/Sejm10.nsf/druk.xsp?nr=2887</LinkDruku>
+            <gd:GUIDwersji>01a0dee5-d322-7d34-99ad-8680161ed98b</gd:GUIDwersji>
+            <Rodzaj>PROJ_U</Rodzaj>
+            <DaneCzasowe>
+                <CyklZyciaProjektuUstawyLubKodeksu>
+                    <Zdarzenie id="zdarz_wplyniecie_pisma_2025-09-24" pochodzenie="odczytane" rodzaj="wpłyniecie-pisma"/>
+                    <Zdarzenie id="zdarz_skierowano-do-opinii-do-organizacji-samorzadowych_2025-09-29" pochodzenie="odczytane" rodzaj="skierowano-do-opinii-do-organizacji-samorządowych"/>
+                    <Zdarzenie id="zdarz_skierowano-do-pierwszego-czytania-w-komisjach_2026-07-31" pochodzenie="odczytane" rodzaj="skierowano-do-pierwszego-czytania-w-komisjach"/>
+                </CyklZyciaProjektuUstawyLubKodeksu>
+                <GrupaCzasowa id="okr_przed-pierwszym-czytaniem.zdarz_wplyniecie_pisma_2025-09-24.zdarz_skierowano-do-pierwszego-czytania-w-komisjach_2026-07-31" glowna="false">
+                    <Przedzial rodzaj="przed-pierwszym-czytaniem" od="zdarz_wplyniecie_pisma_2025-09-24" do="zdarz_skierowano-do-pierwszego-czytania-w-komisjach_2026-07-31"/>
+                </GrupaCzasowa>
+                <GrupaCzasowa id="okr_pierwsze-czytanie.zadrz_skierowano-do-pierwszego-czytania-w-komisjach_2026-07-31" glowna="false">
+                    <Przedzial rodzaj="pierwsze-czytanie" od="zdarz_skierowano-do-pierwszego-czytania-w-komisjach_2026-07-31"/>
+                </GrupaCzasowa>
+            </DaneCzasowe>
+            <OrganyInicjujace>
+                <Organ>
+                    <Nazwa>grupa posłów</Nazwa>
+                </Organ>
+            </OrganyInicjujace>
+            <Relacje>
+                <Relacja ELI="https://eli.gov.pl/eli/DU/2025/561" typ="Zmienia" eId="#art_1"/>
+            </Relacje>
+        </metadane>
+        <winieta>SEJM RZECZYPOSPOLITEJ POLSKIEJ</winieta>
+        <kadencja>X kadencja</kadencja>
+        <druk>Druk nr</druk><nr-druku>2887</nr-druku>
+        <miejsce-i-data>Warszawa, 24 września 2025 r.</miejsce-i-data>
+        <adresat-pisma-tytul-i-osoba>Pan Szymon Hołownia</adresat-pisma-tytul-i-osoba>
+        <adresat-pisma-stanowisko>Marszałek Sejmu Rzeczypospolitej Polskiej</adresat-pisma-stanowisko>
+        <preambula>
+            <p>
+                <zdanie nr="1" fragment="1" gd:zdGUID="01a0dee5-d322-7e55-b0ad-34011de24f9f" gd:fragmentGUID="01a0dee5-d322-7710-a29a-9898dccb81ff">Na podstawie <ref href="https://eli.gov.pl/eli/DU/1997/483__art_118__ust_1" gd:refGUID="01a0dee5-d322-7420-a623-8ae160a91e7a">art. 118 ust. 1</ref> Konstytucji Rzeczypospolitej Polskiej i na podstawie <ref href="https://eli.gov.pl/eli/MP/2026/573__art_32__ust_2" gd:refGUID="01a0dee5-d322-799e-a00b-6c5d7ec193f8">art. 32 ust. 2</ref> regulaminu Sejmu niżej podpisani posłowie wnoszą projekt ustawy:
+                </zdanie>
+            </p>
+        </preambula>
+        <tytul>
+            - o odbudowie polskiej kolei i transportu autobusowego oraz o ratowaniu miejsc pracy na kolei towarowej.
+        </tytul>
+        <upowaznienie-do-reprezentowania>
+            <p>
+                <zdanie nr="2" fragment="1" gd:zdGUID="01a0dee5-d322-76d9-8c62-622d1f1ff125" gd:fragmentGUID="01a0dee5-d322-75aa-8758-f9a879ae8f6b">
+                    Do reprezentowania wnioskodawców w pracach nad projektem ustawy upoważniamy posłanki <osoba upowaznienie="true" gd:osobaGUID="01a0dee5-d322-79ad-a0db-d087f77c5b82"><imie>Annę</imie><imie>Marię</imie><nazwisko>Żukowską</nazwisko></osoba> i <osoba upowaznienie="true" gd:osobaGUID="01a0dee5-d322-7c70-9ed9-e46a63f35ec9"><imie>Darię</imie><nazwisko>Gosek-Popiołek</nazwisko></osoba>.
+                </zdanie>
+            </p>
+        </upowaznienie-do-reprezentowania>
+        <podpisujacy>
+            <osoba gd:osobaGUID="a9ce6e23-7027-47f9-bf13-8646a5337a91" podpisujacy="true">
+                <imie>Włodzimierz</imie>
+                <nazwisko>Czarzasty</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="5b0cf375-7896-4755-bfba-6cd4c8a08d58" podpisujacy="true">
+                <imie>Jacek</imie>
+                <nazwisko>Czerniak</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="d6f70413-4766-4100-ae6a-f334b249ed21" podpisujacy="true">
+                <imie>Agnieszka</imie>
+                <nazwisko>Dziemianowicz-Bąk</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="5ed255bc-bb06-4a93-a40e-b6be0a8680ef" podpisujacy="true">
+                <imie>Krzysztof</imie>
+                <nazwisko>Gawkowski</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="01a0dee5-d322-79ad-a0db-d087f77c5b82" podpisujacy="true" upowaznienie="true">
+                <imie>Daria</imie>
+                <nazwisko>Gosek-Popiołek</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="9eaf5e0b-43bd-4fd4-8297-313217226a85" podpisujacy="true">
+                <imie>Katarzyna</imie>
+                <nazwisko>Kotula</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="3eef5f41-f2be-4b9f-b61d-75f85d2ecd82" podpisujacy="true">
+                <imie>Piotr</imie>
+                <nazwisko>Kowal</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="3103ae92-9da9-47d1-8672-b0439178db90" podpisujacy="true">
+                <imie>Anita</imie>
+                <nazwisko>Kucharska-Dziedzic</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="877f7832-0f11-4635-a323-d900a6557e76" podpisujacy="true">
+                <imie>Wanda</imie>
+                <nazwisko>Nowicka</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="8abe0edb-df22-456d-b6eb-cf16c12efba2" podpisujacy="true">
+                <imie>Dorota</imie>
+                <nazwisko>Olko</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="9649be73-6028-45a4-8f57-ec8692e3bf1a" podpisujacy="true">
+                <imie>Arkadiusz</imie>
+                <nazwisko>Sikora</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="202bb89b-d49e-403f-9c32-4dfac4de4556" podpisujacy="true">
+                <imie>Wiesław</imie>
+                <nazwisko>Szczepański</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="aa6e13af-8624-418f-a241-19e6314cb072" podpisujacy="true">
+                <imie>Andrzej</imie>
+                <nazwisko>Szejna</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="8042a3cc-6c8c-431a-8178-8a8807bfc8cb" podpisujacy="true">
+                <imie>Tadeusz</imie>
+                <nazwisko>Tomaszewski</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="ec3de5aa-7f9c-48dd-9bef-d739a36f8011" podpisujacy="true">
+                <imie>Tomasz</imie>
+                <nazwisko>Trela</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="dc02a87d-01e9-43fc-bfa3-735aeff30f3d" podpisujacy="true">
+                <imie>Katarzyna</imie>
+                <nazwisko>Ueberhan</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="c1a1b4eb-f5ee-4441-ac6c-f606b181f977" podpisujacy="true">
+                <imie>Joanna</imie>
+                <nazwisko>Wicha</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="fe7043b1-c7d7-4827-83da-b726a39703c1" podpisujacy="true">
+                <imie>Dariusz</imie>
+                <nazwisko>Wieczorek</nazwisko>
+            </osoba>
+            <osoba gd:osobaGUID="01a0dee5-d322-79ad-a0db-d087f77c5b82" podpisujacy="true" upowaznienie="true">
+                <imie>Anna</imie>
+                <imie>Maria</imie>
+                <nazwisko>Żukowska</nazwisko>
+            </osoba>
+        </podpisujacy>
+        <rodzaj-aktu>USTAWA</rodzaj-aktu>
+        <data>z dnia ... 2025 r.</data>
+        <tytul-ustawy>o odbudowie polskiej kolei i transportu autobusowego oraz o ratowaniu miejsc pracy na kolei towarowej
+            <odnosnik eId="odn_1" id-odnosnika="1" symbol="1" gd:GUID="01a0dee5-d322-7dfc-9f0a-1d75de8fcc62">
+                <p>
+                    <zdanie nr="1" fragment="1" gd:fragmentGUID="01a0dee5-d322-7569-a02f-2fb96a9addd3" gd:zdGUID="01a0dee5-d322-7d23-b762-cbbc3fa58847">Niniejszą ustawą zmienia się ustawy:
+                        <ref href="https://eli.gov.pl/eli/DU/2026/218" gd:refGUID="01a0dee5-d322-75f0-940f-0e4db8f141cf">ustawę</ref> z dnia 27 października 1994 r. o autostradach płatnych oraz o Krajowym Funduszu Drogowym,
+                        <ref href="https://eli.gov.pl/eli/DU/2026/1231" gd:refGUID="01a0dee5-d322-75e5-87ab-e0f8b7199f4c">ustawę</ref> z dnia 16 grudnia 2010 r. o publicznym transporcie zbiorowym,
+                        <ref href="https://eli.gov.pl/eli/DU/2026/756" gd:refGUID="01a0dee5-d322-7018-b791-0d54e433f647">ustawę</ref> z dnia 16 maja 2019 r. o Funduszu rozwoju przewozów autobusowych o charakterze użyteczności publicznej,
+                        <ref href="https://eli.gov.pl/eli/DU/2026/1232" gd:refGUID="01a0dee5-d322-7fae-9a5c-67fc4773f90b">ustawę</ref> z dnia 26 maja 2023 r. o aplikacji mObywatel,
+                        <ref href="https://eli.gov.pl/eli/DU/2025/889" gd:refGUID="01a0dee5-d322-70fb-828d-afbff93fccdc">ustawę</ref> z dnia 21 marca 1985 r. o drogach publicznych,
+                        <ref href="https://eli.gov.pl/eli/DU/2026/538" gd:refGUID="01a0dee5-d322-708f-b80f-2298076f02fa">ustawę</ref> z dnia 27 marca 2003 r. o planowaniu i zagospodarowaniu przestrzennym,
+                        <ref href="https://eli.gov.pl/eli/DU/2024/1133" gd:refGUID="01a0dee5-d322-7717-b547-fdf742ffb7e7">ustawę</ref> z dnia 16 grudnia 2005 r. o Funduszu Kolejowym oraz
+                        <ref href="https://eli.gov.pl/eli/DU/2025/1234" gd:refGUID="01a0dee5-d322-70d2-a1dd-34aef539f1cb">ustawę</ref> z dnia 28 marca 2003 r. o transporcie kolejowym.</zdanie>
+                </p>
+            </odnosnik>
+        </tytul-ustawy>
+        <preambula gd:GUID="">
+            <p>
+                <zdanie nr="1" fragment="1" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-79d4-81ae-33a5afd7ba8f">
+                    Zważywszy, że niesprawiedliwa transformacja ekonomiczna po 1989 r. doprowadziła do upadku polskiej  kolei, PKS-u i pozostawienia w tyle milionów Polek i Polaków ze wsi i Polski powiatowej,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="2" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-72a1-8ff2-114377effcde">
+                    łącząc się w solidarności z kilkunastoma milionami Polek i Polaków, których prawo do godnego transportu nie jest respektowane, a wolność i możliwość samorealizacji są ograniczane,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="3" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-7c96-b796-0861857a582e">
+                    wyrażając stanowczy sprzeciw wobec przeznaczania publicznych pieniędzy na cele, które uzależniają naszą Ojczyznę od importu paliw kopalnych, często z autorytarnych i wrogo nastawionych państw, co uderza w same fundamenty bezpieczeństwa Polski, odporności i konkurencyjności Jej gospodarki,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="4" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-7e3e-9627-5cea0efb0271">
+                    wyrażając frustrację, że polskie pieniądze wspierają przemysł motoryzacyjny i interesy obcych państw zamiast polskich pracowników i przedsiębiorców,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="5" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-7124-a6c4-2cea1c7d2982">
+                    uwzględniając strategiczną rolę kolei w zapewnieniu bezpieczeństwa państwa, obronie cywilnej oraz zdolności do obrony militarnej,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="6" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-71f7-b354-b500a66c5318">
+                    biorąc pod uwagę, że postępujące zmiany klimatyczne stanowią egzystencjalne zagrożenie dla Państwa Polskiego i ciągłości Narodu, czyli wszystkich obywateli Rzeczypospolitej Polskiej,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="7" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-7124-8c33-41a7e7d6e94c">
+                    dostrzegając, że efekty katastrofy klimatycznej uderzają w nieproporcjonalnym stopniu w mieszkańców obszarów wiejskich i małych miejscowości, szczególnie w tych niezamożnych, a także plony rolników, warunki pracy robotników i ich rodzin,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="8" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-7037-bf9b-c8fde07af10f">
+                    stawiając opór wobec pozbawiania młodych ludzi przyszłości oraz szansy na dobre życie i realizację marzeń w imię krótkoterminowych zysków najbogatszych i globalnych korporacji,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="9" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-746a-8a05-3c54bdfede3c">
+                    stanowczo nie zgadzając się na dalsze zwiększanie nierówności społecznych, marginalizowanie mieszkańców i samorządów obszarów wiejskich,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="10" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-7280-a30e-c70505c9c10d">
+                    stanowczo sprzeciwiając się obciążaniu najbiedniejszych kosztami polityki klimatycznej,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="11" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-7005-b35f-015778065954">
+                    będąc przekonanym, że walka o klimat to wyjątkowa i niepowtarzalna szansa na rozwój i wzmocnienie pozycji Polski, urzeczywistnienie sprawiedliwości społecznej i naprawienie błędów niesprawiedliwej transformacji ekonomicznej po 1989 r.,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="12" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-7ee7-8cfc-fc7891c53b6f">
+                    uważając, że podstawową rolą Państwa Polskiego, w którym władza należy do całego Narodu, a nie wąskiej grupy najbogatszych, jest dbanie o dobro wszystkich obywateli Rzeczypospolitej Polskiej i interes publiczny,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="13" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-75c9-a135-d098459e259a">
+                    nawiązując do najlepszych polskich tradycji historycznych, zgodnie z którymi jednolity i rozwinięty publiczny transport zbiorowy stanowi fundament jednolitego Państwa Polskiego oraz powód do dumy Polek i Polaków, kontynuując misję Juliana Eberhardta, pierwszego Ministra Kolei Żelaznych w II Rzeczypospolitej, który przejmował kolej od okupantów i ujednolicał ją, scalając rozdartą przez zaborców Ojczyznę,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="14" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-723d-b76d-ae95af137718">
+                    wierząc, że przeznaczeniem Państwa Polskiego jest odważne budowanie swojej potęgi i kształtowanie dobrej przyszłości dla całego Narodu, będąc przykładem dla społeczności międzynarodowej i przyczyniając się do dobra Rodziny Ludzkiej,
+                </zdanie>
+            </p>
+            <p>
+                <zdanie nr="1" fragment="15" gd:zdGUID="01a0dee5-d322-75ba-a497-1486798d4e05" gd:fragmentGUID="01a0dee5-d322-72cb-87a1-d9d1972fb841">
+                    uchwala się, co następuje:
+                </zdanie>
+            </p>
+        </preambula>
+        <!--Błędy w eId poniżej są nieuniknione. RCL nalega na wpisywanie w eId całej ścieżki do jednostki. Akceptacja tego wymagania oznacza dodawanie zmyślonego ELI-DL i błąd w walidacji stworzonym regexem.-->
+        <artykul eId="10/2026/2887__art_1" gd:GUID="01a0dee5-d322-7059-832f-b7043aee57dd">
+            <nr>1</nr>
+            <ustep-n gd:GUID="01a0dee5-d322-7186-9167-12ffb475c960">
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0dee5-d322-72a1-9db9-ea277975d684">W ustawie z dnia 27 października 1994 r. o autostradach płatnych oraz o Krajowym Funduszu Drogowym (<metryczka gd:metrGUID="01a0dee5-d322-7245-9d51-362ffb6f781b"><publikator>Dz. U.</publikator> z <rok>2025</rok> poz. <pozycja>561</pozycja></metryczka>) wprowadza się następujące zmiany:
+                    </zdanie>
+                </p>
+                <punkt eId="10/2026/2887__art_1__pkt_1" gd:GUID="01a0dee5-d322-7172-ad2e-d7d5aab53ae4">
+                    <nr>1</nr>
+                    <p>
+                        <zdanie nr="1" fragment="2" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0dee5-d322-7073-b9e3-747696b578af">
+                            art. 37i ust. 1 otrzymuje brzmienie:
+                            <cytat-strukt cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/DU/2026/218" element-eId="DU/2026/218__art_37i__ust_1" funkcja="zastap" gd:nowGUID="01a0e3e7-2264-75f5-b283-8586e318927f">
+                                <ustep eId="DU/2026/218__art_37i__ust_1" gd:GUID="01a0dee5-d322-76ad-bdcc-2bb1d92ab879">
+                                    <nr>1</nr>
+                                    <p>
+                                        <zdanie nr="1" fragment="1" gd:zdGUID="01a0e3e7-2264-7ad8-ad69-459828401382" gd:fragmentGUID="01a0e3e7-2264-7280-8721-7ed9d0dc8c8f">
+                                            Opłata paliwowa stanowi przychód Funduszu Kolejowego oraz Funduszu rozwoju przewozów autobusowych o charakterze użyteczności publicznej, o którym mowa w <ref href="https://eli.gov.pl/eli/DU/2024/402" gd:refGUID="01a0e3e7-2264-7f96-ab07-9966fd508194">ustawie</ref> z dnia 16 maja 2019 r. o Funduszu rozwoju przewozów autobusowych o charakterze użyteczności publicznej (<metryczka gd:metrGUID="01a0e3e7-2264-786d-8147-3c64f1cd389e"><publikator>Dz. U.</publikator> z <rok>2024</rok> r. poz. <pozycja>402</pozycja> i <pozycja>1572</pozycja> oraz z <rok>2025</rok> r. poz. <pozycja>303</pozycja></metryczka>), zwanego dalej „Funduszem Autobusowym”, z tym że kwota stanowiąca 30% opłaty stanowi przychód Funduszu Kolejowego, z przeznaczeniem na rozwój wojewódzkich przewozów pasażerskich, w tym infrastruktury dotyczącej wyłącznie linii kolejowych innych, aniżeli linie kolejowe o znaczeniu państwowym, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_2a" gd:refGUID="01a0e3e7-2264-7f3b-b065-32c76f6b5bee">art. 4 pkt 2a</ref> ustawy z dnia 28 marca 2003 r. o transporcie kolejowym (<metryczka gd:metrGUID="01a0e3e7-2264-7b77-9cc4-73bd7feff478"><publikator>Dz. U.</publikator> z <rok>2024</rok> r. Poz. <pozycja>697</pozycja>, <pozycja>731</pozycja></metryczka>), 15% tej opłaty – przychód Funduszu Kolejowego z przeznaczeniem na rozwój przewozów towarowych, w tym infrastruktury wspierającej towarowe przewozy kolejowe, w szczególności budowę bocznic kolejowych i intermodalnych terminali towarowych w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_10" gd:refGUID="01a0e3e7-2264-7ead-ae50-dddfa507e4f5">art. 4 pkt 10</ref> i <ref href="https://eli.gov.pl/eli/DU/2024/697__art_36c" gd:refGUID="01a0e3e7-2264-7218-add9-97d7d2b8f8c0">36c</ref> tejże ustawy, niebędących infrastrukturą prywatną w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_1c" gd:refGUID="01a0e3e7-2264-775c-8cd7-4a9af60500ba">art. 4 pkt 1c</ref> tejże ustawy, a także przywracanie tej infrastruktury do użytku, jeżeli stanowi infrastrukturę nieczynną w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_1b" gd:refGUID="01a0e3e7-2264-7590-81a0-e7de893e938c">art. 4 pkt 1b</ref> tejże ustawy, 5% przychód Funduszu Kolejowego z przeznaczeniem na finansowanie zadań w zakresie linii kolejowych o znaczeniu obronnym, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_2b" gd:refGUID="01a0e3e7-2264-74a2-a655-b1f02aff8f4f">art. 4 pkt 2b</ref> tejże ustawy, a kwota stanowiąca 50% tej opłaty – przychód Funduszu Autobusowego.
+                                        </zdanie>
+                                    </p>
+                                </ustep>
+                            </cytat-strukt>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="10/2026/2887__art_1__pkt_2" gd:GUID="01a0e3e7-2264-752f-93a0-97c17c58accb">
+                    <nr>2</nr>
+                    <p>
+                        <zdanie nr="1" fragment="3" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-779a-b455-1940e2ee6cd3">
+                            <now:zamien-tekst stary-tekst="Fundusz rozwoju przewozów autobusowych o charakterze użyteczności publicznej" nowy-tekst="Fundusz autobusowy" akt="https://eli.gov.pl/eli/DU/2026/218" now:wystapienie="wszystkie"/>
+                            w przepisach następujących po art. 37i ust. 1 słowa „Fundusz rozwoju przewozów autobusowych o charakterze użyteczności publicznej” zamienia się słowami „Fundusz autobusowy”;
+                        </zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="10/2026/2887__art_1__pkt_3" gd:GUID="01a0e3e7-2264-7964-9884-1dde9bc7669c">
+                    <nr>3</nr>
+                    <p>
+                        <zdanie nr="1" fragment="4" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-779a-b455-1940e2ee6cd3">
+                            w art. 39a:
+                        </zdanie>
+                    </p>
+                    <litera eId="10/2026/2887__art_1__pkt_3__lit_a" gd:GUID="01a0e3e7-2264-743b-97fe-ee48eedfe5a6">
+                        <nr>a</nr>
+                        <p>
+                            <zdanie nr="1" fragment="5" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-79aa-91dd-4c2e717f3dae">
+                                po pkt 1a dodaje się pkt 1b-1e w brzmieniu:
+                                <cytat-strukt cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/DU/2026/218" element-eId="DU/2026/218__art_39a__pkt_1a" funkcja="dodaj-po" gd:nowGUID="01a0e3e7-2264-7b17-8bed-69d20a4f41a2">
+                                    <punkt eId="DU/2026/218__art_39a__pkt_1b" gd:GUID="01a0e3e7-2264-7f09-9e2e-2eef23413454">
+                                        <nr>1b</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="3" gd:zdGUID="01a0e3e7-2264-752f-a6c8-5f1c17dc3fc1" gd:fragmentGUID="01a0e3e7-2264-7692-aa00-e70b62727c70">
+                                                gromadzi środki finansowe na rozwój przewozów o charakterze użyteczności publicznej w rozumieniu <ref
+                                                    href="https://eli.gov.pl/eli/DU/2025/285__art_4__ust_1__pkt_12" gd:refGUID="01a0e3e7-2264-7857-ab76-ee16abc3f3ad">art. 4 ust. 1 pkt 12</ref> ustawy z dnia 16 grudnia 2010 r. o publicznym transporcie zbiorowym (<metryczka
+                                                    gd:metrGUID="01a0e3e7-2264-79dd-a923-80d36cd84691"><publikator>Dz. U.</publikator> z <rok>2025</rok> r. poz. <pozycja>285</pozycja></metryczka>);
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2026/218__art_39a__pkt_1c" gd:GUID="01a0e3e7-2264-72e0-8dd7-ea1ea49b1c92">
+                                        <nr>1c</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="4" gd:zdGUID="01a0e3e7-2264-752f-a6c8-5f1c17dc3fc1" gd:fragmentGUID="01a0e3e7-2264-7349-9dd6-98aeede27bad">
+                                                gromadzi środki finansowe na rozwój infrastruktury dotyczącej wyłącznie linii kolejowych innych, aniżeli linie kolejowe o znaczeniu państwowym, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_2a" gd:refGUID="01a0e3e7-2264-7f3b-b065-32c76f6b5bee">art. 4 pkt 2a</ref> ustawy z dnia 28 marca 2003 r. o transporcie kolejowym (<metryczka gd:metrGUID="01a0e3e7-2264-7b77-9cc4-73bd7feff478"><publikator>Dz. U.</publikator> z <rok>2024</rok> r. Poz. <pozycja>697</pozycja>, <pozycja>731</pozycja></metryczka>);
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2026/218__art_39a__pkt_1d" gd:GUID="01a0e3e7-2264-7ff3-8d72-00312d39b9aa">
+                                        <nr>1d</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="5" gd:zdGUID="01a0e3e7-2264-752f-a6c8-5f1c17dc3fc1" gd:fragmentGUID="01a0e3e7-2264-7ff3-8d72-00312d39b9aa">
+                                                gromadzi środki finansowe na rozwój przewozów towarowych, w tym infrastruktury wspierającej towarowe przewozy kolejowe, w szczególności budowę bocznic kolejowych i intermodalnych terminali towarowych w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_10" gd:refGUID="01a0e3e7-2264-7ead-ae50-dddfa507e4f5">art. 4 pkt 10</ref> i <ref href="https://eli.gov.pl/eli/DU/2024/697__art_36c" gd:refGUID="01a0e3e7-2264-7218-add9-97d7d2b8f8c0">36c</ref> ustawy z ust, 1c, niebędących infrastrukturą prywatną w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_1c" gd:refGUID="01a0e3e7-2264-775c-8cd7-4a9af60500ba">art. 4 pkt 1c</ref> tejże ustawy, a także przywracanie tej infrastruktury do użytku, jeżeli stanowi infrastrukturę nieczynną w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_1b" gd:refGUID="01a0e3e7-2264-7590-81a0-e7de893e938c">art. 4 pkt 1b</ref> tejże ustawy;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2026/218__art_39a__pkt_1e" gd:GUID="01a0e3e7-2264-79f0-b767-907cfa120143">
+                                        <nr>1e</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="6" gd:zdGUID="01a0e3e7-2264-752f-a6c8-5f1c17dc3fc1" gd:fragmentGUID="01a0e3e7-2264-799b-92c7-b50ff40353fd">gromadzi środki na rozwój linii kolejowych o znaczeniu obronnym, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_2b" gd:refGUID="01a0e3e7-2264-74a2-a655-b1f02aff8f4f">art. 4 pkt 2b</ref> ustawy z ust. 1c;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                </cytat-strukt>
+                                ;</zdanie>
+                        </p>
+                    </litera>
+                    <litera eId="10/2026/2887__art_1__pkt_3__lit_b" gd:GUID="01a0e3e7-2264-7bc5-8c51-6162c860ae92">
+                        <nr>b</nr>
+                        <p>
+                            <zdanie nr="1" fragment="6" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-7b3f-849d-68908ba5f607">
+                                <now:zamien-tekst stary-tekst="w pkt 1 i 1a" nowy-tekst="w pkt 1-1e" akt="https://eli.gov.pl/eli/DU/2026/218" element-eId="DU/2026/218__art_39a__pkt_2" gd:nowGUID="01a0e3e7-2264-736e-aee3-3ed32883618d"/>w pkt 2 słowa „w pkt 1 i 1a” zastępuje się słowami „w pkt 1-1e”.
+                            </zdanie>
+                        </p>
+                    </litera>
+                </punkt>
+                <punkt eId="10/2026/2887__art_1__pkt_4" gd:GUID="01a0e3e7-2264-736f-81f8-2a42c59d15bf">
+                    <nr>4</nr>
+                    <p>
+                        <zdanie nr="1" fragment="7" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-76a9-babe-8849ee5ce658">
+                            <now:uchyl akt="https://eli.gov.pl/eli/DU/2026/218" element-eId="DU/2026/218__art_39b__ust_1__pkt_1" gd:nowGUID="01a0e3e7-2264-75ec-b97b-b56b82680ef4"/>w art. 39b uchyla się ust. 1 pkt 1;
+                        </zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="10/2026/2887__art_1__pkt_5" gd:GUID="01a0e3e7-2264-7b32-89c4-86e9ce2aaac2">
+                    <nr>5</nr>
+                    <p>
+                        <zdanie nr="1" fragment="8" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-70b5-a051-7314faaf0de5">
+                            <now:zamien-tekst stary-tekst=";" nowy-tekst="i celów, o których mowa w art. 39f pkt 1a-1e;" akt="https://eli.gov.pl/eli/DU/2026/218" element-eId="DU/2026/218__art_39d__ust_1__pkt_1" gd:nowGUID="01a0e3e7-2264-7ca9-86fd-cb5b4575e15a"/>w art. 39d ust. 1 pkt 1 usuwa się średnik i dodaje słowa „i celów, o których mowa w art. 39f pkt 1a-1e;
+                        </zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="10/2026/2887__art_1__pkt_6" gd:GUID="01a0e3e7-2264-7bd6-936f-ee325ed1ca81">
+                    <nr>6</nr>
+                    <p>
+                        <zdanie nr="1" fragment="9" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-7f75-8631-fcacd5f17021">
+                            w art. 39f:
+                        </zdanie>
+                    </p>
+                    <litera eId="10/2026/2887__art_1__pkt_6__lit_a" gd:GUID="01a0e3e7-2264-788e-a7c4-03dd356e36ed">
+                        <nr>a</nr>
+                        <p>
+                            <zdanie nr="1" fragment="10" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-7d0f-b458-07dacf8f37ca">
+                                w ust. 1 po pkt 1 dodaje się pkt 1a-1f w brzmieniu:
+                                <cytat-strukt cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/DU/2026/218" element-eId="DU/2026/218__art_39f__ust_1__pkt_1" funkcja="dodaj-po" gd:nowGUID="01a0e3e7-2264-75ca-b165-6aabab772f80">
+                                    <punkt eId="DU/2026/218__art_39f__ust_1__pkt_1a" gd:GUID="01a0e3e7-2264-7478-9d79-a4f07c3bbf22">
+                                        <nr>1a</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="3" gd:zdGUID="01a0e3e7-2264-7bca-9147-a8071241c1f2" gd:fragmentGUID="01a0e3e7-2264-7175-9390-f6bd4c2035cc">
+                                                finansowanie rozwoju przewozów o charakterze użyteczności publicznej w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2025/285__art_4__ust_1__pkt_12" gd:refGUID="01a0e3e7-2264-7857-ab76-ee16abc3f3ad">art. 4 ust. 1 pkt 12</ref> ustawy z dnia 16 grudnia 2010 r. o publicznym transporcie zbiorowym (<metryczka gd:metrGUID="01a0e3e7-2264-79dd-a923-80d36cd84691"><publikator>Dz. U.</publikator> z <rok>2025</rok> r. poz. <pozycja>285</pozycja></metryczka>) poprzez przekazywanie środków do Funduszu Kolejowego i do Funduszu Autobusowego;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2026/218__art_39f__ust_1__pkt_1b" gd:GUID="01a0e3e7-2264-7b85-a332-fa9343a4dac1">
+                                        <nr>1b</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="4" gd:zdGUID="01a0e3e7-2264-7bca-9147-a8071241c1f2" gd:fragmentGUID="01a0e3e7-2264-7caa-b6af-fa62405009e9">
+                                                finansowanie rozwoju infrastruktury dotyczącej wyłącznie linii kolejowych innych, aniżeli linie kolejowe o znaczeniu państwowym, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_2a" gd:refGUID="01a0e3e7-2264-7f3b-b065-32c76f6b5bee">art. 4 pkt 2a</ref> ustawy z dnia 28 marca 2003 r. o transporcie kolejowym (<metryczka gd:metrGUID="01a0e3e7-2264-7b77-9cc4-73bd7feff478"><publikator>Dz. U.</publikator> z <rok>2024</rok> r. Poz. <pozycja>697</pozycja>, <pozycja>731</pozycja></metryczka>), poprzez przekazywanie środków do Funduszu Kolejowego;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2026/218__art_39f__ust_1__pkt_1c" gd:GUID="01a0e3e7-2264-7b7e-949e-853c00d144d5">
+                                        <nr>1c</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="5" gd:zdGUID="01a0e3e7-2264-7bca-9147-a8071241c1f2" gd:fragmentGUID="01a0e3e7-2264-7c36-bf1e-b089ec6404c8">
+                                                finansowanie rozwoju przewozów towarowych, w tym infrastruktury wspierającej towarowe przewozy kolejowe, w szczególności budowę bocznic kolejowych i intermodalnych terminali towarowych w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_10" gd:refGUID="01a0e3e7-2264-7ead-ae50-dddfa507e4f5">art. 4 pkt 10</ref> i <ref href="https://eli.gov.pl/eli/DU/2024/697__art_36c" gd:refGUID="01a0e3e7-2264-7218-add9-97d7d2b8f8c0">36c</ref> ustawy z ust, 1c, niebędących infrastrukturą prywatną w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_1c" gd:refGUID="01a0e3e7-2264-775c-8cd7-4a9af60500ba">art. 4 pkt 1c</ref> tejże ustawy, a także przywracanie tej infrastruktury do użytku, jeżeli stanowi infrastrukturę nieczynną w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_1b" gd:refGUID="01a0e3e7-2264-7590-81a0-e7de893e938c">art. 4 pkt 1b</ref> tejże ustawy, poprzez przekazywanie środków do Funduszu Kolejowego;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2026/218__art_39f__ust_1__pkt_1d" gd:GUID="01a0e3e7-2264-7248-941e-f1f9ed65c67b">
+                                        <nr>1d</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="6" gd:zdGUID="01a0e3e7-2264-7bca-9147-a8071241c1f2" gd:fragmentGUID="01a0e3e7-2264-7f48-bdb6-c02174dba7ee">
+                                                rozwijanie linii kolejowych o znaczeniu obronnym, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_2b" gd:refGUID="01a0e3e7-2264-74a2-a655-b1f02aff8f4f">art. 4 pkt 2b</ref> ustawy z ust. 1c, poprzez przekazywanie środków do funduszu kolejowego;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2026/218__art_39f__ust_1__pkt_1e" gd:GUID="01a0e3e7-2261-7248-941e-f1f9ed65c67b">
+                                        <nr>1e</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="7" gd:zdGUID="01a0e3e7-2264-7bca-9147-a8071241c1f2" gd:fragmentGUID="01a0e3e7-2264-7eaa-8ab2-580c6896ed87">poprawę bezpieczeństwa ruchu drogowego na drogach publicznych, w szczególności rozwój systemu automatycznego nadzoru; przy czym na ten cel przeznacza się przynajmniej 10% sumarycznych środków, które przeznacza się na cel, o którym mowa w niniejszym punkcie i cele, o których mowa w <ref href="#art_39f__ust_1__pkt_1" gd:refGUID="01a0e3e7-2264-7c03-b7cb-01b1e47d5334">pkt 1</ref> i <ref href="#art_39f__ust_1__pkt_1f" gd:refGUID="01a0e3e7-2264-721d-8ea7-8ef3b72b827a">1f</ref>;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2026/218__art_39f__ust_1__pkt_1f" gd:GUID="01a0e3e7-2264-72b6-b46d-97565d409028">
+                                        <nr>1f</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="8" gd:zdGUID="01a0e3e7-2264-7bca-9147-a8071241c1f2" gd:fragmentGUID="01a0e3e7-2264-7467-a86b-ac1716e38fa4">
+                                                rozwój dróg lokalnych i infrastruktury lokalnej, poprzez przekazywanie środków do Rządowego Funduszu Rozwoju Dróg, o który mowa w <ref
+                                                    href="https://eli.gov.pl/eli/DU/2025/94" gd:refGUID="01a0e3e7-2264-7233-ac05-583ebf49a48d">ustawie</ref> z dnia 23 października 2018 r. o Rządowym Funduszu Rozwoju Dróg (<metryczka
+                                                    gd:metrGUID="01a0e3e7-2264-79c2-97af-ff79b7ac5e80"><publikator>Dz. U.</publikator> z <rok>2025</rok> r. poz. <pozycja>94</pozycja></metryczka>); przy czym na ten cel przeznacza się przynajmniej 60% sumarycznych środków, które przeznacza się na cel, o którym mowa w niniejszym punkcie i cele, o których mowa w <ref href="#art_39f__ust_1__pkt_1" gd:refGUID="01a0e3e7-2264-7c03-b7cb-01b1e47d5334">pkt 1</ref> i <ref href="#art_39f__ust_1__pkt_1e" gd:refGUID="01a0e3e7-2264-7e9d-86a8-68b7db444567">pkt 1e</ref>;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                </cytat-strukt>
+                                ;</zdanie>
+                        </p>
+                    </litera>
+                    <litera eId="10/2026/2887__art_1__pkt_6__lit_b" gd:GUID="01a0e3e7-2264-794f-b2ce-26e2ab6bbe19">
+                        <nr>b</nr>
+                        <p>
+                            <zdanie nr="1" fragment="11" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-7eae-ac45-af6a5ce85ccf">
+                                <now:zamien-tekst stary-tekst="." nowy-tekst=", a także na finansowanie celów, o których mowa art. 39f pkt 1a-1e:" akt="https://eli.gov.pl/eli/DU/2026/218" element-eId="DU/2026/218__art_39f__ust_4a"/>w ust. 4a kropkę zastępuje się przecinkiem i dodaje słowa „a także na finansowanie celów, o których mowa art. 39f pkt 1a-1e:
+                            </zdanie>
+                        </p>
+                    </litera>
+                    <litera eId="10/2026/2887__art_1__pkt_6__lit_c" gd:GUID="01a0e3e7-2264-7fe6-9a57-2438e5f04e68">
+                        <nr>c</nr>
+                        <p>
+                            <zdanie nr="1" fragment="12" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-7061-bfdf-47be9a2ed4f4">
+                                po ust. 4b dodaje się ust. 4c w brzmieniu:
+                                <cytat-strukt cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/DU/2026/218" element-eId="DU/2026/218__art_39f__ust_4b" funkcja="dodaj-po" gd:nowGUID="01a0e3e7-2264-7eca-b37d-83dee32c997d">
+                                    <ustep eId="DU/2026/218__art_39f__ust_4c" gd:GUID="01a0e3e7-2264-72d3-8dd6-ea13220c1159">
+                                        <nr>4c</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="1" gd:zdGUID="01a0e3e7-2264-78a9-bfbe-82f92ed8dfe3" gd:fragmentGUID="01a0e3e7-2264-7d34-b892-792fcaf74f03">
+                                                Bank Gospodarstwa Krajowego comiesięczne przekazuje 24% wpływów Funduszu do Funduszu Kolejowego z przeznaczeniem na rozwój wojewódzkich przewozów pasażerskich, w tym infrastruktury dotyczącej wyłącznie linii kolejowych innych, aniżeli linie kolejowe o znaczeniu państwowym, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_2a" gd:refGUID="01a0e3e7-2264-7f3b-b065-32c76f6b5bee">art. 4 pkt 2a</ref> ustawy z dnia 28 marca 2003 r. o transporcie kolejowym (<metryczka gd:metrGUID="01a0e3e7-2264-7b77-9cc4-73bd7feff478"><publikator>Dz. U.</publikator> z <rok>2024</rok> r. Poz. <pozycja>697</pozycja>, <pozycja>731</pozycja></metryczka>), 12% wpływów Funduszu przekazuje do Funduszu Kolejowego z przeznaczeniem na rozwój przewozów towarowych, w tym infrastruktury wspierającej towarowe przewozy kolejowe, w szczególności budowę bocznic kolejowych i intermodalnych terminali towarowych w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_10" gd:refGUID="01a0e3e7-2264-7ead-ae50-dddfa507e4f5">art. 4 pkt 10</ref> i <ref href="https://eli.gov.pl/eli/DU/2024/697__art_36c" gd:refGUID="01a0e3e7-2264-7218-add9-97d7d2b8f8c0">36c</ref> tejże ustawy, niebędących infrastrukturą prywatną w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_1c" gd:refGUID="01a0e3e7-2264-775c-8cd7-4a9af60500ba">art. 4 pkt 1c</ref> tejże ustawy, a także przywracanie tej infrastruktury do użytku, jeżeli stanowi infrastrukturę nieczynną w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_1b" gd:refGUID="01a0e3e7-2264-7590-81a0-e7de893e938c">art. 4 pkt 1b</ref> tejże ustawy, 4% wpływów Funduszu przekazuje do Funduszu Kolejowego z przeznaczeniem na finansowanie zadań w zakresie linii kolejowych o znaczeniu obronnym, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2024/697__art_4__pkt_2b" gd:refGUID="01a0e3e7-2264-74a2-a655-b1f02aff8f4f">art. 4 pkt 2b</ref> tejże ustawy, a do Funduszu Autobusowego 40% wpływów Funduszu.
+                                            </zdanie>
+                                        </p>
+                                    </ustep>
+                                </cytat-strukt>
+                            </zdanie>
+                        </p>
+                    </litera>
+                    <litera eId="10/2026/2887__art_1__pkt_6__lit_c" gd:GUID="01a0e3e7-2264-76fb-896b-1e46e30e82be">
+                        <nr>d</nr>
+                        <p>
+                            <zdanie nr="1" fragment="13" gd:zdGUID="01a0dee5-d322-75e9-9c6a-5b6456d15a28" gd:fragmentGUID="01a0e3e7-2264-7268-968b-df42042d5bce">
+                                <now:zamien-tekst stary-tekst="pkt 1 i 3" nowy-tekst="pkt 1-1e" akt="https://eli.gov.pl/eli/DU/2026/218" element-eId="DU/2026/218__art_39f__ust_6" gd:nowGUID="01a0e3e7-2264-7dcf-9846-13ce4cd65d83"/> w ust. 6 słowa „pkt 1 i 3” zamienia się słowami „pkt 1-1e”.
+                            </zdanie>
+                        </p>
+                    </litera>
+                </punkt>
+            </ustep-n>
+        </artykul>
+        <artykul eId="10/2026/2887__art_2" gd:GUID="01a0e3e7-2264-7932-bfd5-53c74406a4e1">
+            <nr>2</nr>
+            <ustep-n gd:GUID="01a0e3e7-2264-7dfb-bc6c-8adc4006f619">
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="01a0e3e7-2264-7103-90dc-7b95bff63c62" gd:fragmentGUID="01a0e3e7-2264-7432-8369-be23d096083c">
+                        W ustawie z dnia 16 grudnia 2010 r. o publicznym transporcie zbiorowym (<metryczka gd:metrGUID="01a0e3e7-2264-781c-8bc8-571351e43b77"><publikator>Dz. U.</publikator> z <rok>2025</rok> r. poz. <pozycja>285</pozycja></metryczka>) wprowadza się następujące zmiany:
+                    </zdanie>
+                </p>
+                <punkt eId="10/2026/2887__art_2__pkt_1" gd:GUID="01a0e3e7-2264-76cb-ae12-3c960b723191">
+                    <nr>1</nr>
+                    <p>
+                        <zdanie nr="1" fragment="2" gd:zdGUID="01a0e3e7-2264-7103-90dc-7b95bff63c62" gd:fragmentGUID="01a0e3e7-2264-7e7d-afaa-37a7e7cda1d4">
+                            w art. 7 po ust. 4 dodaje się ust. 5 w brzmieniu:
+                            <cytat-strukt cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/DU/2025/285" element-eId="DU/2025/285__art_7__ust_4" funkcja="dodaj-po" gd:nowGUID="01a0e3e7-2264-7a52-b2cb-15a285c463f0">
+                                <ustep eId="DU/2025/285__art_7__ust_5" gd:GUID="01a0e3e7-2264-739d-86f7-358cefbc6194">
+                                    <nr>5</nr>
+                                    <p>
+                                        <zdanie nr="1" fragment="1" gd:zdGUID="01a0e3e7-2264-7841-82df-55fe71b93318" gd:fragmentGUID="01a0e3e7-2264-740e-aa75-d3feabc28ee1">
+                                            Do organizacji i rozwoju wojewódzkich przewozów kolejowych jest obowiązane i wyłącznie właściwe województwo.
+                                        </zdanie>
+                                    </p>
+                                </ustep>
+                            </cytat-strukt>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="10/2026/2887__art_2__pkt_2" gd:GUID="01a0e3e7-2264-736f-8ab2-5e91a0060e5a">
+                    <nr>2</nr>
+                    <p>
+                        <zdanie nr="1" fragment="3" gd:zdGUID="01a0e3e7-2264-7103-90dc-7b95bff63c62" gd:fragmentGUID="01a0e3e7-2264-70a9-90dc-201bec1962a7">
+                            w art. 25 ust. 3 po pkt 24 dodaje się pkt 25 w brzmieniu:
+                            <cytat-strukt cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/DU/2025/285" element-eId="DU/2025/285__art_25__ust_4__pkt_24" funkcja="dodaj-po" gd:nowGUID="01a0e3e7-2264-7b4d-abd9-17fab6f61798">
+                                <punkt eId="DU/2025/285__art_25__ust_4__pkt_25" gd:GUID="01a0e3e7-2264-7a40-8ca1-198d5e314904">
+                                    <nr>25</nr>
+                                    <p>
+                                        <zdanie nr="1" fragment="1" gd:zdGUID="01a0e3e7-2264-70e9-8cff-cc45e9560543" gd:fragmentGUID="01a0e3e7-2264-71ab-b5a3-88826d26d2b4">zasady przekazywania środków, o których mowa w <ref href="https://eli.gov.pl/eli/DU/2025/285__art_58f" gd:refGUID="01a0e3e7-2264-7378-86e4-f6a793558ed5">art. 58f</ref>, w tym wskazanie numeru rachunku bankowego organizatora do ich przekazywania.
+                                        </zdanie>
+                                    </p>
+                                </punkt>
+                            </cytat-strukt>
+                            ;</zdanie>
+                    </p>
+                </punkt>
+                <punkt eId="10/2026/2887__art_2__pkt_3" gd:GUID="01a0e3e7-2264-7f56-88c9-292494e90755">
+                    <nr>3</nr>
+                    <p>
+                        <zdanie nr="1" fragment="4" gd:zdGUID="01a0e3e7-2264-7103-90dc-7b95bff63c62" gd:fragmentGUID="01a0e3e7-2264-7e8f-bda5-735fd9b0f954">
+                            w dziale II po rozdziale 6 dodaje się rozdział 7 w brzmieniu:
+                            <cytat-strukt cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/DU/2025/285" funkcja="dodaj-po" element-eId="DU/2025/285__rozdz_6" gd:nowGUID="01a0e3e7-2264-7093-b4cd-fe337f7d3054">
+                                <rozdzial eId="DU/2025/285__rozdz_7" gd:GUID="01a0e3e7-2264-758a-8d4b-8410eab3bc06">
+                                    <naglowek-rozdzialu gd:GUID="01a0e3e7-2264-7776-b040-f8b2936b550e">
+                                        <nr>7</nr>
+                                        <p>Polski Bilet Powszechny im. Juliana Eberhardta</p>
+                                    </naglowek-rozdzialu>
+                                    <oddzial-n gd:GUID="01a0e3e7-2264-7434-b0af-19670414c85d">
+                                        <artykul eId="DU/2025/285__art_58b" gd:GUID="01a0e3e7-2264-74dd-ab26-dcf6374685c3">
+                                            <nr>58b</nr>
+                                            <ustep eId="DU/2025/285__art_58b__ust_1" gd:GUID="01a0e3e7-2264-725c-b58e-c2cb4415fd90">
+                                                <nr>1</nr>
+                                                <p>
+                                                    <zdanie nr="1" fragment="1" gd:zdGUID="01a0e3e7-2264-7721-9b51-763a6e05eb75" gd:fragmentGUID="01a0e3e7-2264-70aa-a824-3d09d0c3c00e">Ustanawia się Polski Bilet Powszechny im. Juliana Eberhardta, zwany dalej „Biletem”
+                                                    </zdanie>
+                                                </p>
+                                            </ustep>
+                                            <ustep eId="DU/2025/285__art_58b__ust_2" gd:GUID="01a0e3e7-2264-77aa-89af-99b773d380c0">
+                                                <nr>2</nr>
+                                                <p>
+                                                    <zdanie nr="1" fragment="1" gd:zdGUID="01a0e3e7-2264-7d93-b358-d5d0dd301d15" gd:fragmentGUID="01a0e3e7-2264-7397-841b-7a846b8ff4a9">Bilet jest uwzględniany w cennikach opłat lub taryfach oraz honorowany przez operatorów i przewoźników wykonujących przewozy o charakterze użyteczności publicznej z wyjątkiem międzywojewódzkich przewozów pasażerskich i międzynarodowych przewozów pasażerskich.
+                                                    </zdanie>
+                                                </p>
+                                            </ustep>
+                                            <ustep eId="DU/2025/285__art_58b__ust_3" gd:GUID="01a0e3e7-2264-746b-9197-a367b649d585">
+                                                <nr>3</nr>
+                                                <p>
+                                                    <zdanie nr="1" fragment="1" gd:zdGUID="01a0e3e7-2264-7018-b1bc-7b1f31c253f7" gd:fragmentGUID="01a0e3e7-2264-7cfa-9bec-e5e60b194886">Bilet jest ważny 30 dni od momentu skasowania lub aktywacji w całym publicznym transporcie zbiorowym w przewozach, o których mowa w <ref href="#art_58b__ust_2" gd:refGUID="01a0e3e7-2264-7d01-9cae-af3149ba04ed">ust. 2</ref>, we wszystkich środkach transportu, na obszarze całej Polski, niezależnie od, w szczególności, liczby przejazdów, przesiadek, zmian środków transportu oraz zmian operatorów i przewoźników.
+                                                    </zdanie>
+                                                </p>
+                                            </ustep>
+                                            <!--Dalszą część tekstu normatywnego pominięto w tym przykładzie.-->
+                                        </artykul>
+                                    </oddzial-n>
+                                </rozdzial>
+                            </cytat-strukt>
+                            .</zdanie>
+                    </p>
+                </punkt>
+            </ustep-n>
+        </artykul>
+
+        <uzasadnienie>
+            <tytul-uzasadnienia gd:GUID="01a0e3e7-2264-734a-a022-5fbe91c81ff1">Uzasadnienie</tytul-uzasadnienia>
+            <sekcja-uzasadnienia gd:GUID="">
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="75b77490-46eb-4e81-8842-398f032b54bf" gd:fragmentGUID="46e76d3a-5673-45b2-b982-c39f6f7808f9">Ustawa jest odpowiedzią na trzy, ściśle powiązane ze sobą problemy społecznie: katastrofę klimatyczną, wykluczenie transportowe oraz zapaść polskiej kolei towarowej prowadzącą do utraty tysięcy miejsc pracy.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="bfe5e847-1af9-498a-853d-0360e52b14e3" gd:fragmentGUID="2f30569a-b81e-47cb-9311-dece60beb4ff">Po pierwsze, Polska doświadcza tempa ocieplenia klimatu dwukrotnie przekraczającego średnią globalną, co niesie za sobą wiele fundamentalnych zagrożeń społecznych i ekonomicznych.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="e8651fb7-0afd-4602-a5b1-ca00ce51dc94" gd:fragmentGUID="9700b556-7c3c-40ee-a35d-eb0d5d448ced">Zmiany klimatyczne prowadzą do wzrostu częstotliwości i intensywności fal upałów, długotrwałych susz, powodzi, huraganów.</zdanie>
+                    <zdanie nr="3" fragment="1" gd:zdGUID="ae3884ba-a404-4b15-8539-93400d114c0a" gd:fragmentGUID="22274acb-b547-450b-b2a6-c8d11ccf905a">Wywiera to destrukcyjny wpływ na zdrowie publiczne, produkcję rolniczą czy gospodarkę wodną.</zdanie>
+                    <zdanie nr="4" fragment="1" gd:zdGUID="9c54b8d2-084a-480c-9e39-08c8c4edc51d" gd:fragmentGUID="700f3759-5975-464e-8cc4-636cc06a2891">Najbardziej zagrożone skutkami zmian klimatu są osoby o niskich dochodach, starsze i z problemami zdrowotnymi, mieszkające w miejscowościach o słabo rozwiniętej infrastrukturze.</zdanie>
+                    <zdanie nr="5" fragment="1" gd:zdGUID="a2f0af88-1f9e-4c02-97ee-2f28cb5e1c53" gd:fragmentGUID="6e6f9b5e-46e7-4a7a-9e6a-0f1c6ef2f7b1">Zmiany klimatu i ich negatywne skutki są już odczuwalne dla większości Polaków.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="6b1b1a3e-7d3a-4b8b-9f6f-2b3c4d5e6f70" gd:fragmentGUID="7c2c2b4f-8e4b-5c9c-a07f-3c4d5e6f7081">Po drugie, na drodze to skutecznego przeciwdziałania zmianom klimatycznych stoi ogromna skala wykluczenia transportowego w naszym kraju.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="8d3d3c5f-9f5c-4d0d-a08f-4d5e6f708192" gd:fragmentGUID="9e4e4d6f-a06d-4e1e-b19f-5e6f70819203">Zgodnie z szacunkami wykluczeniem dotkniętych jest kilkanaście milionów Polek i Polaków.</zdanie>
+                    <zdanie nr="3" fragment="1" gd:zdGUID="af5f5e70-b17e-4f2f-c2a0-6f708192a304" gd:fragmentGUID="b06070819293a4b1d3070819a3b4c5d6">Dla młodzieży brak transportu publicznego oznacza niższe szanse edukacyjne i rozwojowe (np. przez brak możliwości dotarcia na zajęcia dodatkowe), brak wyboru w kwestii edukacji (bycie skazanym na wybór szkoły, do której jest się w stanie dojechać), utrudnienia w dostępie do usług publicznych i ograniczony kontakt z rówieśnikami.</zdanie>
+                    <zdanie nr="4" fragment="1" gd:zdGUID="af5f5e70-b27e-4f2f-c2a0-6f708192a304" gd:fragmentGUID="d283940516273849506172839405162">Dla osób dorosłych i seniorów wykluczenie transportowe oznacza mniejsze szanse na zatrudnienie, problem z dojazdem do pracy, ośrodków kultury, ośrodków religijnych, miejsc integracji i innych kluczowych usług, w tym podstawowej opieki zdrowotnej, a także wpływa na korzystanie z indywidualnego transportu samochodowego jako jedynej możliwości.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="e3940516-2738-4950-8162-839405162738" gd:fragmentGUID="f4051627-3849-5061-9273-940516273849">Dla mieszkańcy mniejszych miejscowości transport publiczny jest nie tylko najmniej dostępny przez niską liczbę połączeń, ale również płacą za niego najwięcej.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="05162738-4950-6172-8394-051627384950" gd:fragmentGUID="16273849-5061-7283-9405-162738495061">Według GUS, dla co co czwartego gospodarstwa domowego, szczególnie na wsi, koszt transportu publicznego to "odczuwalne obciążenie finansowe".</zdanie>
+                    <zdanie nr="3" fragment="1" gd:zdGUID="27384950-6172-8394-0516-273849506172" gd:fragmentGUID="38495061-7283-9405-1627-384950617283">Badanie Blue media podkreśla, że aż 47% osób na wsi, a 57% a małych i średnich miasta byłaby gotowa przesiąść się do transportu zbiorowego, gdyby był tańszy i dostępniejszy.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="49506172-8394-0516-2738-495061728394" gd:fragmentGUID="50617283-9405-1627-3849-506172839405">Po trzecie, skuteczne przeciwdziałanie zmianom klimatu nie jest możliwe w sytuacji, kiedy mamy do czynienia z zapaścią kolei towarowej i utratą tysięcy miejsc pracy.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="61728394-0516-2738-4950-617283940516" gd:fragmentGUID="72839405-1627-3849-5061-728394051627">W przewozach towarowych identyfikuje się niesprawiedliwe i uniemożliwiające konkurencję faworyzowanie transportu drogowego nad kolejowym.</zdanie>
+                    <zdanie nr="3" fragment="1" gd:zdGUID="83940516-2738-4950-6172-839405162738" gd:fragmentGUID="94051627-3849-5061-7283-940516273849">Niedawne protesty Związku Zawodowego maszynistów Kolejowych w PKP Cargo to tylko jeden z przejawów szeregu problemów, z którymi borykają się kolejowe przewozy towarowe.</zdanie>
+                    <zdanie nr="4" fragment="1" gd:zdGUID="05162738-4950-6172-8394-051627384951" gd:fragmentGUID="16273849-5061-7283-9405-162738495062">Koleją przewozi się coraz mniej towarów - nawet takich, które ze względu na swoje cechy fizyczne mniej nadają się do przewozu samochodami ciężarowymi.</zdanie>
+                    <zdanie nr="5" fragment="1" gd:zdGUID="27384950-6172-8394-0516-273849506173" gd:fragmentGUID="38495061-7283-9405-1627-384950617284">Obecnie to ok. 10%, czyli aż o połowę mniej niż np. Niemczech.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="49506172-8394-0516-2738-495061728395" gd:fragmentGUID="50617283-9405-1627-3849-506172839406">Wpływ na taki stan rzeczy ma szereg czynników.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="61728394-0516-2738-4950-617283940517" gd:fragmentGUID="72839405-1627-3849-5061-728394051628">Ceny energii i opłaty dla kolei w Polsce należą do najwyższych w Europie.</zdanie>
+                    <zdanie nr="3" fragment="1" gd:zdGUID="83940516-2738-4950-6172-839405162739" gd:fragmentGUID="94051627-3849-5061-7283-940516273850">Podczas gdy przewoźnicy samochodami ciężarowymi płacą jedynie za co 5 km, przewoźnicy kolejowi płacą za każdy.</zdanie>
+                    <zdanie nr="4" fragment="1" gd:zdGUID="05162738-4950-6172-8394-051627384952" gd:fragmentGUID="16273849-5061-7283-9405-162738495063">Ponadto, Polska ma jedną z niższych liczb terminali w Europie, a także zbyt małą i wciąż spadającą liczbę bocznic kolejowych.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="27384950-6172-8394-0516-273849506174" gd:fragmentGUID="38495061-7283-9405-1627-384950617285">Podczas kiedy rosyjskie drony wdzierają się do Polski, a rosyjskie myśliwce do Estonii, nie można dopuścić, aby gwarancja bezpieczeństwa naszego kraju, którą jest kolej towarowa, uległa destrukcji.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="49506172-8394-0516-2738-495061728396" gd:fragmentGUID="50617283-9405-1627-3849-506172839407">Kolej towarowa jest kluczowa dla bezpieczeństwa wszystkich Polek i Polaków, nie tylko dla przeciwdziałania katastrofie klimatycznej, ale także dla obrony cywilnej, ewakuacji ludności w czasie zagrożenia, transportu wojska i zaopatrzenia.</zdanie>
+                    <zdanie nr="3" fragment="1" gd:zdGUID="61728394-0516-2738-4950-617283940518" gd:fragmentGUID="72839405-1627-3849-5061-728394051629">Jest kluczowa dla realizacji strategicznych inwestycji, np. w elektrownię atomową czy odbudowę Ukrainy.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="83940516-2738-4950-6172-839405162740" gd:fragmentGUID="94051627-3849-5061-7283-940516273851">Niniejsza ustawa składa się z trzech komponentów, które systemowo odpowiadają na opisane powyżej problemy.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="05162738-4950-6172-8394-051627384953" gd:fragmentGUID="16273849-5061-7283-9405-162738495064">Ściśle łączą one rozwiązania nakierowane na przeciwdziałanie zmianom z prospołecznymi rozwiązaniami, które również wzmacniają państwo i podnoszą poziom bezpieczeństwa narodowego.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="27384950-6172-8394-0516-273849506175" gd:fragmentGUID="38495061-7283-9405-1627-384950617286">Pierwszym z komponentów jest sprawiedliwa transformacja transportowa, której służy bardziej sprawiedliwy podział publicznych środków pomiędzy inwestycje w autostrady i drogi ekspresowe, drogi lokalne, regionalne przewozy kolejowe, przewozy autobusowe i regionalne linie kolejowe.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="49506172-8394-0516-2738-495061728397" gd:fragmentGUID="50617283-9405-1627-3849-506172839408">W szczególności uwzględniono tutaj linie kolejowe o znaczeniu obronnym.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="61728394-0516-2738-4950-617283940519" gd:fragmentGUID="72839405-1627-3849-5061-728394051630">Oznacza to przekierowanie środków na walkę z wykluczeniem komunikacyjnym na wsi i w małych miejscowościach.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="83940516-2738-4950-6172-839405162741" gd:fragmentGUID="94051627-3849-5061-7283-940516273852">Drugim z komponentów jest realizacja idei zgodnie z którą transport publiczny to prawo człowieka.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="05162738-4950-6172-8394-051627384954" gd:fragmentGUID="16273849-5061-7283-9405-162738495065">Wyrazem tego jest wprowadzenie Polskiego Biletu Powszechnego im. Juliana Eberhardta (pierwszego Ministra Kolei Żelaznych w II RP, który scalał polską kolej po zaborach).</zdanie>
+                    <zdanie nr="3" fragment="1" gd:zdGUID="27384950-6172-8394-0516-273849506176" gd:fragmentGUID="38495061-7283-9405-1627-384950617287">Jest to bilet miesięczny za 50 zł, który jest ważne w całym publicznym transporcie zbiorowym od regionalnego w dół.</zdanie>
+                    <zdanie nr="4" fragment="1" gd:zdGUID="49506172-8394-0516-2738-495061728398" gd:fragmentGUID="50617283-9405-1627-3849-506172839409">Oznacza to, że jednym biletem są objęte komunikacje miejskie, transport lokalny, PKSy i kolej regionalna.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="61728394-0516-2738-4950-617283940520" gd:fragmentGUID="72839405-1627-3849-5061-728394051631">Trzecim z komponentów jest wsparcie rozwoju kolei towarowej i zapewnienie równych zasad konkurencji na rynku transportowym.</zdanie>
+                    <zdanie nr="2" fragment="1" gd:zdGUID="83940516-2738-4950-6172-839405162742" gd:fragmentGUID="94051627-3849-5061-7283-940516273853">W tym celu przewidziano szereg rozwiązań, w tym bardziej sprawiedliwe rozłożenie opłat na różne środki transportu, wsparcie rozbudowy infrastruktury intermodalnej i bocznic kolejowych czy bardziej sprawiedliwe uregulowanie kwestii transportu ciężarowego.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="05162738-4950-6172-8394-051627384955" gd:fragmentGUID="16273849-5061-7283-9405-162738495066">Projekt jest zgodny z prawem Unii Europejskiej.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="27384950-6172-8394-0516-273849506177" gd:fragmentGUID="38495061-7283-9405-1627-384950617288">Projekt ustawy nie zawiera przepisów technicznych w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2002/2039" gd:refGUID="01a0e3e7-2264-71c5-905e-e5836bc52b07">rozporządzenia</ref> Rady Ministrów z dnia 23 grudnia 2002 r. w sprawie sposobu funkcjonowania krajowego systemu notyfikacji norm i aktów prawnych (<metryczka gd:metrGUID="01a0e3e7-2264-795c-83da-c3bf663bea52"><publikator>Dz. U.</publikator> z <rok>2002</rok> r. poz. <pozycja>2039</pozycja> oraz z <rok>2004</rok> r. poz. <pozycja>597</pozycja></metryczka>) i w związku z tym nie podlega notyfikacji.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="49506172-8394-0516-2738-495061728399" gd:fragmentGUID="50617283-9405-1627-3849-506172839410">Projekt nie wymaga przedłożenia właściwym instytucjom i organom Unii Europejskiej, w tym Europejskiemu Bankowi Centralnemu, w celu uzyskania opinii, dokonania powiadomienia, konsultacji albo uzgodnienia.</zdanie>
+                </p>
+                <p>
+                    <zdanie nr="1" fragment="1" gd:zdGUID="61728394-0516-2738-4950-617283940521" gd:fragmentGUID="72839405-1627-3849-5061-728394051632">Projekt ustawy nie zawiera przepisów regulacyjnych lub przepisów określających wymogi dotyczące świadczenia usług transgranicznych w rozumieniu <ref href="https://eli.gov.pl/eli/DU/2023/334" gd:refGUID="01a0e3e7-2264-7764-b4c9-02a7cd06564f">ustawy</ref> z dnia 22 grudnia 2015 r. o zasadach uznawania kwalifikacji zawodowych nabytych w państwach członkowskich Unii Europejskiej (<metryczka gd:metrGUID="01a0e3e7-2264-7125-b33e-12c95a7bb08e"><publikator>Dz. U.</publikator> z <rok>2023</rok> r. poz. <pozycja>334</pozycja></metryczka>).</zdanie>
+                </p>
+            </sekcja-uzasadnienia>
+        </uzasadnienie>
+    </projekt-ustawy>
+</akt-prawny>

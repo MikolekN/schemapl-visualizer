@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<akt-prawny
+        xmlns:now="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/now"
+        xmlns="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/1.0"
+        xmlns:gd="https://projects.task.gda.pl/caise/NLP/kisi/rcl/GUIDs/1.0"
+        xmlns:tpg="https://projects.task.gda.pl/caise/NLP/kisi/rcl/typografia/1.0"
+        xmlns:kmn="https://projects.task.gda.pl/caise/NLP/kisi/rcl/komentarze/1.0">
+    <autopoprawka>
+        <metadane>
+            <ELIDL>https://eli.gov.pl/eli/10/2026/2887_A</ELIDL><!--To jest zmyślony ELIDL.-->
+            <Kadencja>10</Kadencja>
+            <NumerDruku>2887_A</NumerDruku>
+            <LinkDruku>https://orka.sejm.gov.pl/Druki10ka.nsf/0/41985216A5AE5A8CC1258E450033EE9E/%24File/2887-autopoprawka.docx</LinkDruku>
+            <gd:GUIDwersji>01a06604-94c5-784e-a525-054f1beaa793</gd:GUIDwersji>
+            <Rodzaj>AUTOPOPRAWKA</Rodzaj>
+            <DaneCzasowe>
+                <CyklZyciaProjektuUstawyLubKodeksu>
+                    <Zdarzenie id="zdarz_wplyniecie_pisma_2026-01-13" pochodzenie="odczytane" rodzaj="wpłyniecie-pisma"/>
+                </CyklZyciaProjektuUstawyLubKodeksu>
+                <GrupaCzasowa id="okr_przed-pierwszym-czytaniem.zdarz_wplyniecie_pisma_2026-01-13" glowna="false">
+                    <Przedzial rodzaj="przed-pierwszym-czytaniem" od="zdarz_wplyniecie_pisma_2026-01-13"/>
+                </GrupaCzasowa>
+            </DaneCzasowe>
+            <OrganyInicjujace>
+                <Organ>
+                    <Nazwa>grupa posłów</Nazwa>
+                </Organ>
+            </OrganyInicjujace>
+            <Relacje>
+                <Relacja ELI="https://eli.gov.pl/eli/10/2026/2887" typ="Zmienia"/>
+            </Relacje>
+        </metadane>
+        <rodzaj-aktu>Autopoprawka</rodzaj-aktu>
+        <tytul>do poselskiego projektu ustawy o odbudowie polskiej kolei i transportu autobusowego oraz o ratowaniu miejsc pracy na kolei towarowej (RPW/31538/2025)</tytul>
+        <preambula>
+            <p>
+                <zdanie nr="1" gd:zdGUID="01a06604-94c5-7b1a-b00f-3fd112c8fb42" fragment="1" gd:fragmentGUID="01a06604-94c5-7739-ad81-a154d064a819">W poselskim <ref href="https://eli.gov.pl/eli/10/2026/2887" gd:refGUID="01a06604-94c5-774f-bda7-e511142735f5">projekcie</ref> ustawy o odbudowie polskiej kolei i transportu autobusowego oraz o ratowaniu miejsc pracy na kolei towarowej wprowadza się następująca zmiany:</zdanie>
+            </p>
+        </preambula>
+        <punkt eId="10/2026/2887_A__pkt_1" gd:GUID="01a06604-94c5-767c-8689-719dcad62048">
+            <nr>1</nr>
+            <p>
+                <zdanie nr="1" gd:zdGUID="01a06604-94c5-7500-a15e-3f1ec23cd257" fragment="1" gd:fragmentGUID="01a06604-94c5-7302-a37a-88837cb1d5c1">
+                    w przypisie nr 1 słowa:<now:zamien-tekst stary-tekst="ustawę z dnia 16 grudnia 2005 r. o Funduszu Kolejowym oraz ustawę z dnia 28 marca 2003 r. o transporcie kolejowym." nowy-tekst="ustawę z dnia 16 grudnia 2005 r. o Funduszu Kolejowy, ustawę z dnia 28 marca 2003 r. o transporcie kolejowym, ustawę z dnia 23 października 2018 r. o Rządowym Funduszu Rozwoju Dróg oraz ustawę z dnia 20 października 1994 r. o specjalnych strefach ekonomicznych." element-eId="odn_1" akt="10/2026/2887" gd:nowGUID="01a06604-94c5-7597-af82-90a74fce67b6"/>“ustawę z dnia 16 grudnia 2005 r. o Funduszu Kolejowym oraz ustawę z dnia 28 marca 2003 r. o transporcie kolejowym.” zastępuje się słowami “ustawę z dnia 16 grudnia 2005 r. o Funduszu Kolejowy, ustawę z dnia 28 marca 2003 r. o transporcie kolejowym, ustawę z dnia 23 października 2018 r. o Rządowym Funduszu Rozwoju Dróg oraz ustawę z dnia 20 października 1994 r. o specjalnych strefach ekonomicznych.;
+                </zdanie>
+            </p>
+        </punkt>
+        <punkt eId="10/2026/2887_A__pkt_2" gd:GUID="01a06604-94c5-74fd-9107-88d971583259">
+            <nr>2</nr>
+            <p>
+                <zdanie nr="1" gd:zdGUID="01a06604-94c5-7500-a15e-3f1ec23cd257" fragment="2" gd:fragmentGUID="01a06604-94c5-7438-b9d9-d403365643ca">
+                    po art. 1 dodaje się art. 1a w brzmieniu:
+                    <cytat-strukt cudzyslowy="oba" now:akt="https://eli.gov.pl/eli/10/2026/2887" gd:nowGUID="01a06604-94c5-723b-9b60-1dbc7a416a60" element-eId="10/2026/2887__art_1" funkcja="dodaj-po">
+                        <artykul eId="10/2026/2887__art_1a" gd:GUID="01a06604-94c5-7d73-8446-507eedda5283">
+                            <nr>1a</nr>
+                            <ustep-n gd:GUID="01a06604-94c5-723c-9bd2-b7b7bc9c9209">
+                                <p>
+                                    <zdanie nr="1" gd:zdGUID="01a06604-94c5-7c74-a4ba-2bc18d61b009" fragment="1" gd:fragmentGUID="01a06604-94c5-7677-bde8-7aaa1d8868b7">
+                                        W ustawie z dnia 23 października 2018 r. o Rządowym Funduszu Rozwoju Dróg, w art. 5 ust. 1 pkt 1 skreśla się średnik i dodaje słowa <now:zamien-tekst stary-tekst=";" nowy-tekst=", przy czym środki te przeznacza się wyłącznie na rozwój, w gminach wiejskich i wiejsko-miejskich,  infrastruktury rowerowej, pieszej, a także przystanków komunikacyjnych, dworców i węzłów przesiadkowych;" element-eId="DU/2025/94__art_5__ust_1__pkt_1" akt="https://eli.gov.pl/eli/DU/2025/94" gd:nowGUID="01a06604-94c5-7225-9e7a-0a247881d871"/>“, przy czym środki te przeznacza się wyłącznie na rozwój, w gminach wiejskich i wiejsko-miejskich, infrastruktury rowerowej, pieszej, a także przystanków komunikacyjnych, dworców i węzłów przesiadkowych;”.
+                                    </zdanie>
+                                </p>
+                            </ustep-n>
+                        </artykul>
+                    </cytat-strukt>
+                    ;</zdanie>
+            </p>
+        </punkt>
+        <punkt eId="10/2026/2887_A__pkt_3" gd:GUID="01a06604-94c5-7e48-bd87-2c98f2752506">
+            <nr>3</nr>
+            <p>
+                <zdanie nr="1" gd:zdGUID="01a06604-94c5-7500-a15e-3f1ec23cd257" fragment="3" gd:fragmentGUID="01a06604-94c5-7cc6-8b02-99df5c5b798a">
+                    w art. 2:</zdanie>
+            </p>
+            <litera eId="10/2026/2887_A__pkt_3__lit_a" gd:GUID="01a06604-94c5-766f-bde3-68727106133e">
+                <nr>a</nr>
+                <p>
+                    <!--W tym miejscu występuje zagnieżdżone odwołanie: do art. 58 ust. 3, który znajduje się w pkt 3 projektu. Zamiast adresowania przez ELI+EID zastosowano wskazanie GUIDcelu, a więc jednoznaczne wskazanie elementu, w którym następuje zmiana.-->
+                    <zdanie nr="1" gd:zdGUID="01a06604-94c5-7500-a15e-3f1ec23cd257" fragment="4" gd:fragmentGUID="01a06604-94c5-7958-b4b1-91b3ec92be0c">
+                        <now:zamien-tekst stary-tekst="ważny" nowy-tekst="biletem imiennym, ważnym" akt="https://eli.gov.pl/eli/10/2026/2887" gd:nowGUID="01a06604-94c5-73af-b6f4-63309688bf78" gd:GUIDcelu="01a0e3e7-2264-7018-b1bc-7b1f31c253f7"/>
+                        w pkt 3 w dodawanym art. 58b ust. 3 słowo “ważny” zamienia się słowami “biletem imiennym, ważnym”;
+                    </zdanie>
+                </p>
+            </litera>
+            <litera eId="10/2026/2887_A__pkt_3__lit_b" gd:GUID="01a06604-94c5-7ab8-89da-9cf2209196b8">
+                <nr>b</nr>
+                <p>
+                    <!--W tym miejscu podobnie jak wyżej zastosowano GUIDcelu, z tą różnicą że w cytacie strukturalnym. W tym przypadku GUIDcelu zmyślono.-->
+                    <zdanie nr="1" gd:zdGUID="01a06604-94c5-7500-a15e-3f1ec23cd257" fragment="5" gd:fragmentGUID="01a06604-94c5-7543-8a70-db4a4b8fd68d">
+                        w pkt 3 dodawany art. 58e ust. 1 uzyskuje brzmienie:
+                        <cytat-strukt cudzyslowy="oba" gd:GUIDcelu="01a06604-94c5-7654-9e66-a10585047b67" now:akt="https://eli.gov.pl/eli/10/2026/2887" gd:nowGUID="01a06604-94c5-749e-a6fb-8014a0af0cd0" funkcja="zastap">
+                            <ustep eId="art_58e__ust_1" gd:GUID="01a06604-94c5-7686-a061-59746667a126">
+                                <nr>58e</nr>
+                                <p>
+                                    <zdanie nr="1" gd:zdGUID="01a06604-94c5-7346-b5b2-3659c8c3784f" fragment="1" gd:fragmentGUID="01a06604-94c5-725b-a69d-1e242e79f564">W celu otrzymania rekompensaty, o której mowa w <ref href="https://eli.gov.pl/eli/DU/2025/285/art_50/pkt_3" gd:refGUID="01a06604-94c5-795f-9263-1d67a5786389">art. 50 pkt 3</ref>, w stosunku do linii komunikacyjnych, których dotyczy obowiązek, o którym mowa w <ref href="https://eli.gov.pl/eli/DU/2025/285/art_58b/ust_2" gd:refGUID="01a06604-94c5-793c-ab74-0935d17572da">art. 58b ust. 2</ref>, przewoźnik nie będący operatorem zawiera z organizatorem umowę, o której mowa w <ref href="https://eli.gov.pl/eli/DU/2025/285/art_4/ust_1/pkt_24" gd:refGUID="01a06604-94c5-7290-b7b7-9377ef83ab3b">art. 4 ust. 1 pkt 24</ref>, i na tej podstawie uzyskuje status operatora.
+                                    </zdanie>
+                                </p>
+                            </ustep>
+                        </cytat-strukt>
+                        ;</zdanie>
+                </p>
+            </litera>
+            <litera eId="10/2026/2887_A__pkt_3__lit_c" gd:GUID="01a06604-94c5-7bdb-9431-d18a90419103">
+                <nr>c</nr>
+                <p>
+                    <zdanie nr="1" gd:zdGUID="01a06604-94c5-7500-a15e-3f1ec23cd257" fragment="6" gd:fragmentGUID="01a06604-94c5-7108-b7e7-3dbbbae715d7">
+                        pkt 4 w dodawanym art. 66 ust. 1, 2 i 3 po słowach “podlega” dodaje się słowo “każdorazowo”
+                        <now:zamien-tekst stary-tekst="podlega" nowy-tekst="podlega każdorazowo" akt="https://eli.gov.pl/eli/10/2026/2887" gd:nowGUID="01a06604-94c5-73af-b6f4-63309688bf78" gd:GUIDcelu="01a06604-94c5-7d20-951f-53108df7361a"/>
+                        <now:zamien-tekst stary-tekst="podlega" nowy-tekst="podlega każdorazowo" akt="https://eli.gov.pl/eli/10/2026/2887" gd:nowGUID="01a06604-94c5-7dc0-b9be-58004892d9e9" gd:GUIDcelu="01a06604-94c5-7c49-af59-f85d200caf1c"/>
+                        <now:zamien-tekst stary-tekst="podlega" nowy-tekst="podlega każdorazowo" akt="https://eli.gov.pl/eli/10/2026/2887" gd:nowGUID="01a06604-94c5-75c8-9c9b-7cb2694a34b8" gd:GUIDcelu="01a06604-94c5-7833-8503-0dc19edb7275"/>;
+                    </zdanie>
+                </p>
+            </litera>
+        </punkt>
+        <!--Reszta tekstu normatywnego autopoprawki jest pominięta.-->
+        <uzasadnienie>
+            <tytul-uzasadnienia gd:GUID="01a06604-94c5-7dd5-b2f2-9e311f859670">UZASADNIENIE</tytul-uzasadnienia>
+            <sekcja-uzasadnienia gd:GUID="01a06604-94c5-7a6b-b503-9890acdc6898">
+                <p>
+                    <zdanie nr="1" gd:zdGUID="01a06604-94c5-7b02-8ef2-e0320101a50f" fragment="1" gd:fragmentGUID="01a06604-94c5-76bf-b3d3-a477fb74298c">Głównym celem niniejszej autopoprawki jest uwzględnienie rekomendacji zawartych w opinii Biura Ekspertyz i Oceny Skutków Regulacji Kancelarii Sejmu (dalej jako “BEOS”) z dnia 10 października 2025 r.</zdanie>
+                    <zdanie nr="2" gd:zdGUID="01a06604-94c5-735b-8618-01c479b4a3d2" fragment="1" gd:fragmentGUID="01a06604-94c5-76d3-ae5b-a1118f4125c5">Ponadto, autopoprawka uwzględnia uwagę zawartą w opinii Prezesa Urzędu Ochrony Danych Osobowych (UODO) z dnia 9 października 2025 r., a także część uwag eksperckich i zgłoszonych w ramach konsultacji społecznych projektu ustawy.</zdanie>
+                </p>
+            </sekcja-uzasadnienia>
+            <!--Reszta tekstu uzasadnienia autopoprawki została pominięta.-->
+        </uzasadnienie>
+    </autopoprawka>
+</akt-prawny>

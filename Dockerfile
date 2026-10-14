@@ -15,11 +15,16 @@ WORKDIR /srv
 COPY requirements.txt ./
 RUN pip install --no-cache-dir --requirement requirements.txt
 
-COPY app ./app
+COPY pyproject.toml README.md MANIFEST.in LICENSE /tmp/build/
+COPY source/schemapl_visualizer/ /tmp/build/source/schemapl_visualizer/
+RUN pip install --no-cache-dir --no-deps /tmp/build \
+    && rm -rf /tmp/build
+
+COPY source/api/ ./
 
 RUN useradd --system --create-home --uid 10001 appuser
 USER appuser
 
-CMD ["uvicorn", "app.service:app", \
+CMD ["uvicorn", "main:app", \
      "--host", "0.0.0.0", "--port", "8000", \
      "--proxy-headers", "--forwarded-allow-ips", "*"]

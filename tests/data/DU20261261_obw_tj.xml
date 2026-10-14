@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<akt-prawny
+        xmlns="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/1.0"
+        xmlns:now="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/now"
+        xmlns:gd="https://projects.task.gda.pl/caise/NLP/kisi/rcl/GUIDs/1.0"
+        xmlns:tpg="https://projects.task.gda.pl/caise/NLP/kisi/rcl/typografia/1.0"
+        xmlns:kmn="https://projects.task.gda.pl/caise/NLP/kisi/rcl/komentarze/1.0">
+    <obwieszczenie>
+        <metadane>
+            <ELIaktu>
+                <ELI>DU/2026/1261</ELI>
+            </ELIaktu>
+            <gd:GUIDwersji>01a0e974-e2f4-7c65-9e9a-de1eba0e87e1</gd:GUIDwersji>
+            <AdresISAP>WDU20260001261</AdresISAP>
+            <Wydawnictwo>DU</Wydawnictwo>
+            <Rok>2026</Rok>
+            <Pozycja>1261</Pozycja>
+            <AdresWyswietlany>Dz.U. 2026 poz. 1261</AdresWyswietlany>
+            <Tytul>Obwieszczenie Marszałka Sejmu Rzeczypospolitej Polskiej z dnia 1 września 2026 r. w sprawie ogłoszenia jednolitego tekstu ustawy - Kodeks wyborczy</Tytul>
+            <Rodzaj>OBW_TJ</Rodzaj>
+            <DataOgloszenia>2026-09-28</DataOgloszenia>
+            <DataAktu>
+                <DataWydania>2026-09-01</DataWydania>
+            </DataAktu>
+            <DaneCzasowe>
+                <CyklZyciaAktu>
+                    <Zdarzenie id="zdarz_ujednolicenie_2026-09-28_DU-2026-1261_domyslne" rodzaj="ujednolicenie" pochodzenie="domyslne-z-aktu" data="2026-09-28"></Zdarzenie>
+                </CyklZyciaAktu>
+                <GrupaCzasowa id="okr_ujednolicenie.zdarz_ujednolicenie_2026-09_28_DU-2026-1261_domyslne" glowna="true">
+                    <Przedzial rodzaj="ujednolicenie" od="zdarz_ujednolicenie_2026-09-28_DU-2026-1261_domyslne"/>
+                </GrupaCzasowa>
+            </DaneCzasowe>
+            <DataObowiazywaniaWersji>
+                <Od>zdarz_ujednolicenie_2026-09-28_DU-2026-1261_domyslne</Od>
+            </DataObowiazywaniaWersji>
+            <DataStanuPrawnegoTJ>2026-08-25</DataStanuPrawnegoTJ>
+            <Status>akt obowiązujacy</Status>
+            <CzyObowiazuje>IN_FORCE</CzyObowiazuje>
+            <Organy>
+                <Organ rola="wydajacy" eliURI="http://eli.gov.pl/resource/authority/legal-institution/MSEJMU" gd:GUID="01a0e974-e2f4-7d51-9e3a-6c1f84269728">
+                    <Nazwa>Marszałek Sejmu</Nazwa>
+                    <OrganPodpisujacy>Marszałek Sejmu</OrganPodpisujacy>
+                    <OsobaPodpisujaca gd:osobaGUID="a9ce6e23-7027-47f9-bf13-8646a5337a91" podpisujacy="true">
+                        <imie>Włodzimierz</imie>
+                        <nazwisko>Czarzasty</nazwisko>
+                    </OsobaPodpisujaca>
+                </Organ>
+            </Organy>
+            <SlowaKluczowe>
+                <Termin>kodeks wyborczy</Termin>
+                <Termin>wybory</Termin>
+            </SlowaKluczowe>
+            <Relacje>
+                <Relacja ELI="https://eli.gov.pl/eli/DU/2011/112" typ="Ujednolica" dataRelacji="okr_ujednolicenie.zdarz_ujednolicenie_2026-09_28_DU-2026-1261_domyslne"/>
+                <Relacja ELI="https://eli.gov.pl/eli/DU/2000/718" typ="Wykonuje" dataRelacji="okr_ujednolicenie.zdarz_ujednolicenie_2026-09_28_DU-2026-1261_domyslne"/>
+            </Relacje>
+            <TekstyAktu>
+                <TekstAktu>
+                    <NazwaPliku>D2026001261.pdf</NazwaPliku>
+                    <TypTekstu>O</TypTekstu>
+                </TekstAktu>
+                <TekstAktu>
+                    <NazwaPliku>D2026001261.pdf</NazwaPliku>
+                    <TypTekstu>I</TypTekstu>
+                </TekstAktu>
+            </TekstyAktu>
+        </metadane>
+        <rodzaj-aktu>Obwieszczenie</rodzaj-aktu>
+        <autor-aktu>Marszałka Sejmu</autor-aktu>
+        <data>z dnia 1 września 2026 r.</data>
+        <tytul>w sprawie ogłoszenia jednolitego tekstu ustawy – Kodeks wyborczy</tytul>
+        <punkt-OTJ eId="DU/2026/1261__pkt_1" gd:GUID="01a0e974-e2f4-7b75-aec1-cf23722992d4">
+            <nr>1</nr>
+            <p>
+                <zdanie nr="1" fragment="1" gd:zdGUID="01a0e974-e2f4-73d5-8606-54568682003a" gd:fragmentGUID="01a0e974-e2f4-7868-8a6b-1af9a52e188f">
+                    Na podstawie <ref href="https://eli.gov.pl/eli/DU/2019/1461__art_16__ust_1" gd:refGUID="01a0e974-e2f4-73d3-b45c-e26cc377a464">art. 16 ust. 1</ref> ustawy z dnia 20 lipca 2000 r. o ogłaszaniu aktów normatywnych i niektórych innych aktów prawnych (<metryczka gd:metrGUID="01a0e974-e2f4-70ae-b186-e36ac07ce2c0"><publikator>Dz. U.</publikator> z <rok>2019</rok> r. poz. <pozycja>1461</pozycja> oraz z <rok>2026</rok> r. poz. <pozycja>912</pozycja></metryczka>) ogłasza się w załączniku do niniejszego obwieszczenia jednolity tekst ustawy z dnia 5 stycznia 2011 r. – Kodeks wyborczy (<metryczka gd:metrGUID="01a0e974-e2f4-75df-87f1-d12e8e16c8a0"><publikator>Dz. U.</publikator> z <rok>2025</rok> r. poz. <pozycja>365</pozycja></metryczka>), z uwzględnieniem stanu prawnego na dzień 25 sierpnia 2026 r. oraz zmian wprowadzonych:
+                </zdanie>
+            </p>
+            <podpunkt-OTJ eId="DU/2026/1261__pkt_1__ppkt_1" gd:GUID="01a0e974-e2f4-7fb4-8a34-4bfb60e83292">
+                <nr>1</nr>
+                <p>
+                    <zdanie nr="1" fragment="2" gd:zdGUID="01a0e974-e2f4-73d5-8606-54568682003a" gd:fragmentGUID="01a0e974-e2f4-778a-8bf8-578097d4d46f">
+                        <ref href="https://eli.gov.pl/eli/DU/2025/1792" gd:refGUID="01a0e974-e2f4-766a-aea5-281ee365ee8b">ustawą</ref> z dnia 21 listopada 2025 r. o zmianie ustawy o statystyce publicznej oraz niektórych innych ustaw (<metryczka gd:metrGUID="01a0e974-e2f4-70d6-ae58-468cb7d044b9"><publikator>Dz. U.</publikator> poz. <pozycja>1792</pozycja></metryczka>);
+                    </zdanie>
+                </p>
+            </podpunkt-OTJ>
+            <podpunkt-OTJ eId="DU/2026/1261__pkt_1__ppkt_2" gd:GUID="01a0e974-e2f4-7bac-8570-cfafc49de21d">
+                <nr>2</nr>
+                <p>
+                    <zdanie nr="1" fragment="3" gd:zdGUID="01a0e974-e2f4-73d5-8606-54568682003a" gd:fragmentGUID="01a0e974-e2f4-7cf6-a5ae-9cd547afbcb4">
+                        <ref href="https://eli.gov.pl/eli/DU/2026/178" gd:refGUID="01a0e974-e2f4-7e4c-a23f-c131badfb795">ustawą</ref> z dnia 23 stycznia 2026 r. o zmianie ustawy – Kodeks wyborczy (<metryczka
+                            gd:metrGUID="01a0e974-e2f4-794a-bdb9-ee7c9b5dc086"><publikator>Dz. U.</publikator> poz. <pozycja>178</pozycja></metryczka>)
+                    </zdanie>
+                </p>
+            </podpunkt-OTJ>
+        </punkt-OTJ>
+        <punkt-OTJ eId="DU/2026/1261__pkt_2" gd:GUID="01a0e974-e2f4-7643-aefc-0f5bcdcafe70">
+            <nr>2</nr>
+            <p>
+                <zdanie nr="1" fragment="1" gd:zdGUID="01a0e974-e2f4-7177-bfa1-593bf9fdd820" gd:fragmentGUID="01a0e974-e2f4-7f0f-876a-dd0efca4ecf0">
+                    Podany w załączniku do niniejszego obwieszczenia tekst jednolity ustawy nie obejmuje:
+                </zdanie>
+            </p>
+            <podpunkt-OTJ eId="DU/2026/1261__pkt_2__ppkt_1" gd:GUID="01a0e974-e2f4-7732-8dfa-d9f7f2f1be21">
+                <nr>1</nr>
+                <p>
+                    <zdanie nr="1" fragment="2" gd:zdGUID="01a0e974-e2f4-7177-bfa1-593bf9fdd820" gd:fragmentGUID="01a0e974-e2f4-7f65-8325-5a5c189d20eb">
+                        <ref href="https://eli.gov.pl/eli/DU/2025/1792__art_19" gd:refGUID="01a0e974-e2f4-7cd0-a628-2c0a9dee7936">art. 19</ref> ustawy z dnia 21 listopada 2025 r. o zmianie ustawy o statystyce publicznej oraz niektórych innych ustaw (<metryczka gd:metrGUID="01a0e974-e2f4-70d6-ae58-468cb7d044b9"><publikator>Dz. U.</publikator> poz. <pozycja>1792</pozycja></metryczka>), który stanowi:
+                        <tresc-strukt cudzyslowy="oba" gd:GUID="01a0e974-e2f4-772f-97eb-6bcc179913bf">
+                            <artykul eId="DU/2025/1792__art_19" gd:GUID="01a0e974-e2f4-7b19-9839-2ccb3c10fedf">
+                                <nr>19</nr>
+                                <ustep-n gd:GUID="01a0e974-e2f4-740d-8124-d08616a4709b">
+                                    <p>
+                                        <zdanie nr="1" fragment="1" gd:zdGUID="01a0e974-e2f4-7de7-ac2d-3dffc1b81472" gd:fragmentGUID="01a0e974-e2f4-7450-b94c-ae7774262e35">
+                                            Ustawa wchodzi w życie po upływie 14 dni od dnia ogłoszenia, z wyjątkiem:</zdanie>
+                                    </p>
+                                    <punkt eId="DU/2025/1792__art_19__pkt_1" gd:GUID="01a0e974-e2f4-7814-9ca3-79140e9bceb1">
+                                        <nr>1</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="2" gd:zdGUID="01a0e974-e2f4-7de7-ac2d-3dffc1b81472" gd:fragmentGUID="01a0e974-e2f4-7a32-959c-193f05690a99">
+                                                art. 1 pkt 11 lit. c tiret drugie, tiret piąte, tiret szóste w zakresie pkt 5 lit. g, tiret siódme w zakresie pkt 9 lit. a tiret czwarte i w zakresie pkt 10, lit. d tiret drugie w zakresie ust. 3a pkt 1, lit. e, pkt 13 w zakresie art. 42a ust. 2 pkt 2 i 3 oraz ust. 3 pkt 2 i 3 oraz pkt 16 i 17, które wchodzą w życie po upływie 12 miesięcy od dnia ogłoszenia;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2025/1792__art_19__pkt_2" gd:GUID="01a0e974-e2f4-739c-828d-7295fedbff45">
+                                        <nr>2</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="3" gd:zdGUID="01a0e974-e2f4-7de7-ac2d-3dffc1b81472" gd:fragmentGUID="01a0e974-e2f4-75d1-9742-dd4d018b832d">
+                                                art. 1 pkt 11 lit. d tiret drugie w zakresie ust. 3a pkt 2, pkt 13 w zakresie art. 42a ust. 2 pkt 1, pkt 19 lit. c tiret
+                                                drugie i trzecie i lit. d, pkt 20, pkt 21 lit. b i c oraz pkt 22, art. 3–5, art. 6 pkt 2 w zakresie art. 20f oraz art. 10, które wchodzą w życie po upływie 18 miesięcy od dnia ogłoszenia;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2025/1792__art_19__pkt_3" gd:GUID="01a0e974-e2f4-7991-8b75-c975b39bb4e6">
+                                        <nr>3</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="4" gd:zdGUID="01a0e974-e2f4-7de7-ac2d-3dffc1b81472" gd:fragmentGUID="01a0e974-e2f4-7c05-affd-93e3b0da76b4">
+                                                art. 6 pkt 2 w zakresie art. 20e ust. 1 i 2 oraz pkt 3 i art. 12, które wchodzą w życie z dniem 31 grudnia 2025 r.
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                </ustep-n>
+                            </artykul>
+                        </tresc-strukt>
+                        ;</zdanie>
+                </p>
+            </podpunkt-OTJ>
+            <podpunkt-OTJ eId="DU/2026/1261__pkt_2__ppkt_2" gd:GUID="01a0e974-e2f4-7a98-93c4-48fd91328fd7">
+                <nr>2</nr>
+                <p>
+                    <zdanie nr="1" fragment="5" gd:zdGUID="01a0e974-e2f4-7de7-ac2d-3dffc1b81472" gd:fragmentGUID="01a0e974-e2f4-7f91-8148-48b9f78aa3c5">
+                        <mref gd:refGUID="01a0e974-e2f4-7c42-9e0d-37265f9d8e71">
+                            <ref href="https://eli.gov.pl/eli/DU/2026/178__art_3" gd:refGUID="01a0e974-e2f4-7c2b-809f-c7b380c6da0f">art. 3</ref> i                         <ref href="https://eli.gov.pl/eli/DU/2026/178__art_4" gd:refGUID="01a0e974-e2f4-7b49-b150-02651ae8cef6">art. 4</ref></mref> ustawy z dnia 23 stycznia 2026 r. o zmianie ustawy – Kodeks wyborczy (<metryczka
+                            gd:metrGUID="01a0e974-e2f4-794a-bdb9-ee7c9b5dc086"><publikator>Dz. U.</publikator> poz. <pozycja>178</pozycja></metryczka>), które stanowią:
+                        <tresc-strukt cudzyslowy="oba" gd:GUID="01a0e974-e2f4-7b44-b72e-8c4218359be6">
+                            <artykul eId="DU/2026/178__art_3" gd:GUID="01a0e974-e2f4-7f73-9220-572033688025">
+                                <nr>3</nr>
+                                <ustep-n gd:GUID="01a0e974-e2f4-70b8-8824-f23d329b6de4">
+                                    <p>
+                                        <zdanie nr="1" fragment="1" gd:zdGUID="01a0e974-e2f4-7aaf-b0fd-518e2354498e" gd:fragmentGUID="01a0e974-e2f4-7c0c-8074-3231f8e57389">
+                                            Minister właściwy do spraw informatyzacji, w terminie 12 miesięcy od dnia wejścia w życie niniejszego przepisu:</zdanie>
+                                    </p>
+                                    <punkt eId="DU/2026/178__art_3__pkt_1" gd:GUID="01a0e974-e2f4-7c93-9e50-82079cbf0745">
+                                        <nr>1</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="2" gd:zdGUID="01a0e974-e2f4-7aaf-b0fd-518e2354498e" gd:fragmentGUID="01a0e974-e2f4-7f1b-b6f6-5f387ea48a4c">
+                                                przygotuje, w uzgodnieniu z Państwową Komisją Wyborczą, system teleinformatyczny, który umożliwi działanie portalu poparcia, o którym mowa w <ref href="https://eli.gov.pl/eli/DU/2025/365__art_103d" gd:refGUID="01a0e974-e2f4-7447-aab4-997f2bd28962">art. 103d</ref> ustawy zmienianej w art. 1;
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                    <punkt eId="DU/2026/178__art_3__pkt_2" gd:GUID="01a0e974-e2f4-756a-b8e3-d01b9812d444">
+                                        <nr>2</nr>
+                                        <p>
+                                            <zdanie nr="1" fragment="3" gd:zdGUID="01a0e974-e2f4-7aaf-b0fd-518e2354498e" gd:fragmentGUID="01a0e974-e2f4-7852-921b-903acf36568e">
+                                                udostępni do wglądu Państwowej Komisji Wyborczej kod źródłowy portalu poparcia, o którym mowa w <ref href="https://eli.gov.pl/eli/DU/2025/365__art_103d" gd:refGUID="01a0e974-e2f4-7447-aab4-997f2bd28962">art. 103d</ref> ustawy zmienianej w art. 1.
+                                            </zdanie>
+                                        </p>
+                                    </punkt>
+                                </ustep-n>
+                            </artykul>
+                            <artykul eId="DU/2026/178__art_4" gd:GUID="01a0e974-e2f4-7a87-bd5f-d5881194bea4">
+                                <nr>4</nr>
+                                <ustep-n gd:GUID="01a0e974-e2f4-7dbd-abb8-ab218e470281">
+                                    <p>
+                                        <zdanie nr="1" fragment="1" gd:zdGUID="01a0e974-e2f4-7488-9433-3b48973cfb74" gd:fragmentGUID="01a0e974-e2f4-795f-96ed-4b0e9f8d5dcb">
+                                            Ustawa wchodzi w życie po upływie 12 miesięcy od dnia ogłoszenia, z wyjątkiem <ref
+                                                href="#art_3" gd:refGUID="01a0e974-e2f4-7ac9-a248-cdbe5d1cf6b4">art. 3</ref>, który wchodzi w życie po upływie 14 dni od dnia ogłoszenia.
+                                        </zdanie>
+                                    </p>
+                                </ustep-n>
+                            </artykul>
+                        </tresc-strukt>
+                        .</zdanie>
+                </p>
+            </podpunkt-OTJ>
+        </punkt-OTJ>
+        <organ-podpisujacy>Marszałek Sejmu</organ-podpisujacy>
+        <osoba><imie>W.</imie> <nazwisko>Czarzasty</nazwisko></osoba>
+        <kodeks>
+            <zalacznik-do gd:GUID="01a0e974-e2f4-7cc0-8889-418ff334938b">Załącznik do obwieszczenia Marszałka Sejmu Rzeczypospolitej Polskiej z dnia 1 września 2026 r. (<metryczka
+                    gd:metrGUID="01a0e974-e2f4-7ccd-8070-1b0f0b5e4d46"><publikator>Dz. U.</publikator> poz. <pozycja>1261</pozycja></metryczka>)</zalacznik-do>
+            <rodzaj-aktu>USTAWA</rodzaj-aktu>
+            <data>z dnia 5 stycznia 2011 r.</data>
+            <tytul>Kodeks wyborczy
+                <odnosnik eId="DU/2026/1261__odn_1" symbol="1" id-odnosnika="1" gd:GUID="01a0e974-e2f4-79be-a816-ff5eceb6f22d">
+                    <p>
+                        <zdanie nr="1" fragment="1" gd:zdGUID="01a0e974-e2f4-773e-bbc6-035f3394221b" gd:fragmentGUID="01a0e974-e2f4-77de-a5ce-3b21e84e322b">
+                            Przepisy niniejszej ustawy wdrażają postanowienia <ref href="https://data.europa.eu/eli/dir/1993/109/oj" gd:refGUID="01a0e974-e2f4-7f15-ad6f-f2f5ee088cae">dyrektywy Rady 93/109/WE</ref> z dnia 6 grudnia 1993 r. ustanawiającej szczegółowe warunki wykonywania prawa do głosowania i kandydowania w wyborach do Parlamentu Europejskiego przez obywateli Unii mających miejsce zamieszkania w Państwie Członkowskim, którego nie są obywatelami oraz <ref href="https://data.europa.eu/eli/dir/1994/80/oj" gd:refGUID="01a0e974-e2f4-73af-96e6-54b5ad2662d8">dyrektywy Rady 94/80/WE</ref> z dnia 19 grudnia 1994 r. ustanawiającej szczegółowe zasady korzystania z prawa głosowania i kandydowania w wyborach lokalnych przez obywateli Unii zamieszkałych w Państwie Członkowskim, którego nie są obywatelami.
+                        </zdanie>
+                    </p>
+                </odnosnik>
+            </tytul>
+            <dzial>
+                <naglowek-dzialu eId="DU/2026/1261__dzial_1" gd:GUID="01a0e974-e2f4-77e7-ad75-235db8ab5241">
+                    <nr>I</nr>
+                    <p>Przepisy wstępne</p>
+                </naglowek-dzialu>
+
+                <rozdzial>
+                    <naglowek-rozdzialu eId="DU/2026/1261__rozdz_1" gd:GUID="01a0e974-e2f4-74e4-8397-810e244514d9">
+                        <nr>1</nr>
+                        <p>Przepisy ogólne</p>
+                    </naglowek-rozdzialu>
+                    <oddzial-n gd:GUID="01a0e974-e2f4-764f-ac83-9a0c1ea187e3">
+                        <artykul-kodeksu-tj eId="DU/2026/1261__art_1" gd:GUID="01a0e974-e2f4-75eb-8e6b-13db931efb41">
+                            <nr>1</nr>
+                            <paragraf-kodeksu-n gd:GUID="01a0e974-e2f4-7c8f-89ec-f850d9ec7782">
+                                <p>
+                                    <zdanie nr="1" fragment="1" gd:zdGUID="01a0e974-e2f4-77e4-bd08-76f60ab2aeba" gd:fragmentGUID="01a0e974-e2f4-7ee8-b1a3-5c8c8ef61f51">
+                                        Kodeks wyborczy określa zasady i tryb zgłaszania kandydatów, przeprowadzania oraz warunki ważności wyborów:
+                                    </zdanie>
+                                </p>
+                                <punkt eId="DU/2026/1261__art_1__pkt_1" gd:GUID="01a0e974-e2f4-7984-91f4-c21743794ef6">
+                                    <nr>1</nr>
+                                    <p>
+                                        <zdanie nr="1" fragment="2" gd:zdGUID="01a0e974-e2f4-77e4-bd08-76f60ab2aeba" gd:fragmentGUID="01a0e974-e2f4-71c8-b57f-8210fa0ea21d">
+                                            do Sejmu Rzeczypospolitej Polskiej i do Senatu Rzeczypospolitej Polskiej;
+                                        </zdanie>
+                                    </p>
+                                </punkt>
+                                <punkt eId="DU/2026/1261__art_1__pkt_2" gd:GUID="01a0e974-e2f4-7c36-85bb-009d8330b548">
+                                    <nr>2</nr>
+                                    <p>
+                                        <zdanie nr="1" fragment="3" gd:zdGUID="01a0e974-e2f4-77e4-bd08-76f60ab2aeba" gd:fragmentGUID="01a0e974-e2f4-7c30-ba95-4b3c0001f728">
+                                            Prezydenta Rzeczypospolitej Polskiej;
+                                        </zdanie>
+                                    </p>
+                                </punkt>
+                                <punkt eId="DU/2026/1261__art_1__pkt_3" gd:GUID="01a0e974-e2f4-7770-8d98-e679cab67977">
+                                    <nr>3</nr>
+                                    <p>
+                                        <zdanie nr="1" fragment="4" gd:zdGUID="01a0e974-e2f4-77e4-bd08-76f60ab2aeba" gd:fragmentGUID="01a0e974-e2f4-795e-abfc-68e7ed3420de">
+                                            do Parlamentu Europejskiego w Rzeczypospolitej Polskiej;
+                                        </zdanie>
+                                    </p>
+                                </punkt>
+                                <punkt eId="DU/2026/1261__art_1__pkt_4" gd:GUID="01a0e974-e2f4-7059-a166-be270ca16063">
+                                    <nr>4</nr>
+                                    <p>
+                                        <zdanie nr="1" fragment="5" gd:zdGUID="01a0e974-e2f4-77e4-bd08-76f60ab2aeba" gd:fragmentGUID="01a0e974-e2f4-7ca9-b865-a74377b4a7dd">
+                                            do organów stanowiących jednostek samorządu terytorialnego;
+                                        </zdanie>
+                                    </p>
+                                </punkt>
+                                <punkt eId="DU/2026/1261__art_1__pkt_5" gd:GUID="01a0e974-e2f4-7b1d-9b6d-481b6ccae54c">
+                                    <nr>4</nr>
+                                    <p>
+                                        <zdanie nr="1" fragment="5" gd:zdGUID="01a0e974-e2f4-77e4-bd08-76f60ab2aeba" gd:fragmentGUID="01a0e974-e2f4-718b-a498-0bea33ebe9a2">
+                                            wójtów, burmistrzów i prezydentów miast.
+                                        </zdanie>
+                                    </p>
+                                </punkt>
+                            </paragraf-kodeksu-n>
+                        </artykul-kodeksu-tj>
+<!--Dalszą część tekstu normatywnego pominięto w tym przykładzie.-->
+                    </oddzial-n>
+                </rozdzial>
+            </dzial>
+        </kodeks>
+    </obwieszczenie>
+</akt-prawny>

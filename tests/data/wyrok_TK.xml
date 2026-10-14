@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<akt-prawny
+        xmlns="https://projects.task.gda.pl/caise/NLP/kisi/rcl/schemaPL/1.0">
+    <orzeczenieTK>
+        <metadane>
+            <ELIaktu>
+                <ELI>https://eli.gov.pl/eli/DU/2021/696/ogl</ELI>
+            </ELIaktu>
+            <AdresISAP>WDU20210000696</AdresISAP>
+            <Wydawnictwo>DU</Wydawnictwo>
+            <Rok>2021</Rok>
+            <Pozycja>696</Pozycja>
+            <AdresWyswietlany>Dz.U. 2021 poz. 696</AdresWyswietlany>
+            <Tytul>Wyrok Trybunału Konstytucyjnego z dnia 15 kwietnia 2021 r. sygn. akt K 20/20</Tytul>
+            <Rodzaj>WYROK</Rodzaj>
+            <DataOgloszenia>2021-04-15</DataOgloszenia>
+            <DataAktu>
+                <DataWydania>2021-04-15</DataWydania>
+            </DataAktu>
+            <DataWejsciaWZycie>2021-04-15</DataWejsciaWZycie>
+            <DataOstatniejZmiany>2024-03-14T12:39:42</DataOstatniejZmiany>
+            <GUIDwersji>A3F2C1D4-5E6B-7890-ABCD-EF1224567891</GUIDwersji>
+            <Status>akt obowiązujacy</Status>
+            <CzyObowiazuje>IN_FORCE</CzyObowiazuje>
+            <Organy>
+                <Organ>
+                    <Nazwa>Trybunał Konstytucyjny</Nazwa>
+                </Organ>
+            </Organy>
+            <SlowaKluczowe>
+                <Termin>konstytucja</Termin>
+            </SlowaKluczowe>
+            <NazwyWlasne>
+                <Termin>Trybunał Konstytucyjny</Termin>
+                <Termin>Rzecznik Praw Obywatelskich</Termin>
+            </NazwyWlasne>
+            <Relacje>
+                <ZmieniaWZ>
+                    <Relacja>
+                        <ELI>https://eli.gov.pl/eli/DU/1987/123/ogl</ELI>
+                        <DataRelacji>2021-07-16</DataRelacji>
+                    </Relacja>
+                </ZmieniaWZ>
+                <Odsyla>
+                    <Relacja>
+                        <ELI>https://eli.gov.pl/eli/DU/1997/483/ogl</ELI>
+                        <DataRelacji></DataRelacji>
+                    </Relacja>
+                </Odsyla>
+                <OrzeczenieTKDlaAktu>
+                    <Relacja>
+                        <ELI>https://eli.gov.pl/eli/DU/1987/123/ogl</ELI>
+                        <DataRelacji></DataRelacji>
+                    </Relacja>
+                </OrzeczenieTKDlaAktu>
+            </Relacje>
+            <TekstyAktu>
+                <TekstAktu>
+                    <NazwaPliku>text.html</NazwaPliku>
+                    <TypTekstu>H</TypTekstu>
+                </TekstAktu>
+                <TekstAktu>
+                    <NazwaPliku>D20210696.pdf</NazwaPliku>
+                    <TypTekstu>O</TypTekstu>
+                </TekstAktu>
+                <TekstAktu>
+                    <NazwaPliku>D20210696.pdf</NazwaPliku>
+                    <TypTekstu>I</TypTekstu>
+                </TekstAktu>
+            </TekstyAktu>
+        </metadane>
+        <!--Oznaczenie dodaję poglądowo, nie było go oryginalnie w tym wyroku.-->
+        <oznaczenie>
+            Zgodnie z wyrokami Europejskiego Trybunału Praw Człowieka w sprawach: Xero Flor w Polsce Sp. z o.o. p. Polsce z dn. 7.05.2021 r., skarga nr 4907/18; Wałęsa p. Polsce z dn. 23.11.2023 r., skarga nr 50849/21; M.L. p. Polsce z dn. 14.12.2023 r., skarga nr 40119/21, Trybunał Konstytucyjny jest pozbawiony cech trybunału powołanego ustawą, gdy w jego składzie zasiada osoba nieuprawniona. Zgodnie z tymi orzeczeniami, publikowany wyrok wydany został w składzie ustalonym z naruszeniem podstawowej zasady mającej zastosowanie do wyboru sędziów Trybunału Konstytucyjnego i w konsekwencji naruszającym istotę prawa do sądu ustanowionego na mocy ustawy.
+        </oznaczenie>
+        <rodzaj-aktu><b><wersaliki>WYROK</wersaliki></b></rodzaj-aktu>
+        <autor-aktu><b><wersaliki>TRYBUNAŁU KONSTYTUCYJNEGO</wersaliki></b></autor-aktu>
+        <daty>z dnia 15 kwietnia 2021 r.</daty>
+        <sygnatura><b>sygn. akt K 20/20</b></sygnatura>
+        <sklad-sedziowski>
+            <naglowek-skladu>Trybunał Konstytucyjny w składzie</naglowek-skladu>
+            <sedzia rola="przewodniczacy">Julia Przyłębska</sedzia>
+            <sedzia rola="sprawozdawca">Stanisław Piotrowicz</sedzia>
+            <sedzia rola="czlonek">Justyn Piskorski</sedzia>
+            <sedzia rola="czlonek">Bartłomiej Sochański</sedzia>
+            <sedzia rola="czlonek">Wojciech Sych</sedzia>
+            <protokolant>Grażyna Szałygo</protokolant>
+        </sklad-sedziowski>
+        <przedmiot-sprawy>
+            <podstawa-inicjowania>po rozpoznaniu, z udziałem wnioskodawcy oraz Sejmu, Prokuratora Generalnego i Rzecznika Praw Obywatelskich, ,<tryb-orzekania>na rozprawie</tryb-orzekania> w dniach 12 i 13 kwietnia 2021 r., wniosku <podmiot-inicjujacy>grupy posłów</podmiot-inicjujacy> o zbadanie zgodności: <kwestionowany-przepis ELI="https://eli.gov.pl/eli/DU/2020/627
+            /ogl/art=3/ustep=6">art. 3 ust. 6 ustawy z dnia 15 lipca 1987 r. o Rzeczniku Praw Obywatelskich (Dz. U. z 2020 r. poz. 627)</kwestionowany-przepis> z <wzorzec-kontroli ELI="https://eli.gov.pl/eli/DU/1997/483/ogl/art_2">art. 2</wzorzec-kontroli>, <wzorzec-kontroli ELI="https://eli.gov.pl/eli/DU/1997/483/ogl/art=7">art. 7</wzorzec-kontroli> i <wzorzec-kontroli ELI="https://eli.gov.pl/eli/DU/1997/483/ogl/art=209/ustep=1">art. 209 ust. 1 Konstytucji</wzorzec-kontroli>,</podstawa-inicjowania>
+        </przedmiot-sprawy>
+        <tenor-orzeczenia>
+            <naglowek-tenoru><rozstrzelone>orzeka</rozstrzelone></naglowek-tenoru>
+            <punkt-tenoru>
+                <nr>I</nr>
+                <tresc><kwestionowany-przepis ELI="https://eli.gov.pl/eli/DU/2020/627/ogl/art_3__ust_6">Art. 3 ust. 6 ustawy z dnia 15 lipca 1987 r. o Rzeczniku Praw Obywatelskich (Dz. U. z 2020 r. poz. 627)</kwestionowany-przepis> <wynik-inline>jest niezgodny</wynik-inline> z <wzorzec-kontroli ELI="https://eli.gov.pl/eli/DU/1997/483/ogl/art=209/ustep=1">art. 209 ust. 1 </wzorzec-kontroli> w związku z <wzorzec-kontroli ELI="https://eli.gov.pl/eli/DU/1997/483/ogl/art=2">art. 2</wzorzec-kontroli> i w związku z <wzorzec-kontroli ELI="https://eli.gov.pl/eli/DU/1997/483/ogl/art=7">art. 7</wzorzec-kontroli> Konstytucji Rzeczypospolitej Polskiej.</tresc>
+            </punkt-tenoru>
+            <punkt-tenoru>
+                <nr>II</nr>
+                <tresc>Przepis wymieniony w części I traci moc obowiązującą po upływie 3 (trzech) miesięcy od dnia ogłoszenia wyroku w Dzienniku Ustaw Rzeczypospolitej Polskiej.</tresc>
+            </punkt-tenoru>
+        </tenor-orzeczenia>
+        <wynik-narady>Orzeczenie zapadło jednogłośnie.</wynik-narady>
+        <podpisy>
+            <sedzia rola="przewodniczacy" text-align="center">Julia Przyłębska</sedzia>
+            <sedzia rola="sprawozdawca" kolumna="1" text-align="left">Stanisław Piotrowicz</sedzia>
+            <sedzia rola="czlonek" kolumna="2" text-align="right">Justyn Piskorski</sedzia>
+            <sedzia rola="czlonek" kolumna="1" text-align="left">Bartłomiej Sochański</sedzia>
+            <sedzia rola="czlonek" kolumna="2" text-align="right">Wojciech Sych</sedzia>
+        </podpisy>
+    </orzeczenieTK>
+</akt-prawny>

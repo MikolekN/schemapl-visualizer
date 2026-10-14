@@ -24,8 +24,6 @@ logs
 *.ipynb
 
 .env
-.env.example
 output
 Dockerfile
 .dockerignore
-README.md
