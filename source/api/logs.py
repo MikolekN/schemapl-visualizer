@@ -42,5 +42,5 @@ def configure_logging(level: str | None = None) -> None:
 
 
 def _level(name: str | None) -> int:
-    level = logging.getLevelName((name or DEFAULT_LEVEL).strip().upper())
-    return level if isinstance(level, int) else logging.INFO
+    levels = logging.getLevelNamesMapping()
+    return levels.get((name or DEFAULT_LEVEL).strip().upper(), logging.INFO)

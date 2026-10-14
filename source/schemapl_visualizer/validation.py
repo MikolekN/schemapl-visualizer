@@ -1,5 +1,4 @@
-"""
-Validator object
+"""Validator object.
 
 Provides an object responsible for loading XML Schema, validating
 provided XML file, and sharing validation status and errors.
@@ -19,6 +18,8 @@ from lxml import etree
 
 
 class ValidationStatus(Enum):
+    """Whether and how a document was validated."""
+
     SKIPPED = "skipped"
     VALID = "valid"
     INVALID = "invalid"
@@ -27,6 +28,7 @@ class ValidationStatus(Enum):
 
 @dataclass(frozen=True)
 class ValidationResult:
+    """The outcome of validating one document."""
 
     status: ValidationStatus
     errors: tuple[str, ...] = ()
@@ -34,32 +36,43 @@ class ValidationResult:
 
     @property
     def validated(self) -> bool:
-        return self.status in (ValidationStatus.VALID, ValidationStatus.INVALID)
+        """True when a schema checked the document, valid or not."""
+        return self.status in (
+            ValidationStatus.VALID,
+            ValidationStatus.INVALID,
+        )
 
     @property
     def is_valid(self) -> bool:
+        """True when the document passed validation."""
         return self.status is ValidationStatus.VALID
 
     @classmethod
     def skipped(cls) -> ValidationResult:
+        """No validation was asked for."""
         return cls(ValidationStatus.SKIPPED)
 
     @classmethod
     def valid(cls) -> ValidationResult:
+        """The document is valid."""
         return cls(ValidationStatus.VALID)
 
     @classmethod
     def invalid(cls, errors: list[str]) -> ValidationResult:
+        """The document is invalid, with the schema's errors."""
         return cls(ValidationStatus.INVALID, tuple(errors))
 
     @classmethod
     def unavailable(cls, schema_error: str | None) -> ValidationResult:
+        """The schema could not be loaded, with the reason."""
         return cls(ValidationStatus.UNAVAILABLE, (), schema_error)
 
 
 class SchemaValidator:
+    """An XML Schema loaded from a file, ready to validate documents."""
 
     def __init__(self, schema_path: Path | str) -> None:
+        """Load the schema; a failure is kept in ``load_error``."""
         self.path = Path(schema_path)
         self.compiled = False
         self.load_error: str | None = None
@@ -72,6 +85,7 @@ class SchemaValidator:
             self.load_error = f"{type(exc).__name__}: {exc}"
 
     def validate(self, root: etree._Element) -> ValidationResult:
+        """Validate the document, listing errors by line and column."""
         if not self.compiled or self._schema is None:
             return ValidationResult.unavailable(self.load_error)
         if self._schema.validate(root):
@@ -84,6 +98,7 @@ class SchemaValidator:
 
 
 def load_validator(schema_path: Path | str | None) -> SchemaValidator | None:
+    """A validator for ``schema_path``, or ``None`` without a path."""
     return SchemaValidator(schema_path) if schema_path else None
 
 
@@ -91,8 +106,13 @@ class SchemaUploadError(ValueError):
     """The uploaded files do not amount to a usable schema."""
 
 
-def load_validator_from_uploads(files: Sequence[tuple[str, bytes]]) -> SchemaValidator:
-    """Compile a schema that arrived with the request instead of living on disk."""
+def load_validator_from_uploads(
+    files: Sequence[tuple[str, bytes]],
+) -> SchemaValidator:
+    """Compile a schema that arrived with the request.
+
+    The files are written to a temporary folder for the compilation.
+    """
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
         for name, data in files:
@@ -103,7 +123,8 @@ def load_validator_from_uploads(files: Sequence[tuple[str, bytes]]) -> SchemaVal
 
         candidates = _entry_points(root)
         if not candidates:
-            raise SchemaUploadError("wśród przesłanych plików nie ma pliku .xsd")
+            message = "wśród przesłanych plików nie ma pliku .xsd"
+            raise SchemaUploadError(message)
         validators = []
         for candidate in candidates:
             validator = SchemaValidator(candidate)
@@ -114,11 +135,12 @@ def load_validator_from_uploads(files: Sequence[tuple[str, bytes]]) -> SchemaVal
 
 
 def _extract_schema_zip(data: bytes, root: Path) -> None:
-    """Unpack the ``.xsd`` files of a zipped schema, keeping their layout."""
+    """Unpack the ``.xsd`` files of a zipped schema, keeping paths."""
     try:
         archive = zipfile.ZipFile(io.BytesIO(data))
     except zipfile.BadZipFile as exc:
-        raise SchemaUploadError(f"nie udało się odczytać archiwum .zip – {exc}") from exc
+        message = f"nie udało się odczytać archiwum .zip – {exc}"  # noqa: RUF001
+        raise SchemaUploadError(message) from exc
     with archive:
         for entry in archive.infolist():
             if entry.is_dir() or not entry.filename.lower().endswith(".xsd"):
@@ -131,10 +153,11 @@ def _extract_schema_zip(data: bytes, root: Path) -> None:
 
 
 def _entry_points(root: Path) -> list[Path]:
-    """Uploaded schemas nothing else references; all of them if every one is referenced.
+    """Uploaded schemas nothing else references.
 
-    A referenced schema is only a part of another one. Validating against it
-    when the main schema fails to compile would report every document invalid.
+    When every schema is referenced, all of them. A referenced schema is
+    only a part of another one. Validating against it when the main
+    schema fails to compile would report every document invalid.
     """
     schemas = sorted(root.rglob("*.xsd"))
     referenced: set[Path] = set()
@@ -151,4 +174,6 @@ def _entry_points(root: Path) -> list[Path]:
             location = element.get("schemaLocation")
             if location and "://" not in location:
                 referenced.add((path.parent / location).resolve())
-    return [path for path in schemas if path.resolve() not in referenced] or schemas
+    return [
+        path for path in schemas if path.resolve() not in referenced
+    ] or schemas

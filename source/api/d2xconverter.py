@@ -1,13 +1,13 @@
-"""
-DOCX → XML: the hand-off to the external transformation service.
-"""
+"""DOCX → XML: the hand-off to the external transformation service."""
 
 from __future__ import annotations
 
 from settings import Settings
 from upstream import Deployment, HttpFileService, resolve_deployment
 
-DOCX_MEDIA_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+DOCX_MEDIA_TYPE = (
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+)
 
 
 LOCAL = Deployment(
@@ -24,7 +24,10 @@ SERVICE = Deployment(
 
 
 def load_docx_service(settings: Settings) -> HttpFileService:
-    deployment = resolve_deployment(LOCAL, SERVICE, run_local=settings.run_local)
+    """The DOCX → XML converter this process should call."""
+    deployment = resolve_deployment(
+        LOCAL, SERVICE, run_local=settings.run_local
+    )
     return HttpFileService(
         url=deployment.url,
         field_name=settings.docx_service_field,

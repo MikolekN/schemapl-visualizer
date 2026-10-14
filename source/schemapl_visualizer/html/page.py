@@ -29,6 +29,7 @@ def render_full_page(
     uses_math: bool,
     source_name: str,
 ) -> str:
+    """The complete HTML page of a converted document."""
     template = _environment.get_template("page.html.j2")
     return template.render(
         title=source_name,
@@ -38,7 +39,7 @@ def render_full_page(
         errors=validation.errors,
         schema_error=validation.schema_error,
         needs_mathjax=uses_math,
-        generated=datetime.now().strftime("%Y-%m-%d %H:%M"),
+        generated=datetime.now().astimezone().strftime("%Y-%m-%d %H:%M"),
         body=body_html,
         toc=toc_html,
         metadata=metadata_html,

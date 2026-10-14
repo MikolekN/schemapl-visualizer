@@ -1,13 +1,14 @@
-"""
-Typst: the typesetting engine behind PDF output.
+"""Typst: the typesetting engine behind PDF output.
 
-A PDF is typeset straight from the XML. A PDF profile walks the document and
-writes Typst code that calls the functions of a layout template
+A PDF is typeset straight from the XML. A PDF profile walks the document
+and writes Typst code that calls the functions of a layout template
 (``pdf/templates/*.typ``); Typst compiles that code into the PDF. This
-module holds the helpers for writing the code safely and the compile step.
+module holds the helpers for writing the code safely and the compile
+step.
 
-Text from the document never becomes Typst markup: it is always emitted as a
-string literal, so nothing in a document can change the layout code.
+Text from the document never becomes Typst markup: it is always emitted
+as a string literal, so nothing in a document can change the layout
+code.
 """
 
 from __future__ import annotations
@@ -19,10 +20,12 @@ from pathlib import Path
 
 TEMPLATE_DIR = Path(__file__).resolve().parent / "templates"
 
-# Collapsible whitespace - not the no-break space, which typesetting must keep.
+# Collapsible whitespace - not the no-break space, which typesetting
+# must keep.
 _WHITESPACE = re.compile(r"[ \t\n\r\f\v]+")
-# No space after an opening quotation mark, none before a closing one or punctuation
-# (the whitespace between elements of a pretty-printed file would put one there).
+# No space after an opening quotation mark, none before a closing one or
+# punctuation (the whitespace between elements of a pretty-printed file
+# would put one there).
 _OPENING_QUOTE = "\u201e"
 _NO_SPACE_BEFORE = ("\u201d", ",", ".", ";", ":", ")", "!", "?")
 
@@ -40,7 +43,10 @@ def string(value: str) -> str:
 
 
 def literal(value: object) -> str:
-    """A Python value as a Typst expression (str, bool, None, numbers, lists, dicts, code)."""
+    """A Python value as a Typst expression.
+
+    Handles str, bool, None, numbers, lists, dicts and code.
+    """
     if isinstance(value, Code):
         return value.source
     if isinstance(value, Inline):
@@ -56,31 +62,53 @@ def literal(value: object) -> str:
     if isinstance(value, dict):
         if not value:
             return "(:)"
-        return "(" + ", ".join(f"{key}: {literal(item)}" for key, item in value.items()) + ")"
+        return (
+            "("
+            + ", ".join(
+                f"{key}: {literal(item)}" for key, item in value.items()
+            )
+            + ")"
+        )
     if isinstance(value, (list, tuple)):
         items = [literal(item) for item in value]
         return "(" + ", ".join(items) + ("," if len(items) == 1 else "") + ")"
-    raise TypeError(f"no Typst literal for {type(value).__name__}")
+    message = f"no Typst literal for {type(value).__name__}"
+    raise TypeError(message)
 
 
 @dataclass(frozen=True)
 class Code:
-    """Raw Typst code: an expression (e.g. ``1.5em``) or a content block (``[...]``)."""
+    """Raw Typst code.
+
+    An expression (e.g. ``1.5em``) or a content block (``[...]``).
+    """
 
     source: str
 
 
-def call(function: str, *args: object, body: "Inline | Code | None" = None, **kwargs: object) -> Code:
-    """``function(args, key: value)[body]`` as an expression (no leading ``#``)."""
+def call(
+    function: str,
+    *args: object,
+    body: Inline | Code | None = None,
+    **kwargs: object,
+) -> Code:
+    """``function(args, key: value)[body]`` as an expression.
+
+    The expression has no leading ``#``.
+    """
     parts = [literal(arg) for arg in args]
-    parts += [f"{key.replace('_', '-')}: {literal(item)}" for key, item in kwargs.items() if item is not None]
+    parts += [
+        f"{key.replace('_', '-')}: {literal(item)}"
+        for key, item in kwargs.items()
+        if item is not None
+    ]
     code = f"{function}({', '.join(parts)})"
     if body is not None:
         code += content(body).source
     return Code(code)
 
 
-def content(body: "Inline | Code") -> Code:
+def content(body: Inline | Code) -> Code:
     """A content block ``[...]``."""
     if isinstance(body, Inline):
         return Code("[" + body.markup() + "]")
@@ -90,41 +118,50 @@ def content(body: "Inline | Code") -> Code:
 @dataclass
 class _Wrapped:
     function: str
-    args: tuple
-    inner: "Inline"
+    args: tuple[object, ...]
+    inner: Inline
 
 
 @dataclass
 class Inline:
-    """Running text of one paragraph: text, wrapped runs (bold, links, ...) and atoms.
+    """Running text of one paragraph.
 
-    Whitespace is collapsed across the whole run - as in a typeset paragraph -
-    and trimmed at its ends, so the indentation of a pretty-printed XML file
-    never reaches the PDF.
+    The text, wrapped runs (bold, links, ...) and atoms in order.
+
+    Whitespace is collapsed across the whole run - as in a typeset
+    paragraph - and trimmed at its ends, so the indentation of a
+    pretty-printed XML file never reaches the PDF.
     """
 
-    items: list = field(default_factory=list)
+    items: list[str | _Wrapped | Code] = field(default_factory=list)
 
-    def text(self, value: str | None) -> "Inline":
+    def text(self, value: str | None) -> Inline:
+        """Append text; empty text adds nothing."""
         if value:
             self.items.append(value)
         return self
 
-    def wrap(self, function: str, inner: "Inline", *args: object) -> "Inline":
+    def wrap(self, function: str, inner: Inline, *args: object) -> Inline:
+        """Append ``inner`` wrapped in a Typst function call."""
         if inner.items:
             self.items.append(_Wrapped(function, args, inner))
         return self
 
-    def atom(self, code: Code) -> "Inline":
-        """Content that is not text: a footnote call, a formula, a line break."""
+    def atom(self, code: Code) -> Inline:
+        """Append content that is not text.
+
+        A footnote call, a formula or a line break.
+        """
         self.items.append(code)
         return self
 
-    def extend(self, other: "Inline") -> "Inline":
+    def extend(self, other: Inline) -> Inline:
+        """Append the items of another run."""
         self.items.extend(other.items)
         return self
 
     def is_empty(self) -> bool:
+        """True when nothing was appended."""
         return not self.items
 
     def plain(self) -> str:
@@ -138,12 +175,16 @@ class Inline:
         return _WHITESPACE.sub(" ", "".join(parts)).strip()
 
     def markup(self) -> str:
+        """The run as Typst markup, whitespace collapsed."""
         return "".join(self._emit(self._collapse()))
 
-    # -- whitespace ------------------------------------------------------------------
+    # -- whitespace ----------------------------------------------------
 
     def _collapse(self) -> dict[tuple[int, int], str]:
-        """Collapsed text of every text item, keyed by (run, position), trimmed at both ends."""
+        """Collapsed text of every text item, keyed by (run, position).
+
+        The text is trimmed at both ends of the paragraph.
+        """
         flat: list[tuple[tuple[int, int], str | None]] = []
 
         def walk(inline: Inline) -> None:
@@ -152,13 +193,14 @@ class Inline:
                     flat.append(((id(inline), position), item))
                 elif isinstance(item, _Wrapped):
                     walk(item.inner)
-                else:
-                    flat.append(((id(inline), position), None))  # an atom: not whitespace
+                else:  # an atom: not whitespace
+                    flat.append(((id(inline), position), None))
 
         walk(self)
         result: dict[tuple[int, int], str] = {}
         after_space = True  # at the start, leading whitespace goes
-        last = None  # the text written last, whose space a closing quote takes back
+        # the text written last, whose space a closing quote takes back
+        last = None
         for key, value in flat:
             if value is None:
                 after_space, last = False, None
@@ -167,7 +209,11 @@ class Inline:
             if not core:
                 collapsed = "" if after_space else " "
             else:
-                lead = " " if _WHITESPACE.match(value[:1]) and not after_space else ""
+                lead = (
+                    " "
+                    if _WHITESPACE.match(value[:1]) and not after_space
+                    else ""
+                )
                 if core.startswith(_NO_SPACE_BEFORE):
                     lead = ""
                     if last is not None:
@@ -175,8 +221,11 @@ class Inline:
                 trail = " " if _WHITESPACE.match(value[-1:]) else ""
                 collapsed = lead + core + trail
             result[key] = collapsed
-            if collapsed:  # a no-break space takes the place of the space after it
-                after_space = collapsed.endswith((" ", "\u00a0", _OPENING_QUOTE))
+            if collapsed:
+                # a no-break space takes the place of the space after it
+                after_space = collapsed.endswith(
+                    (" ", "\u00a0", _OPENING_QUOTE)
+                )
                 last = key
         for key, value in reversed(flat):  # trailing whitespace goes
             if value is None:
@@ -205,14 +254,25 @@ class PdfError(RuntimeError):
     """Typst could not typeset the document."""
 
 
-def compile_pdf(source: str, *, standards: Sequence[str] = (), inputs: Mapping[str, str] | None = None) -> bytes:
-    """Typeset Typst ``source`` (which imports a template from TEMPLATE_DIR) into a PDF.
+def compile_pdf(
+    source: str,
+    *,
+    standards: Sequence[str] = (),
+    inputs: Mapping[str, str] | None = None,
+) -> bytes:
+    """Typeset Typst ``source`` into a PDF.
 
-    ``inputs`` reach the template as ``sys.inputs`` (e.g. which version of a layout to set).
+    The source imports a template from TEMPLATE_DIR. ``inputs`` reach
+    the template as ``sys.inputs`` (e.g. which version of a layout to
+    set).
     """
     import typst  # imported lazily: only PDF output needs it
 
     try:
+        # The stub binds ``input`` and ``root`` to one type variable,
+        # so bytes input with a path root (what typst-py expects)
+        # matches no overload; it also types pdf_standards as literals.
+        # pyrefly: ignore[no-matching-overload]
         return typst.compile(
             source.encode("utf-8"),
             root=str(TEMPLATE_DIR),

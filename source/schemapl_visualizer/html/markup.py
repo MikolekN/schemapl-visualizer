@@ -1,5 +1,4 @@
-"""
-Tiny helpers for building HTML strings safely.
+"""Tiny helpers for building HTML strings safely.
 
 Everything returns a ``markupsafe.Markup`` and any plain text from the
 document is escaped first — so document content can never accidentally
@@ -14,11 +13,28 @@ from markupsafe import Markup, escape
 
 
 def escape_text(value: str | None) -> Markup:
+    """Escape document text; ``None`` becomes empty markup."""
     return escape(value if value is not None else "")
 
 
 def join(parts: Iterable[Markup]) -> Markup:
+    """Concatenate markup without escaping it again."""
     return Markup("").join(parts)
+
+
+def _start_tag(
+    name: str,
+    css_class: str | None,
+    attributes: Mapping[str, str | None] | None,
+) -> Markup:
+    """The opening tag, with every attribute value escaped."""
+    tag = Markup("<{}").format(name)
+    if css_class:
+        tag += Markup(' class="{}"').format(css_class)
+    for key, value in (attributes or {}).items():
+        if value is not None:
+            tag += Markup(' {}="{}"').format(key, value)
+    return tag + Markup(">")
 
 
 def html_tag(
@@ -28,16 +44,14 @@ def html_tag(
     css_class: str | None = None,
     attributes: Mapping[str, str | None] | None = None,
 ) -> Markup:
-    """Build ``<name class="...">inner</name>``."""
-    opening = "<" + name
-    if css_class:
-        opening += ' class="' + str(escape(css_class)) + '"'
-    if attributes:
-        for key, value in attributes.items():
-            if value is None:
-                continue
-            opening += " " + key + '="' + str(escape(value)) + '"'
-    return Markup(opening + ">") + Markup(inner) + Markup("</" + name + ">")
+    """Build ``<name class="...">inner</name>``.
+
+    ``inner`` is markup already: callers escape any document text in it.
+    """
+    start = _start_tag(name, css_class, attributes)
+    # inner is markup by contract (see above): not escaped again.
+    body = Markup(inner)  # noqa: S704
+    return start + body + Markup("</{}>").format(name)
 
 
 def void_tag(
@@ -46,13 +60,5 @@ def void_tag(
     css_class: str | None = None,
     attributes: Mapping[str, str | None] | None = None,
 ) -> Markup:
-    """Build a tag with no closing tag, e.g. ``<img ...>`` or ``<hr>``."""
-    opening = "<" + name
-    if css_class:
-        opening += ' class="' + str(escape(css_class)) + '"'
-    if attributes:
-        for key, value in attributes.items():
-            if value is None:
-                continue
-            opening += " " + key + '="' + str(escape(value)) + '"'
-    return Markup(opening + ">")
+    """Build a tag with no closing tag, e.g. ``<img ...>``."""
+    return _start_tag(name, css_class, attributes)

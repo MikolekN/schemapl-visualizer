@@ -354,7 +354,7 @@ answered with HTTP 400 and a page explaining them.
 | `load_validator(schema_path)` | `SchemaValidator`, or `None` without a path |
 
 Conversion raises `lxml.etree.XMLSyntaxError` for malformed XML,
-`UnsupportedDocument` for PDF of a document no PDF profile handles, and
+`UnsupportedDocumentError` for PDF of a document no PDF profile handles, and
 `PdfError` when Typst cannot typeset the document.
 
 ## Adding Support for Another Schema

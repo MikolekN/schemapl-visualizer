@@ -8,7 +8,7 @@ from lxml import etree
 from schemapl_visualizer import (
     ConversionResult,
     SchemaValidator,
-    UnsupportedDocument,
+    UnsupportedDocumentError,
     available_formats,
     convert_bytes,
     convert_file,
@@ -83,7 +83,7 @@ def test_unknown_document_falls_back_to_generic_html(
 
 def test_unknown_document_has_no_pdf(generic_xml: bytes) -> None:
     """Refuses PDF output for documents no PDF profile handles."""
-    with pytest.raises(UnsupportedDocument):
+    with pytest.raises(UnsupportedDocumentError):
         convert_bytes(generic_xml, source_name="doc.xml", output_format="pdf")
 
 
@@ -147,3 +147,22 @@ def test_missing_schema_is_reported(
 def test_no_schema_means_no_validator() -> None:
     """Skips validation when no schema is given."""
     assert load_validator(None) is None
+
+
+def test_footnote_opening_with_a_table() -> None:
+    """Typesets a footnote whose first block is a table."""
+    act = Path(__file__).resolve().parent / "data" / "DU20261261_obw_tj.xml"
+    root = etree.parse(str(act)).getroot()
+    namespace = etree.QName(root).namespace
+    note = root.find(f".//{{{namespace}}}odnosnik")
+    assert note is not None
+    table = etree.Element(f"{{{namespace}}}tabela")
+    row = etree.SubElement(table, f"{{{namespace}}}tr")
+    etree.SubElement(row, f"{{{namespace}}}td").text = "x"
+    note.insert(0, table)
+
+    result = convert_bytes(
+        etree.tostring(root), source_name="akt.xml", output_format="pdf"
+    )
+
+    assert result.content.startswith(b"%PDF-")

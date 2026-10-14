@@ -5,7 +5,7 @@ from importlib.metadata import version
 
 from .conversion import (
     ConversionResult,
-    UnsupportedDocument,
+    UnsupportedDocumentError,
     available_formats,
     convert_bytes,
     convert_file,
@@ -17,7 +17,7 @@ __all__ = [
     "ConversionResult",
     "PdfError",
     "SchemaValidator",
-    "UnsupportedDocument",
+    "UnsupportedDocumentError",
     "ValidationResult",
     "__version__",
     "available_formats",

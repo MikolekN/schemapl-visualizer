@@ -101,9 +101,12 @@ def test_send_posts_the_file(urlopen: MockType) -> None:
     result = _service().send(b"<akt/>", filename="akt.xml")
 
     request = _sent(urlopen)
+    content_type = request.get_header("Content-type")
     assert result == b"<ok/>"
     assert request.get_method() == "POST"
-    assert request.get_header("Content-type").startswith("multipart/form-data")
+    assert content_type is not None
+    assert content_type.startswith("multipart/form-data")
+    assert isinstance(request.data, bytes)
     assert b'name="file"; filename="akt.xml"' in request.data
     assert b"<akt/>" in request.data
     assert request.get_header("Authorization") is None
@@ -239,3 +242,11 @@ def test_load_docx_service() -> None:
     assert service.field_name == "plik"
     assert service.media_type == DOCX_MEDIA_TYPE
     assert (service.username, service.password) == ("user", "secret")
+
+
+def test_only_http_addresses_are_opened(urlopen: MockType) -> None:
+    """Refuses addresses that are not http or https."""
+    with pytest.raises(UpstreamError, match="nieobsługiwany adres"):
+        _service(url="file:///etc/passwd").send(b"x", filename="a.xml")
+
+    urlopen.assert_not_called()

@@ -354,7 +354,7 @@ ogólnym. Błędy są zwracane z kodem HTTP 400 i stroną z wyjaśnieniem.
 | `load_validator(schema_path)` | `SchemaValidator` albo `None` bez ścieżki |
 
 Konwersja zgłasza `lxml.etree.XMLSyntaxError` dla niepoprawnego XML,
-`UnsupportedDocument` dla PDF dokumentu, którego nie obsługuje żaden profil PDF,
+`UnsupportedDocumentError` dla PDF dokumentu, którego nie obsługuje żaden profil PDF,
 oraz `PdfError`, gdy Typst nie może złożyć dokumentu.
 
 ## Obsługa innego schematu
