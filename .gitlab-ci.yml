@@ -1,43 +1,280 @@
 ---
-stages:
-  - "image_builder"
+spec:
+  inputs:
+    caise-service-test:
+      description: "CAISE service validation test to execute"
+      type: "string"
+      default: "health"
+      options:
+        - "health"
+        - "reproducibility"
+        - "volume"
 
-container-build:
-  image: "docker"
+---
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
+      when: never
+    - when: always
+
+stages:
+  - "test"
+  - "quality"
+  - "build_check"
+  - "build_and_publish"
+  - "deployment_validation"
+
+variables:
+  PACKAGE_NAME: "schemapl_visualizer"
+  PYTHON_IMAGE: "python:3.11.15-trixie"
+  RUFF_IMAGE: "ghcr.io/astral-sh/ruff:0.16.1-alpine"
+  UV_IMAGE: "ghcr.io/astral-sh/uv:0.12.2-python3.11-trixie-slim"
+  UV_LINK_MODE: "copy"
+
+.uv:
+  image: "${UV_IMAGE}"
+  variables:
+    UV_CACHE_DIR: ".uv-cache"
+  cache:
+    key:
+      files:
+        - "uv.lock"
+    paths:
+      - ".uv-cache"
+  after_script:
+    - uv cache prune --ci
+
+.docker:
+  image: "docker:29-cli"
   services:
-    - name: "docker:dind"
+    - name: "docker:29-dind"
       command:
         - "--registry-mirror"
         - "https://proxy.containers.task.gda.pl"
   tags:
     - "docker"
     - "dind"
-  stage: "image_builder"
   variables:
     DOCKER_TLS_CERTDIR: ""
-    _TEMPLATE_DOCKERFILE_PATH_DEFAULT: "."
-    _TEMPLATE_CONTAINER_NAME_DEFAULT: "${CI_REGISTRY_IMAGE}"
+    BUILDKIT_PROGRESS: "plain"
+    CACHE_IMAGE: "${CI_REGISTRY_IMAGE}:build-cache"
   before_script:
-    - "docker login --username gitlab-ci-token --password ${CI_JOB_TOKEN} ${CI_REGISTRY}"
-    - "_TEMPLATE_CONTAINER_NAME=${CONTAINER_NAME:-${_TEMPLATE_CONTAINER_NAME_DEFAULT}}"
-    - "_TEMPLATE_CONTAINER_TAG=${CONTAINER_TAG:-${_TEMPLATE_CONTAINER_TAG_DEFAULT}}"
-  script: |
-    docker pull "${_TEMPLATE_CONTAINER_NAME}:${_TEMPLATE_CONTAINER_TAG}" \
-    || docker pull "${_TEMPLATE_CONTAINER_NAME}:latest" \
-    || true
-    docker build \
-      --cache-from "${_TEMPLATE_CONTAINER_NAME}:${_TEMPLATE_CONTAINER_TAG}" \
-      --cache-from "${_TEMPLATE_CONTAINER_NAME}:latest" \
-      --tag ${_TEMPLATE_CONTAINER_NAME}:${_TEMPLATE_CONTAINER_TAG} \
-      ${DOCKERFILE_PATH:-${_TEMPLATE_DOCKERFILE_PATH_DEFAULT}}
-    docker push ${_TEMPLATE_CONTAINER_NAME}:${_TEMPLATE_CONTAINER_TAG}
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin "$CI_REGISTRY"
+    - docker buildx create --driver docker-container --use
+
+unit-tests:
+  extends: ".uv"
+  stage: "test"
+  interruptible: true
+  coverage: '/Total coverage:\s*(\d+(?:\.\d+)?)%/'
   rules:
-    - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+  variables:
+    COV_FAIL_UNDER: "70"
+    DIFF_FAIL_UNDER: "80"
+  before_script:
+    - apt-get update
+    - apt-get install --yes --no-install-recommends git
+    - rm -rf /var/lib/apt/lists/*
+    - uv sync --locked --no-default-groups --group test --extra service
+  script:
+    - |
+      uv run --no-sync pytest \
+        --cov \
+        --cov-branch \
+        --cov-report=term-missing \
+        --cov-report=xml:coverage.xml \
+        --cov-fail-under="${COV_FAIL_UNDER}"
+    - |
+      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+        git fetch --no-tags --depth=1 origin \
+          "${CI_MERGE_REQUEST_DIFF_BASE_SHA}"
+
+        uv run --no-sync diff-cover coverage.xml \
+          --fail-under="${DIFF_FAIL_UNDER}" \
+          --compare-branch="${CI_MERGE_REQUEST_DIFF_BASE_SHA}"
+      fi
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+
+.quality:
+  stage: "quality"
+  interruptible: true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+
+.ruff:
+  extends: ".quality"
+  image: "${RUFF_IMAGE}"
+
+lint-check:
+  extends: ".ruff"
+  script:
+    - ruff check --output-format=gitlab --output-file=code-quality-report.json .
+  artifacts:
+    reports:
+      codequality: code-quality-report.json
+
+format-check:
+  extends: ".ruff"
+  script:
+    - ruff format --check --diff .
+
+type-check:
+  extends:
+    - ".quality"
+    - ".uv"
+  before_script:
+    - uv sync --locked --group dev --extra service
+  script:
+    - uv run --no-sync pyrefly check
+
+dependency-check:
+  extends:
+    - ".quality"
+    - ".uv"
+  before_script: []
+  script:
+    - uv lock --check
+    - uv audit --locked
+    - cp requirements.txt /tmp/requirements.txt
+    - uv export --locked --extra service --no-default-groups --no-emit-project --no-hashes --format requirements.txt --output-file requirements.txt
+    - cmp /tmp/requirements.txt requirements.txt
+
+package-build-check:
+  extends: ".uv"
+  stage: "build_check"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_TAG'
+      when: never
+  script:
+    - uv build --no-sources
+
+container-build-check:
+  extends: ".docker"
+  stage: "build_check"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_TAG'
+  script:
+    - docker buildx build
+        --cache-from "type=registry,ref=${CACHE_IMAGE}"
+        --tag "${CI_PROJECT_NAME}:mr-${CI_MERGE_REQUEST_IID}"
+        --load .
+
+version-check:
+  extends: ".uv"
+  stage: "build_check"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_TAG'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - |
+      PUBLISH_VERSION="$(uv version --short)"
+
+      if [ -n "${CI_COMMIT_TAG:-}" ] && [ "$CI_COMMIT_TAG" != "$PUBLISH_VERSION" ]; then
+        echo "ERROR: Tag ${CI_COMMIT_TAG} does not match package version ${PUBLISH_VERSION}" >&2
+        exit 1
+      fi
+
+      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+        case "$PUBLISH_VERSION" in
+          *.dev*) ;;
+          *) PUBLISH_VERSION="${PUBLISH_VERSION}.dev${CI_PIPELINE_IID}" ;;
+        esac
+      fi
+
+      printf 'PUBLISH_VERSION=%s\n' "$PUBLISH_VERSION" > version.env
+  artifacts:
+    reports:
+      dotenv: version.env
+
+.publish:
+  stage: "build_and_publish"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: manual
+      allow_failure: true
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
       when: manual
       variables:
-        _TEMPLATE_CONTAINER_TAG_DEFAULT: "latest"
-    - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE != "merge_request_event"'
-      when: manual
-      variables:
-        _TEMPLATE_CONTAINER_TAG_DEFAULT: "${CI_COMMIT_REF_NAME}"
-    - when: never
+          _TEMPLATE_CONTAINER_TAG_DEFAULT: "${CI_COMMIT_TAG}"
+
+package-build-and-publish:
+  dependencies:
+    - "version-check"
+  extends:
+    - ".publish"
+    - ".uv"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: never
+  before_script:
+    - |
+      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+        uv version "$PUBLISH_VERSION" --frozen
+      fi
+  script:
+    - uv build --no-sources
+    - uv publish
+      --publish-url "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/pypi"
+      --check-url "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/pypi/simple"
+      --username gitlab-ci-token
+      --password "$CI_JOB_TOKEN"
+
+container-build-and-publish:
+  extends:
+    - ".publish"
+    - ".docker"
+  script:
+    - |
+      if [ -n "${CI_COMMIT_TAG:-}" ]; then
+        CONTAINER_TAG="$CI_COMMIT_TAG"
+      elif [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then
+        CONTAINER_TAG="latest"
+      fi
+
+      IMAGE="${CI_REGISTRY_IMAGE}:${CONTAINER_TAG}"
+
+    - docker buildx build
+        --cache-from "type=registry,ref=${CACHE_IMAGE}"
+        --cache-to "type=registry,ref=${CACHE_IMAGE},mode=max"
+        --tag "${IMAGE}"
+        --push .
+
+.deployment_validation:
+  stage: "deployment_validation"
+  image: "${PYTHON_IMAGE}"
+  tags:
+    - "docker"
+  variables:
+    CAISE_SERVICE_NAME: "${PACKAGE_NAME}"
+    CAISE_SERVICE_TEST: "$[[ inputs.caise-service-test ]]"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  script:
+    - pip3 --no-cache-dir install --requirement "validation/requirements.txt"
+    - validation/run_test.py
+
+validation-production:
+  extends: ".deployment_validation"
+  variables:
+    CAISE_SERVICE_INSTANCE: "production"
+    CAISE_SERVICE_URL: "https://schemapl-visualizer.lex.nlp.caise.pl"
+    CAISE_SERVICE_KUBERNETES_RESOURCE: "s67-schemapl-visualizer"
