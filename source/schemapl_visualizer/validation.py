@@ -139,7 +139,7 @@ def _extract_schema_zip(data: bytes, root: Path) -> None:
     try:
         archive = zipfile.ZipFile(io.BytesIO(data))
     except zipfile.BadZipFile as exc:
-        message = f"nie udało się odczytać archiwum .zip – {exc}"  # noqa: RUF001
+        message = f"nie udało się odczytać archiwum .zip \u2013 {exc}"
         raise SchemaUploadError(message) from exc
     with archive:
         for entry in archive.infolist():

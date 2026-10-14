@@ -57,7 +57,7 @@ def test_index(api_client: testclient.TestClient) -> None:
 
 def test_logo(api_client: testclient.TestClient) -> None:
     """Serves the CAISE logo."""
-    response = api_client.get("/tmp/caise.png")  # noqa: S108 - URL path.
+    response = api_client.get("/tmp/caise.png")  # noqa: S108 - URL path
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"

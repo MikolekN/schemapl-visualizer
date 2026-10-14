@@ -272,8 +272,7 @@ def compile_pdf(
         # The stub binds ``input`` and ``root`` to one type variable,
         # so bytes input with a path root (what typst-py expects)
         # matches no overload; it also types pdf_standards as literals.
-        # pyrefly: ignore[no-matching-overload]
-        return typst.compile(
+        return typst.compile(  # type: ignore[no-matching-overload] - stub limits, see above
             source.encode("utf-8"),
             root=str(TEMPLATE_DIR),
             format="pdf",

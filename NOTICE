@@ -4,7 +4,7 @@ NOTICE
 Usługa: CAISE Service 67 — schemaPL visualizer (schemapl_visualizer 1.1.0)
 Repozytorium: https://projects.task.gda.pl/caise/services/nlp-lex/schemapl-visualizer
 
-Copyright 2026 CAISE project (KPOD.05.10-IW.10-0005/24) / Gdansk University of Technology.
+Copyright 2024-2026 CAISE project (KPOD.05.10-IW.10-0005/24) / Gdansk University of Technology.
 Kod usługi licencjonowany na warunkach pliku LICENSE.
 
 --------------------------------------------------------------------------
@@ -15,6 +15,11 @@ wymagają atrybucji zgodnie z warunkami ich licencji:
 * typst 0.15.0 — autorzy typst-py (https://github.com/messense/typst-py);
   zawiera kompilator Typst — autorzy Typst (https://github.com/typst/typst).
   Licencja: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+  Pakiet zawiera fonty domyślne Typst:
+    - Libertinus Serif — SIL Open Font License 1.1
+    - New Computer Modern, New Computer Modern Math — GUST Font License
+    - DejaVu Sans Mono — licencja Bitstream Vera Fonts (zmiany DejaVu
+      w domenie publicznej)
 
 * python-multipart 0.0.32 — Andrew Dunham, Marcelo Trylesinski i autorzy
   kontrybutorzy. Licencja: Apache License 2.0
@@ -34,7 +39,9 @@ Pozostałe zależności runtime o licencjach MIT / BSD-3-Clause / PSF-2.0
   annotated-types 0.8.0 (MIT) · annotated-doc 0.0.5 (MIT)
   typing-inspection 0.4.4 (MIT) · typing-extensions 4.16.0 (PSF-2.0)
 
-Fonty instalowane w obrazie kontenera (do składu PDF):
+Fonty w obrazie kontenera (do składu PDF), skopiowane z pakietów Debiana
+13 (trixie) z etapu budowania; teksty ich licencji leżą w obrazie
+w /usr/share/fonts/caise/licenses:
 
   * Liberation Serif (fonts-liberation) — Copyright (c) 2012 Red Hat, Inc.,
     dane cyfrowe Copyright (c) 2010 Google Corporation.
@@ -44,20 +51,49 @@ Fonty instalowane w obrazie kontenera (do składu PDF):
   * Atkinson Hyperlegible (fonts-atkinson-hyperlegible) — Copyright 2020
     Braille Institute of America, Inc. Licencja: SIL Open Font License 1.1
 
-Pozostałe elementy:
+Dane i grafiki w repozytorium:
 
   * Godło Rzeczypospolitej Polskiej w nagłówku PDF (godlo.png) — symbol
     urzędowy, nie podlega prawu autorskiemu (art. 4 ustawy o prawie
     autorskim i prawach pokrewnych).
-  * MathJax 3 (Apache License 2.0) — nie jest dołączany; strona HTML
-    z wzorami wczytuje go w przeglądarce z cdn.jsdelivr.net.
+  * Geometria stylów akapitów (style-akapitow.typ) — odczytana ze stylów
+    pliku DOCX aktu opublikowanego w Dzienniku Ustaw, dokumentu urzędowego
+    (art. 4 ustawy o prawie autorskim i prawach pokrewnych).
+  * Przykładowe akty urzędowe (tests/data/DU20261261_obw_tj.xml,
+    tests/data/projekt01.xml, tests/data/autopoprawka01.xml,
+    tests/data/wyrok_TK.xml, validation/tests/h_test.xml) — akt
+    normatywny, urzędowy projekt ustawy z autopoprawką i orzeczenie, nie
+    podlegają prawu autorskiemu (art. 4); przykłady pochodzą z projektu
+    CAISE akn4pl.
+  * Logo CAISE (source/api/template/caise.png) — logo projektu CAISE.
+
+Zasoby wczytywane w przeglądarce, niedołączane do usługi:
+
+  * MathJax 3 (Apache License 2.0) — strona HTML z wzorami wczytuje go
+    z cdn.jsdelivr.net.
+
+Usługi CAISE wywoływane przez API (osobne utwory, niedołączane):
+
+  * konwerter DOCX → XML (acts-docx-to-xml-converter),
+  * ekstraktor odesłań (reference-extractor).
+
+Zależności budowania (nie trafiają do obrazu uruchomieniowego):
+
+  * setuptools (MIT) — backend budowania pakietu (pyproject.toml).
+  * Obraz etapu budowania: ghcr.io/astral-sh/uv:0.12.2-python3.11-trixie-slim
+    (Debian 13; z niego pochodzą wyłącznie fonty wymienione wyżej).
+  * Narzędzia deweloperskie i testowe (pytest, ruff, pyrefly i inne z grup
+    zależności test/quality) oraz zależności walidacji (validation/)
+    nie wchodzą w skład usługi.
 
 Środowisko uruchomieniowe:
 
-  Obraz bazowy: python:3.11-slim-trixie
+  Obraz bazowy: ghcr.io/astral-sh/uv:0.12.2-python3.11-dhi
+    - uv 0.12.2 — Copyright Astral Software Inc., Apache License 2.0
+      lub MIT (https://github.com/astral-sh/uv)
     - Python 3.11 — Python Software Foundation License (PSF-2.0)
-    - Debian 13 (trixie) — pakiety na licencjach podanych w
-      /usr/share/doc/*/copyright
+    - komponenty hardened base image — Docker Hardened Image dhi/python,
+      Debian 13 (com.docker.dhi.entitlement: public)
 
 Pełne teksty licencji stron trzecich dostępne są w dystrybucjach
 odpowiednich pakietów (katalogi dist-info/LICENSE).

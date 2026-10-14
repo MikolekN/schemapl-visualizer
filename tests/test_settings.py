@@ -47,7 +47,7 @@ def test_environment_variables(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert settings.run_local is True
     assert settings.service_user == "user"
-    assert settings.password == "secret"  # noqa: S105 - test value.
+    assert settings.password == "secret"  # noqa: S105 - test value
     assert "secret" not in repr(settings)
     assert settings.docx_service_field == "plik"
 

@@ -95,7 +95,7 @@ class RefExtractor:
                 if exc.status != 404:
                     raise
                 log.info(
-                    "wyniku jeszcze nie ma (404, próba %d z %d) – "  # noqa: RUF001
+                    "wyniku jeszcze nie ma (404, próba %d z %d) \u2013 "
                     "ponawiamy za %.0f s",
                     attempt,
                     self.retries + 1,
@@ -103,7 +103,7 @@ class RefExtractor:
                 )
                 time.sleep(self.delay)
         log.warning(
-            "po %d próbach i %.0f s czekania wyniku wciąż nie ma – "  # noqa: RUF001
+            "po %d próbach i %.0f s czekania wyniku wciąż nie ma \u2013 "
             "ostatnia próba",
             self.retries,
             self.retries * self.delay,
@@ -119,8 +119,7 @@ def _result_path(payload: bytes, base_url: str) -> str:
     try:
         envelope = json.loads(payload)
     except ValueError as exc:
-        # The caller logs the traceback of the error raised here.
-        log.error(  # noqa: TRY400
+        log.error(  # noqa: TRY400 - the caller logs the traceback
             "odpowiedź ekstraktora nie jest JSON-em: %s", preview(payload)
         )
         message = (
@@ -156,7 +155,7 @@ def _warn_on_foreign_host(
     base = urllib.parse.urlsplit(base_url)
     if parts.netloc and parts.netloc != base.netloc:
         log.warning(
-            "xml_file_url wskazuje na %s, a odpytujemy %s – "  # noqa: RUF001
+            "xml_file_url wskazuje na %s, a odpytujemy %s \u2013 "
             "pobieramy z %s, "
             "więc jeśli ścieżka tam nie istnieje, dostaniemy 404",
             parts.netloc,

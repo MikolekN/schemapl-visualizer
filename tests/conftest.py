@@ -5,8 +5,30 @@ from pathlib import Path
 
 import pytest
 from fastapi import testclient
+from freezegun import freeze_time
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
+
+
+@pytest.fixture
+def fixed_now() -> Iterator[None]:
+    """Freezes the clock at 2026-01-01 12:00 UTC (freezegun).
+
+    Yields:
+        Nothing; the clock stays frozen while the test runs.
+    """
+    with freeze_time("2026-01-01 12:00:00+00:00"):
+        yield
+
+
+@pytest.fixture
+def data_dir() -> Path:
+    """Provides the folder of sample acts.
+
+    Returns:
+        The absolute path of ``tests/data/``.
+    """
+    return DATA_DIR
 
 
 @pytest.fixture

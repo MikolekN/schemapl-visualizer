@@ -12,7 +12,9 @@ a wersjonowanie zgodne z Semantic Versioning.
 - testy jednostkowe biblioteki, poleceń i usługi HTTP z przykładowymi aktami w `tests/data/`
 - walidację wdrożonej usługi CAISE (`health`, `reproducibility`, `volume`) w `validation/`
 - logo CAISE i numer wersji na stronie startowej usługi
-- pliki `LICENSE`, `NOTICE`, `MANIFEST.in`, `public-info.yaml` i `README.pl.md`
+- pliki `LICENSE`, `NOTICE` (audyt licencji zależności, fontów, danych i obrazów), `MANIFEST.in`, `public-info.yaml` i `README.pl.md`
+- test czasu wygenerowania strony HTML z zamrożonym zegarem (freezegun w grupie `test`)
+- `HEALTHCHECK` w obrazie kontenera
 
 ### Zmieniono
 - zmieniono nazwę projektu na `schemapl-visualizer`
@@ -21,8 +23,18 @@ a wersjonowanie zgodne z Semantic Versioning.
 - konfigurację usługi (`RUN_LOCAL`, `SERVICE_USER`, `SERVICE_PASSWORD`, `LOG_LEVEL`, `REF_SERVICE_FIELD`, `DOCX_SERVICE_FIELD`) wczytuje pydantic-settings ze zmiennych środowiskowych lub pliku `.env` w katalogu uruchomienia
 - wprowadzono uv: `pyproject.toml`, `uv.lock`, grupy zależności `test`, `quality` i `dev` oraz dodatek `service` z zależnościami usługi HTTP
 - `requirements.txt` jest eksportowany z `uv.lock`
-- obraz kontenera instaluje pakiet i uruchamia usługę z `source/api/` na Pythonie 3.11
+- obraz kontenera według standardu CI/CD i konteneryzacji: budowany wieloetapowo przez uv, uruchamiany na Docker Hardened Image; fonty PDF kopiowane z etapu budowania razem z ich licencjami
+- pipeline CI według standardu: testy, checki jakości, wersja publikacyjna i ręczna publikacja pakietu oraz obrazu
+- kod zgodny ze standardem jakości kodu (Ruff, Pyrefly); wyciszenia podają regułę i powód
+- wyjątek `UnsupportedDocument` nazywa się `UnsupportedDocumentError`
+- adresy usług zewnętrznych inne niż http(s) są odrzucane
+- `python main.py` nasłuchuje na 127.0.0.1
+- README według standardu README
+- `public-info.yaml`: tytuł z numerem usługi, właściciel `caise_platform_admin` i zależności `dependsOn`
 - przeniesiono skrypt generujący style akapitów do `source/scripts/paragraph_styles.py`, a tabelę stylów do `style-akapitow.typ`
+
+### Naprawiono
+- PDF nie powstawał, gdy przypis zaczynał się tabelą
 
 ### Usunięto
 - plik `.env.example`; zmienne konfiguracji opisuje README

@@ -24,7 +24,14 @@ MATHML = "http://www.w3.org/1998/Math/MathML"
 
 # ASCII operators Typst math reads as themselves; other ASCII
 # punctuation is escaped.
-_BARE = {"+": "+", "-": "−", "=": "=", "<": "<", ">": ">", "!": "!"}  # noqa: RUF001
+_BARE = {
+    "+": "+",
+    "-": "\u2212",
+    "=": "=",
+    "<": "<",
+    ">": ">",
+    "!": "!",
+}  # MINUS SIGN
 # Opening and closing delimiters that may stretch around what they
 # enclose.
 _FENCES = {
@@ -42,10 +49,10 @@ _INVISIBLE = {"⁡", "⁢", "⁣", "⁤"}
 # characters).
 _ACCENTS = {
     "^",
-    "ˆ",  # noqa: RUF001
+    "\u02c6",  # MODIFIER LETTER CIRCUMFLEX ACCENT
     "̂",
     "~",
-    "˜",  # noqa: RUF001
+    "\u02dc",  # SMALL TILDE
     "̃",
     "˙",
     "̇",
@@ -55,7 +62,7 @@ _ACCENTS = {
     "⃗",
     "ˇ",
     "̌",
-    "´",  # noqa: RUF001
+    "\u00b4",  # ACUTE ACCENT
     "́",
     "`",
     "̀",
@@ -336,9 +343,9 @@ _SPOKEN_OPERATORS = {
     "=": "równa się",
     "+": "plus",
     "-": "minus",
-    "−": "minus",  # noqa: RUF001
+    "\u2212": "minus",  # MINUS SIGN
     "±": "plus minus",
-    "×": "razy",  # noqa: RUF001
+    "\u00d7": "razy",  # MULTIPLICATION SIGN
     "⋅": "razy",
     "·": "razy",
     "∙": "razy",
@@ -361,7 +368,7 @@ _SPOKEN_OPERATORS = {
     "→": "dąży do",
     "∈": "należy do",
     "∉": "nie należy do",
-    "′": "prim",  # noqa: RUF001
+    "\u2032": "prim",  # PRIME
     "…": "i tak dalej",
 }
 _LARGE = {"∑": "suma", "∏": "iloczyn", "∫": "całka"}

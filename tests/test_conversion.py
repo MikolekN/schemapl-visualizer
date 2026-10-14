@@ -149,9 +149,9 @@ def test_no_schema_means_no_validator() -> None:
     assert load_validator(None) is None
 
 
-def test_footnote_opening_with_a_table() -> None:
+def test_footnote_opening_with_a_table(data_dir: Path) -> None:
     """Typesets a footnote whose first block is a table."""
-    act = Path(__file__).resolve().parent / "data" / "DU20261261_obw_tj.xml"
+    act = data_dir / "DU20261261_obw_tj.xml"
     root = etree.parse(str(act)).getroot()
     namespace = etree.QName(root).namespace
     note = root.find(f".//{{{namespace}}}odnosnik")
@@ -166,3 +166,11 @@ def test_footnote_opening_with_a_table() -> None:
     )
 
     assert result.content.startswith(b"%PDF-")
+
+
+@pytest.mark.usefixtures("fixed_now")
+def test_page_shows_when_it_was_generated(generic_xml: bytes) -> None:
+    """Shows the time of the conversion in the page's metadata."""
+    result = convert_bytes(generic_xml, source_name="doc.xml")
+
+    assert "2026-01-01 12:00" in result.text

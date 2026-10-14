@@ -1,11 +1,12 @@
 ---
 # public-info.yaml
+# pełna dokumentacja: https://backstage.io/docs/features/software-catalog/descriptor-format/
 apiVersion: "backstage.io/v1alpha1"
 kind: "Component"
 
 metadata:
   name: "schemapl-visualizer"
-  title: "Usługa 67: Wizualizacja aktów prawnych schemaPL"
+  title: "#67: Wizualizacja aktów prawnych schemaPL"
 
   description: "Wizualizacja aktów prawnych przetwarza akt prawny zapisany w XML zgodnym ze schematem schemaPL na interaktywny HTML lub PDF – w układzie dziennika urzędowego albo w wersji dostępnej dla osób niedowidzących."
 
@@ -28,4 +29,7 @@ metadata:
 spec:
   type: "service"
   lifecycle: "production"
-  owner: "user:default/mikolajnadzieja"
+  owner: "user:default/caise_platform_admin"
+  dependsOn:
+    - "service:default/acts-docx-to-xml-converter"
+    - "service:default/reference-extractor"

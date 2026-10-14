@@ -8,7 +8,7 @@ version = "1.1.0"
 authors = [
     { name = "Mikołaj Nadzieja", email = "mikolaj.nadzieja@pg.edu.pl" },
 ]
-description = "Converts Polish legal acts in schemaPL XML into interactive HTML or PDF (official journal layout or accessible PDF/UA)."
+description = "schemaPL Visualizer converts Polish legal acts in schemaPL XML into interactive HTML or PDF (official journal layout or accessible PDF/UA)."
 keywords = [
     "schemapl",
     "legal-acts",
@@ -50,6 +50,7 @@ schemapl-visualizer = "schemapl_visualizer.cli:main"
 [dependency-groups]
 test = [
     "diff-cover>=9",
+    "freezegun>=1",
     "httpx2==2.12.*",
     "pytest==9.1.*",
     "pytest-cov>=5",

@@ -114,8 +114,7 @@ class HttpFileService:
         )
         started = time.monotonic()
         try:
-            # requests come from _request, which allows http(s) only
-            with urllib.request.urlopen(request) as response:  # noqa: S310
+            with urllib.request.urlopen(request) as response:  # noqa: S310 - _request allows http(s) only
                 payload = response.read()
                 status, final_url = response.status, response.geturl()
                 log.info(
@@ -144,8 +143,7 @@ class HttpFileService:
         except urllib.error.HTTPError as exc:
             body = exc.read()
             final_url = getattr(exc, "url", None) or target
-            # Logged without a traceback: the error goes to the caller.
-            log.error(  # noqa: TRY400
+            log.error(  # noqa: TRY400 - the error is raised to the caller
                 "%s %s -> %s %s po %s%s; treść: %s",
                 method,
                 target,
@@ -176,28 +174,29 @@ class HttpFileService:
             detail = _first_line(body)
             message = (
                 f"usługa odpowiedziała {exc.code} {exc.reason} "
-                f"na {method} {target}" + (f" – {detail}" if detail else "")  # noqa: RUF001
+                f"na {method} {target}"
+                + (f" \u2013 {detail}" if detail else "")
             )
             raise UpstreamError(message, status=exc.code) from exc
         except urllib.error.URLError as exc:
-            log.error(  # noqa: TRY400
+            log.error(  # noqa: TRY400 - the error is raised to the caller
                 "%s %s - brak połączenia po %s: %s",
                 method,
                 target,
                 _elapsed(started),
                 exc.reason,
             )
-            message = f"usługa niedostępna ({target}) – {exc.reason}"  # noqa: RUF001
+            message = f"usługa niedostępna ({target}) \u2013 {exc.reason}"
             raise UpstreamError(message) from exc
         except OSError as exc:
-            log.error(  # noqa: TRY400
+            log.error(  # noqa: TRY400 - the error is raised to the caller
                 "%s %s - błąd połączenia po %s: %s",
                 method,
                 target,
                 _elapsed(started),
                 exc,
             )
-            message = f"błąd połączenia z usługą ({target}) – {exc}"  # noqa: RUF001
+            message = f"błąd połączenia z usługą ({target}) \u2013 {exc}"
             raise UpstreamError(message) from exc
 
         if not payload.strip():

@@ -114,7 +114,7 @@ def test_send_posts_the_file(urlopen: MockType) -> None:
 
 def test_basic_credentials(urlopen: MockType) -> None:
     """Authenticates with the configured user and password."""
-    service = _service(username="user", password="secret")  # noqa: S106
+    service = _service(username="user", password="secret")  # noqa: S106 - test value
 
     service.send(b"x", filename="a.xml")
 
@@ -126,7 +126,7 @@ def test_basic_credentials(urlopen: MockType) -> None:
 
 def test_client_authorization_takes_precedence(urlopen: MockType) -> None:
     """Forwards the client's Authorization header when there is one."""
-    _service(username="user", password="secret").send(  # noqa: S106
+    _service(username="user", password="secret").send(  # noqa: S106 - test value
         b"x", filename="a.xml", authorization="Bearer token"
     )
 
@@ -231,7 +231,7 @@ def test_load_docx_service() -> None:
         _env_file=None,
         run_local=True,
         service_user="user",
-        service_password="secret",  # noqa: S106 - test value.
+        service_password="secret",  # noqa: S106 - test value
         docx_service_field="plik",
     )
 

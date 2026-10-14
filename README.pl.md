@@ -5,32 +5,33 @@
 schemaPL Visualizer przetwarza akty prawne zapisane w XML zgodnym ze schematem schemaPL na interaktywny HTML lub PDF (w układzie dziennika urzędowego albo dostępny PDF/UA).
 
 Może być używany jako usługa HTTP oparta na FastAPI, jako polecenie
-`schemapl-visualizer` lub jako biblioteka Python `schemapl_visualizer`. Źródłem
-jest zawsze XML: z niego powstają zarówno HTML, jak i PDF, a PDF nigdy nie
-powstaje z HTML. Przed konwersją usługa HTTP może wysłać XML do ekstraktora
-odesłań CAISE, który oznacza odesłania aktu, tak że stają się linkami. Usługa
-przyjmuje też DOCX, który konwerter DOCX → XML CAISE najpierw zamienia na XML.
+`schemapl-visualizer` lub jako biblioteka Python `schemapl_visualizer`.
+Źródłem jest zawsze XML: z niego powstają zarówno HTML, jak i PDF, a PDF nigdy
+nie powstaje z HTML. Przed konwersją usługa HTTP może wysłać XML do
+ekstraktora odesłań CAISE, który oznacza odesłania aktu, tak że stają się
+linkami. Usługa przyjmuje też DOCX, który konwerter DOCX → XML CAISE najpierw
+zamienia na XML.
 
 Formaty wyniku:
 
 - `html` – samodzielna, interaktywna strona: spis treści, zwijane jednostki,
   przypisy, metadane, wzory oraz wynik opcjonalnej walidacji XSD;
-- `pdf` – akt w układzie publikacji w Dzienniku Ustaw / Monitorze Polskim: style
-  akapitów szablonu aktu prawnego dla Worda, Times New Roman, nagłówek dziennika z godłem,
-  żywa pagina i przypisy, linki do przywoływanych aktów;
-- `pdf-accessible` – ten sam dokument w wersji łatwiejszej do czytania dla osób
-  niedowidzących: duży druk (tekst 18 pt, cały układ powiększony razem z nim)
-  krojem bezszeryfowym (Atkinson Hyperlegible, zaprojektowany dla osób
-  słabowidzących; nagłówek dziennika zachowuje krój dziennika), interlinia 1,5,
-  tekst wyrównany do lewej bez dzielenia wyrazów, podkreślone linki, wyraźniejsze
-  linie tabel oraz otagowany plik PDF/UA-1 (tytuł, rozdziały i załączniki jako
-  nagłówki, przypisy jako noty, nagłówki tabel, teksty alternatywne wzorów
-  i rysunków).
+- `pdf` – akt w układzie publikacji w Dzienniku Ustaw / Monitorze Polskim:
+  style akapitów szablonu aktu prawnego dla Worda, Times New Roman, nagłówek
+  dziennika z godłem, żywa pagina i przypisy, linki do przywoływanych aktów;
+- `pdf-accessible` – ten sam dokument w wersji łatwiejszej do czytania dla
+  osób niedowidzących: duży druk (tekst 18 pt, cały układ powiększony razem
+  z nim) krojem bezszeryfowym (Atkinson Hyperlegible, zaprojektowany dla osób
+  słabowidzących; nagłówek dziennika zachowuje krój dziennika), interlinia
+  1,5, tekst wyrównany do lewej bez dzielenia wyrazów, podkreślone linki,
+  wyraźniejsze linie tabel oraz otagowany plik PDF/UA-1 (tytuł, rozdziały
+  i załączniki jako nagłówki, przypisy jako noty, nagłówki tabel, teksty
+  alternatywne wzorów i rysunków).
 
 Oba PDF-y zawierają strukturę aktu jako drzewo zakładek (spis treści widoczny
-w przeglądarce PDF): rozdziały, artykuły, ustępy, punkty, litery i tiret, każde
-prowadzące do swojej jednostki. Odesłania do przepisów tego samego aktu są
-linkami do nich.
+w przeglądarce PDF): rozdziały, artykuły, ustępy, punkty, litery i tiret,
+każde prowadzące do swojej jednostki. Odesłania do przepisów tego samego aktu
+są linkami do nich.
 
 Dokumentacja: <https://projects.task.gda.pl/caise/caise-documentation/-/wikis/services/usluga_67>
 
@@ -40,19 +41,19 @@ Dokumentacja: <https://projects.task.gda.pl/caise/caise-documentation/-/wikis/se
   - [Instalacja biblioteki Python](#instalacja-biblioteki-python)
   - [Instalacja usługi HTTP](#instalacja-usługi-http)
   - [Konfiguracja środowiska deweloperskiego](#konfiguracja-środowiska-deweloperskiego)
-  - [Fonty](#fonty)
+  - [Zależności](#zależności)
 - [Użycie](#użycie)
+  - [Jak zacząć?](#jak-zacząć)
   - [Usługa HTTP](#usługa-http)
   - [Wiersz poleceń](#wiersz-poleceń)
   - [Biblioteka Python](#biblioteka-python)
-- [Konfiguracja](#konfiguracja)
-- [Wynik PDF](#wynik-pdf)
 - [Testowanie](#testowanie)
 - [Struktura projektu](#struktura-projektu)
+- [Wynik PDF](#wynik-pdf)
+- [Obsługa innego schematu](#obsługa-innego-schematu)
 - [API](#api)
   - [API HTTP](#api-http)
   - [API Python](#api-python)
-- [Obsługa innego schematu](#obsługa-innego-schematu)
 - [Licencja](#licencja)
 
 ## Instalacja
@@ -62,8 +63,8 @@ planowanego użycia projektu.
 
 ### Instalacja biblioteki Python
 
-Zainstaluj pakiet z prywatnego GitLab Package Registry. Zastąp `<token>` swoim
-tokenem GitLab:
+Zainstaluj pakiet z prywatnego GitLab Package Registry. Zastąp `<token>`
+swoim tokenem GitLab:
 
 ```bash
 pip install schemapl-visualizer --extra-index-url "https://gitlab-ci-token:<token>@projects.task.gda.pl/api/v4/projects/2556/packages/pypi/simple"
@@ -106,38 +107,77 @@ Po zmianie zależności odśwież eksport zgodny z pip dla środowisk bez uv:
 uv export --locked --extra service --no-default-groups --no-emit-project --no-hashes --format requirements.txt --output-file requirements.txt
 ```
 
-### Fonty
+### Zależności
 
-Układy PDF wymagają zainstalowanych fontów (obraz kontenera je zawiera):
-Times New Roman lub Liberation Serif, Cambria Math lub TeX Gyre Termes Math,
-a dla wersji dostępnej Atkinson Hyperlegible (w przeciwnym razie Verdana, Arial
-lub Liberation Sans).
+Układy PDF wymagają fontów zainstalowanych w systemie. Obraz kontenera je
+zawiera; poza nim zainstaluj je samodzielnie.
+
+1. Zainstaluj Times New Roman lub Liberation Serif, krój układu urzędowego.
+2. Zainstaluj Cambria Math lub TeX Gyre Termes Math, krój wzorów.
+3. Zainstaluj Atkinson Hyperlegible dla wersji dostępnej (w przeciwnym razie
+   użyty zostanie Verdana, Arial lub Liberation Sans).
+
+    W Debianie lub Ubuntu wszystkie trzy dostarczają poniższe pakiety. Debian
+    umieszcza font matematyczny w drzewie TeX, którego Typst nie przeszukuje,
+    dlatego jest on kopiowany do fontów systemowych:
+
+    - UNIX:
+
+        ```bash
+        sudo apt-get install fonts-liberation fonts-texgyre-math fonts-atkinson-hyperlegible
+        sudo cp -r /usr/share/texmf/fonts/opentype/public/tex-gyre-math /usr/share/fonts/opentype/
+        ```
+
+    - Windows: Times New Roman i Cambria Math są częścią systemu; Atkinson
+      Hyperlegible pobierz ze strony Braille Institute.
 
 ## Użycie
 
-schemaPL Visualizer może być używany jako usługa HTTP, polecenie lub biblioteka
-Python.
+schemaPL Visualizer może być używany jako usługa HTTP, polecenie lub
+biblioteka Python.
+
+### Jak zacząć?
+
+Usługa HTTP odczytuje konfigurację ze zmiennych środowiskowych, które mówią
+jej, jak łączyć się z ekstraktorem odesłań i konwerterem DOCX → XML CAISE.
+Uruchomiona z kopii repozytorium może je też wczytać z pliku `.env`
+w katalogu, z którego jest uruchamiana; zmienne ustawione w środowisku mają
+pierwszeństwo. Obraz kontenera nie zawiera pliku `.env`: przekaż zmienne
+przez `--env-file` lub `--env`.
+
+| Zmienna | Domyślnie | Opis |
+| --- | --- | --- |
+| `RUN_LOCAL` | `false` | `true`: łączy się z usługami zewnętrznymi przez ich publiczne adresy, które wymagają poświadczeń. `false`: łączy się z nimi po wewnętrznych nazwach usług. |
+| `SERVICE_USER` | brak | Użytkownik usług zewnętrznych (HTTP Basic). |
+| `SERVICE_PASSWORD` | brak | Hasło do usług zewnętrznych. |
+| `REF_SERVICE_FIELD` | `file` | Pole formularza, w którym ekstraktor odesłań oczekuje XML. |
+| `DOCX_SERVICE_FIELD` | `docxFile` | Pole formularza, w którym konwerter DOCX → XML oczekuje DOCX. |
+| `LOG_LEVEL` | `INFO` | `DEBUG` dodaje nagłówki żądań i odpowiedzi usług zewnętrznych (wartość Authorization pozostaje ukryta). |
+
+Nagłówek `Authorization` wysłany przez klienta jest przekazywany do usług
+zewnętrznych i ma pierwszeństwo przed `SERVICE_USER` i `SERVICE_PASSWORD`.
+Nigdy nie commituj pliku `.env`: Git i Docker go pomijają.
 
 ### Usługa HTTP
 
 Uruchom usługę z katalogu głównego repozytorium:
 
-```console
+```bash
 uv run uvicorn main:app --app-dir source/api --host 127.0.0.1 --port 8000
 ```
 
-Strona startowa pod adresem <http://127.0.0.1:8000/> ma jeden formularz: plik do
-upuszczenia lub wybrania (XML albo DOCX, rozpoznany po zawartości), wynik jako
-kafelki (HTML, PDF, PDF dostępny, XML) oraz wyszukiwanie odesłań i walidację
-XSD jako opcje. Konwersja odbywa się na stronie: jej postęp, ewentualny błąd,
-a potem wynik do otwarcia lub pobrania. Bez JavaScriptu formularz wysyła się
-zwyczajnie, a przeglądarka pokazuje wynik. Swagger UI jest dostępny pod adresem
-<http://127.0.0.1:8000/docs>.
+Strona startowa pod adresem <http://127.0.0.1:8000/> ma jeden formularz: plik
+do upuszczenia lub wybrania (XML albo DOCX, rozpoznany po zawartości), wynik
+jako kafelki (HTML, PDF, PDF dostępny, XML) oraz wyszukiwanie odesłań
+i walidację XSD jako opcje. Konwersja odbywa się na stronie: jej postęp,
+ewentualny błąd, a potem wynik do otwarcia lub pobrania. Bez JavaScriptu
+formularz wysyła się zwyczajnie, a przeglądarka pokazuje wynik. Swagger UI
+jest dostępny pod adresem <http://127.0.0.1:8000/docs>.
 
-Usługę można też uruchomić w Dockerze, przekazując
-[konfigurację](#konfiguracja) jako zmienne środowiskowe:
+Usługę można też uruchomić w Dockerze, przekazując konfigurację jako zmienne
+środowiskowe:
 
-```console
+```bash
 docker build --tag schemapl-visualizer:local .
 docker run --rm --publish 127.0.0.1:8000:8000 --env-file .env schemapl-visualizer:local
 ```
@@ -150,6 +190,8 @@ Opublikowany obraz:
 Akt w schemacie schemaPL, `akt.xml`.
 
 #### Polecenie
+
+Przetwórz akt na PDF bez wyszukiwania odesłań:
 
 ```bash
 curl --form "file=@akt.xml" --form "output=pdf" --output akt.pdf http://127.0.0.1:8000/convert/no-refs
@@ -167,18 +209,19 @@ Akt w schemacie schemaPL, `akt.xml`, albo katalog aktów.
 
 #### Polecenie
 
+Przetwórz akt na dostępny PDF; w kopii deweloperskiej poprzedź polecenie
+`uv run`. `--schema schema.xsd` włącza walidację XSD, której wynik pokazuje
+strona HTML.
+
 ```bash
 schemapl-visualizer akt.xml --format pdf-accessible --output output
 ```
 
-W kopii deweloperskiej poprzedź polecenie `uv run`. `--schema schema.xsd`
-włącza walidację XSD, której wynik pokazuje strona HTML.
-
 #### Wynik
 
-`output/akt.accessible.pdf`. Każdy akt trafia do katalogu wyjściowego pod własną
-nazwą, z rozszerzeniem formatu: `.html`, `.pdf` lub `.accessible.pdf`. Polecenie
-zwraca 1, gdy któregoś pliku nie udało się przetworzyć.
+`output/akt.accessible.pdf`. Każdy akt trafia do katalogu wyjściowego pod
+własną nazwą, z rozszerzeniem formatu: `.html`, `.pdf` lub `.accessible.pdf`.
+Polecenie zwraca 1, gdy któregoś pliku nie udało się przetworzyć.
 
 ### Biblioteka Python
 
@@ -187,6 +230,8 @@ zwraca 1, gdy któregoś pliku nie udało się przetworzyć.
 Akt w schemacie schemaPL, `akt.xml`.
 
 #### Polecenie
+
+Przetwórz akt na PDF i zapisz go:
 
 ```python
 from pathlib import Path
@@ -201,36 +246,96 @@ Path(f"akt.{result.file_extension}").write_bytes(result.content)
 
 `akt.pdf`, akt w układzie dziennika urzędowego.
 
-Biblioteka emituje rekordy przez standardowy pakiet `logging` Pythona, ale sama
-nie konfiguruje logowania.
+Biblioteka emituje rekordy przez standardowy pakiet `logging` Pythona, ale
+sama nie konfiguruje logowania.
 
-## Konfiguracja
+## Testowanie
 
-Usługa HTTP odczytuje konfigurację ze zmiennych środowiskowych. Uruchomiona
-z kopii repozytorium może je też wczytać z pliku `.env` w katalogu, z którego
-jest uruchamiana; zmienne ustawione w środowisku mają pierwszeństwo. Obraz
-kontenera nie zawiera pliku `.env`: przekaż zmienne przez `--env-file` lub
-`--env`.
+Pytest uruchamia testy biblioteki, polecenia i API HTTP; usługi zewnętrzne są
+zastąpione atrapami. Z pokryciem gałęzi, tak jak mierzy je CI (próg globalny
+70%):
 
-| Zmienna | Domyślnie | Opis |
-| --- | --- | --- |
-| `RUN_LOCAL` | `false` | `true`: łączy się z ekstraktorem odesłań i konwerterem DOCX → XML przez ich publiczne adresy, które wymagają poświadczeń. `false`: łączy się z nimi po wewnętrznych nazwach usług. |
-| `SERVICE_USER` | brak | Użytkownik usług zewnętrznych (HTTP Basic). |
-| `SERVICE_PASSWORD` | brak | Hasło do usług zewnętrznych. |
-| `REF_SERVICE_FIELD` | `file` | Pole formularza, w którym ekstraktor odesłań oczekuje XML. |
-| `DOCX_SERVICE_FIELD` | `docxFile` | Pole formularza, w którym konwerter DOCX → XML oczekuje DOCX. |
-| `LOG_LEVEL` | `INFO` | `DEBUG` dodaje nagłówki żądań i odpowiedzi usług zewnętrznych (wartość Authorization pozostaje ukryta). |
+```bash
+uv run pytest --cov --cov-branch
+```
 
-Nagłówek `Authorization` wysłany przez klienta jest przekazywany do usług
-zewnętrznych i ma pierwszeństwo przed `SERVICE_USER` i `SERVICE_PASSWORD`.
-Nigdy nie commituj pliku `.env`: Git i Docker go pomijają.
+Przed commitem zastosuj bezpieczne poprawki i formatowanie Ruff:
+
+```bash
+uv run ruff check --fix .
+uv run ruff format .
+```
+
+Uruchom te same kontrole jakości co CI:
+
+```bash
+uv run ruff format --check --diff .
+uv run ruff check .
+uv run pyrefly check
+uv audit --locked
+```
+
+## Struktura projektu
+
+```text
+schemapl-visualizer/
+├── source/                                    # Kod źródłowy usługi i pakietu.
+│   ├── api/                                   # Usługa FastAPI, poza pakietem.
+│   │   ├── settings/                          # Konfiguracja ze zmiennych środowiskowych.
+│   │   ├── template/                          # Strona przesyłania i logo CAISE.
+│   │   ├── main.py                            # Endpointy HTTP i aplikacja.
+│   │   ├── upstream.py                        # Wywołania innych usług CAISE.
+│   │   ├── refextractor.py                    # Klient ekstraktora odesłań.
+│   │   ├── d2xconverter.py                    # Klient konwertera DOCX → XML.
+│   │   └── logs.py                            # Konfiguracja logów usługi.
+│   ├── schemapl_visualizer/                   # Pakiet Python.
+│   │   ├── __init__.py                        # Publiczne API.
+│   │   ├── __main__.py                        # Uruchamia polecenie przez python -m.
+│   │   ├── cli.py                             # Polecenie schemapl-visualizer.
+│   │   ├── conversion.py                      # Konwersja XML → HTML / PDF.
+│   │   ├── parsing.py                         # Bezpieczne parsowanie XML.
+│   │   ├── validation.py                      # Walidacja XSD.
+│   │   ├── namespaces.py                      # Pomocnicze funkcje nazw elementów.
+│   │   ├── html/                              # Silnik renderowania i szablon strony.
+│   │   ├── pdf/                               # Typst, MathML i szablony układu.
+│   │   └── profiles/                          # Profile schematów i ich rejestr.
+│   │       └── schemapl/                      # schemaPL: kod wspólny, HTML i PDF.
+│   └── scripts/                               # Skrypty pomocnicze, poza pakietem.
+│       └── paragraph_styles.py                # Generuje style-akapitow.typ.
+├── tests/                                     # Testy biblioteki, polecenia i API HTTP.
+│   └── data/                                  # Przykładowe akty schemaPL.
+├── validation/                                # Walidacja usługi CAISE.
+│   ├── caise/                                 # Narzędzia walidacji.
+│   ├── tests/                                 # Kontrole walidacji.
+│   │   ├── h_test.xml                         # Przykładowy akt wysyłany przez kontrole.
+│   │   ├── health.py                          # Kontrola dostępności.
+│   │   ├── reproducibility.py                 # Kontrola oczekiwanego wyniku.
+│   │   └── volume.py                          # Kontrola obciążenia.
+│   ├── requirements.txt                       # Zależności walidacji.
+│   └── run_test.py                            # Uruchamianie testów walidacji.
+├── .dockerignore                              # Pliki pomijane w obrazie kontenera.
+├── .gitignore                                 # Pliki pomijane przez Git.
+├── .gitlab-ci.yml                             # Zadania testów, jakości, publikacji i walidacji.
+├── .python-version                            # Wersja Pythona używana przez uv.
+├── CHANGELOG.md                               # Historia wydań.
+├── Dockerfile                                 # Definicja kontenera usługi.
+├── LICENSE                                    # Licencja GNU AGPL v3.0.
+├── MANIFEST.in                                # Zawartość dystrybucji źródłowej.
+├── NOTICE                                     # Audyt licencji.
+├── public-info.yaml                           # Wpis w katalogu usług.
+├── pyproject.toml                             # Metadane pakietu i zależności.
+├── README.md                                  # Dokumentacja w języku angielskim.
+├── README.pl.md                               # Dokumentacja w języku polskim.
+├── requirements.txt                           # Przypięte zależności uruchomieniowe.
+└── uv.lock                                    # Zablokowany graf zależności.
+```
 
 ## Wynik PDF
 
 `source/schemapl_visualizer/profiles/schemapl/pdf.py` przechodzi dokument
 schemaPL i zapisuje kod Typst: akapity aktu, każdy ze stylem akapitu, który
-nadaje mu Word w publikacji (`PKT`, `Z_LIT/UST(§)`, ...), z oznaczeniem i miejscem
-w strukturze. Szablon Typst
+nadaje mu Word w publikacji (`PKT`, `Z_LIT/UST(§)`, ...), z oznaczeniem
+i miejscem w strukturze. Szablon Typst
 `source/schemapl_visualizer/pdf/templates/dziennik.typ` rysuje je — jak
 w publikacji albo w wersji dostępnej (wejście szablonu `uklad: "dostepny"`) —
 a [Typst](https://typst.app) kompiluje PDF
@@ -240,93 +345,19 @@ Typst (`source/schemapl_visualizer/pdf/mathml.py`).
 `source/schemapl_visualizer/pdf/templates/style-akapitow.typ` zawiera style
 akapitów szablonu aktu prawnego dla Worda. Jest generowany z DOCX publikacji:
 
-```console
+```bash
 uv run python source/scripts/paragraph_styles.py <publikacja.docx>
 ```
 
-## Testowanie
+## Obsługa innego schematu
 
-Pytest uruchamia testy biblioteki, polecenia i API HTTP z pokryciem gałęzi;
-usługi zewnętrzne są zastąpione atrapami. Skonfigurowany globalny próg pokrycia
-wynosi 70%:
-
-```console
-uv run pytest
-```
-
-Przed commitem zastosuj bezpieczne poprawki i formatowanie Ruff:
-
-```console
-uv run ruff check --fix .
-uv run ruff format .
-```
-
-Uruchom te same kontrole jakości co CI:
-
-```console
-uv run ruff format --check --diff .
-uv run ruff check .
-uv run pyrefly check
-uv audit --locked
-```
-
-Kontrole w `validation/` sprawdzają wdrożoną usługę. Wymagają środowiska
-walidacji CAISE i są uruchamiane przez zadania walidacji wdrożenia w CI.
-
-## Struktura projektu
-
-```text
-schemapl-visualizer/
-├── source/
-│   ├── api/                            # Usługa FastAPI, poza pakietem
-│   │   ├── settings/                   # Konfiguracja ze zmiennych środowiskowych
-│   │   ├── template/                   # Strona przesyłania i logo CAISE
-│   │   ├── main.py                     # Endpointy HTTP i aplikacja
-│   │   ├── upstream.py                 # Wywołania innych usług CAISE
-│   │   ├── refextractor.py             # Klient ekstraktora odesłań
-│   │   ├── d2xconverter.py             # Klient konwertera DOCX → XML
-│   │   └── logs.py                     # Konfiguracja logów usługi
-│   ├── schemapl_visualizer/
-│   │   ├── __init__.py                 # Publiczne API
-│   │   ├── __main__.py                 # python -m schemapl_visualizer
-│   │   ├── cli.py                      # Polecenie schemapl-visualizer
-│   │   ├── conversion.py               # XML → HTML / PDF
-│   │   ├── parsing.py                  # Bezpieczne parsowanie XML
-│   │   ├── validation.py               # Walidacja XSD
-│   │   ├── namespaces.py               # Pomocnicze funkcje nazw elementów
-│   │   ├── html/                       # Silnik renderowania i szablon strony
-│   │   ├── pdf/                        # Typst, MathML i szablony układu
-│   │   └── profiles/
-│   │       └── schemapl/               # schemaPL: wspólne, HTML i PDF
-│   └── scripts/
-│       └── paragraph_styles.py         # Generuje style-akapitow.typ
-├── tests/                              # Testy biblioteki, polecenia i API HTTP
-│   └── data/                           # Przykładowe akty schemaPL
-├── validation/                         # Walidacja usługi CAISE
-│   ├── caise/                          # Narzędzia walidacji
-│   ├── tests/
-│   │   ├── h_test.xml                  # Przykładowy akt wysyłany przez kontrole
-│   │   ├── health.py                   # Kontrola dostępności
-│   │   ├── reproducibility.py          # Kontrola oczekiwanego wyniku
-│   │   └── volume.py                   # Kontrola obciążenia
-│   ├── requirements.txt                # Zależności walidacji
-│   └── run_test.py                     # Uruchamianie testów walidacji
-├── .dockerignore
-├── .gitignore
-├── .gitlab-ci.yml                      # Zadania budowania, publikacji i walidacji
-├── .python-version                     # Wersja Pythona używana przez uv
-├── CHANGELOG.md                        # Historia wydań
-├── Dockerfile                          # Definicja kontenera usługi
-├── LICENSE                             # Licencja GNU AGPL v3.0
-├── MANIFEST.in                         # Zawartość dystrybucji źródłowej
-├── NOTICE                              # Audyt licencji
-├── public-info.yaml                    # Wpis w katalogu usług
-├── pyproject.toml                      # Metadane pakietu i bezpośrednie zależności
-├── README.md                           # Dokumentacja w języku angielskim
-├── README.pl.md                        # Dokumentacja w języku polskim
-├── requirements.txt                    # Przypięte zależności uruchomieniowe
-└── uv.lock                             # Zablokowany graf zależności
-```
+1. Skopiuj `source/schemapl_visualizer/profiles/schemapl/` do
+   `source/schemapl_visualizer/profiles/<twoj_schemat>/`.
+2. Zmień adresy przestrzeni nazw i obsługę elementów zgodnie ze swoim
+   słownikiem. `dispatch(element, state, inline)` w `html.py` zwraca HTML
+   elementu albo `None`, aby silnik użył widoku ogólnego.
+3. Zarejestruj go w `source/schemapl_visualizer/profiles/__init__.py`: dodaj
+   jego `PROFILE` do `_PROFILES` i nadaj mu zbiór `root_namespaces`.
 
 ## API
 
@@ -346,29 +377,29 @@ ogólnym. Błędy są zwracane z kodem HTTP 400 i stroną z wyjaśnieniem.
 
 ### API Python
 
-| Interfejs | Zwraca |
-| --- | --- |
-| `convert_file(path, *, validator=None, output_format="html")` | `ConversionResult` z `content`, `media_type`, `file_extension` |
-| `convert_bytes(data, *, source_name, validator=None, output_format="html")` | `ConversionResult` |
-| `available_formats()` | `["html", "pdf", "pdf-accessible"]` |
-| `load_validator(schema_path)` | `SchemaValidator` albo `None` bez ścieżki |
+#### Klasy
 
-Konwersja zgłasza `lxml.etree.XMLSyntaxError` dla niepoprawnego XML,
-`UnsupportedDocumentError` dla PDF dokumentu, którego nie obsługuje żaden profil PDF,
-oraz `PdfError`, gdy Typst nie może złożyć dokumentu.
+| Nazwa | Opis | Kluczowe atrybuty |
+| --- | --- | --- |
+| `ConversionResult` | Przetworzony dokument. | `content`, `media_type`, `file_extension`, `text` |
+| `SchemaValidator` | Schemat XML wczytany z pliku, gotowy do walidacji dokumentów. | `path`, `compiled`, `load_error` |
+| `ValidationResult` | Wynik walidacji jednego dokumentu. | `status`, `errors`, `schema_error`, `validated`, `is_valid` |
+| `UnsupportedDocumentError` | Zgłaszany dla PDF dokumentu, którego nie obsługuje żaden profil PDF. | None |
+| `PdfError` | Zgłaszany, gdy Typst nie może złożyć dokumentu. | None |
 
-## Obsługa innego schematu
+#### Funkcje
 
-1. Skopiuj `source/schemapl_visualizer/profiles/schemapl/` do
-   `source/schemapl_visualizer/profiles/<twoj_schemat>/`.
-2. Zmień adresy przestrzeni nazw i obsługę elementów zgodnie ze swoim
-   słownikiem. `dispatch(element, state, inline)` w `html.py` zwraca HTML
-   elementu albo `None`, aby silnik użył widoku ogólnego.
-3. Zarejestruj go w `source/schemapl_visualizer/profiles/__init__.py`: dodaj jego
-   `PROFILE` do `_PROFILES` i nadaj mu zbiór `root_namespaces`.
+| Nazwa | Parametry | Zwraca | Opis |
+| --- | --- | --- | --- |
+| `convert_file` | `path: Path \| str`, `validator: SchemaValidator \| None`, `output_format: str` | `ConversionResult` | Przetwarza plik XML spod `path` na format wyniku. |
+| `convert_bytes` | `data: bytes`, `source_name: str`, `validator: SchemaValidator \| None`, `output_format: str` | `ConversionResult` | Przetwarza XML podany jako bajty na format wyniku. |
+| `available_formats` | None | `list[str]` | Zwraca formaty wyniku: `html`, `pdf`, `pdf-accessible`. |
+| `load_validator` | `schema_path: Path \| str \| None` | `SchemaValidator \| None` | Wczytuje XSD albo zwraca `None` bez ścieżki. |
+
+Niepoprawny XML zgłasza `lxml.etree.XMLSyntaxError`.
 
 ## Licencja
 
-Copyright © 2026 CAISE.
+Copyright © 2024-2026 CAISE projekt (KPOD.05.10-IW.10-0005/24) / Politechnika Gdańska.
 
 Projekt na licencji: [GNU AGPL-3.0-only License](LICENSE).

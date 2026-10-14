@@ -20,7 +20,7 @@ workflow:
 stages:
   - "test"
   - "quality"
-  - "build_check"
+  - "prepare_publish"
   - "build_and_publish"
   - "deployment_validation"
 
@@ -68,6 +68,8 @@ unit-tests:
   interruptible: true
   coverage: '/Total coverage:\s*(\d+(?:\.\d+)?)%/'
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
     - if: '$CI_COMMIT_TAG'
@@ -147,54 +149,18 @@ dependency-check:
     - uv export --locked --extra service --no-default-groups --no-emit-project --no-hashes --format requirements.txt --output-file requirements.txt
     - cmp /tmp/requirements.txt requirements.txt
 
-package-build-check:
+prepare-publish-version:
   extends: ".uv"
-  stage: "build_check"
+  stage: "prepare_publish"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_TAG'
-      when: never
-  script:
-    - uv build --no-sources
-
-container-build-check:
-  extends: ".docker"
-  stage: "build_check"
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_TAG'
-  script:
-    - docker buildx build
-        --cache-from "type=registry,ref=${CACHE_IMAGE}"
-        --tag "${CI_PROJECT_NAME}:mr-${CI_MERGE_REQUEST_IID}"
-        --load .
-
-version-check:
-  extends: ".uv"
-  stage: "build_check"
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_TAG'
-      when: never
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   script:
     - |
       PUBLISH_VERSION="$(uv version --short)"
-
-      if [ -n "${CI_COMMIT_TAG:-}" ] && [ "$CI_COMMIT_TAG" != "$PUBLISH_VERSION" ]; then
-        echo "ERROR: Tag ${CI_COMMIT_TAG} does not match package version ${PUBLISH_VERSION}" >&2
-        exit 1
-      fi
-
-      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
-        case "$PUBLISH_VERSION" in
-          *.dev*) ;;
-          *) PUBLISH_VERSION="${PUBLISH_VERSION}.dev${CI_PIPELINE_IID}" ;;
-        esac
-      fi
-
+      case "$PUBLISH_VERSION" in
+        *.dev*) ;;
+        *) PUBLISH_VERSION="${PUBLISH_VERSION}.dev${CI_PIPELINE_IID}" ;;
+      esac
       printf 'PUBLISH_VERSION=%s\n' "$PUBLISH_VERSION" > version.env
   artifacts:
     reports:
@@ -202,27 +168,21 @@ version-check:
 
 .publish:
   stage: "build_and_publish"
+  when: manual
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      when: manual
-      allow_failure: true
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      needs:
+        - job: "prepare-publish-version"
+          artifacts: true
     - if: '$CI_COMMIT_TAG'
-      when: manual
-      variables:
-          _TEMPLATE_CONTAINER_TAG_DEFAULT: "${CI_COMMIT_TAG}"
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
 package-build-and-publish:
-  dependencies:
-    - "version-check"
   extends:
     - ".publish"
     - ".uv"
-  rules:
-    - if: '$CI_COMMIT_TAG'
-      when: never
   before_script:
     - |
       if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
@@ -242,14 +202,14 @@ container-build-and-publish:
     - ".docker"
   script:
     - |
-      if [ -n "${CI_COMMIT_TAG:-}" ]; then
-        CONTAINER_TAG="$CI_COMMIT_TAG"
+      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+        CONTAINER_TAG="$PUBLISH_VERSION"
       elif [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then
         CONTAINER_TAG="latest"
+      else
+        CONTAINER_TAG="$CI_COMMIT_TAG"
       fi
-
       IMAGE="${CI_REGISTRY_IMAGE}:${CONTAINER_TAG}"
-
     - docker buildx build
         --cache-from "type=registry,ref=${CACHE_IMAGE}"
         --cache-to "type=registry,ref=${CACHE_IMAGE},mode=max"

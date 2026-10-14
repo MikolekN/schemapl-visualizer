@@ -49,8 +49,7 @@ def html_tag(
     ``inner`` is markup already: callers escape any document text in it.
     """
     start = _start_tag(name, css_class, attributes)
-    # inner is markup by contract (see above): not escaped again.
-    body = Markup(inner)  # noqa: S704
+    body = Markup(inner)  # noqa: S704 - inner is markup by contract
     return start + body + Markup("</{}>").format(name)
 
 

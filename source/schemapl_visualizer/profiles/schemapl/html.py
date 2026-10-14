@@ -14,7 +14,7 @@ change.
 from __future__ import annotations
 
 import re
-from typing import cast
+from dataclasses import dataclass
 
 from lxml import etree
 from markupsafe import Markup, escape
@@ -460,6 +460,14 @@ def _time_lines(element: etree._Element, state: RenderState) -> list[str]:
     return lines
 
 
+@dataclass(frozen=True)
+class _TimeIndex:
+    """The events and time groups of <DaneCzasowe>, by id."""
+
+    events: dict[str, etree._Element]
+    groups: dict[str, etree._Element]
+
+
 def _time_index(
     element: etree._Element, state: RenderState
 ) -> tuple[dict[str, etree._Element], dict[str, etree._Element]]:
@@ -468,7 +476,7 @@ def _time_index(
     Built once per document.
     """
     index = state.profile_data.get("time")
-    if index is None:
+    if not isinstance(index, _TimeIndex):
         events: dict[str, etree._Element] = {}
         groups: dict[str, etree._Element] = {}
         for data in (
@@ -478,10 +486,8 @@ def _time_index(
                 events[event.get("id", "")] = event
             for group in data.iter(f"{{{SCHEMAPL}}}GrupaCzasowa"):
                 groups[group.get("id", "")] = group
-        index = state.profile_data["time"] = (events, groups)
-    return cast(
-        "tuple[dict[str, etree._Element], dict[str, etree._Element]]", index
-    )
+        index = state.profile_data["time"] = _TimeIndex(events, groups)
+    return index.events, index.groups
 
 
 def _period_ranges(
@@ -762,11 +768,11 @@ def render_reference(element: etree._Element, state: RenderState) -> Markup:
 def _links(element: etree._Element, state: RenderState) -> InternalLinks:
     """The act's references to its own provisions, worked out once."""
     links = state.profile_data.get("internal_links")
-    if links is None:
+    if not isinstance(links, InternalLinks):
         links = state.profile_data["internal_links"] = InternalLinks(
             element.getroottree().getroot()
         )
-    return cast("InternalLinks", links)
+    return links
 
 
 def _internal_link(
@@ -999,8 +1005,7 @@ def render_math(
 ) -> Markup:
     """A <math> formula, inline or as a block, for MathJax."""
     state.uses_math = True
-    # _serialize_plain escapes all text and drops scripts and handlers.
-    formula = Markup(_serialize_plain(element, MATHML))  # noqa: S704
+    formula = Markup(_serialize_plain(element, MATHML))  # noqa: S704 - escaped, scripts dropped
     if inline:
         return html_tag("span", formula, css_class="math math--inline")
     return html_tag("div", formula, css_class="math")
@@ -1086,8 +1091,7 @@ def render_vector_image(element: etree._Element, state: RenderState) -> Markup:
     caption = _image_caption(element, state) or Markup("")
     for child in element:
         if is_element(child) and has_name(child, SVG, "svg"):
-            # _serialize_plain escapes text, drops scripts and handlers.
-            svg = Markup(_serialize_plain(child, SVG))  # noqa: S704
+            svg = Markup(_serialize_plain(child, SVG))  # noqa: S704 - escaped, scripts dropped
             return html_tag(
                 "figure",
                 svg + caption,
