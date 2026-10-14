@@ -22,7 +22,7 @@ a wersjonowanie zgodne z Semantic Versioning.
 - wprowadzono uv: `pyproject.toml`, `uv.lock`, grupy zależności `test`, `quality` i `dev` oraz dodatek `service` z zależnościami usługi HTTP
 - `requirements.txt` jest eksportowany z `uv.lock`
 - obraz kontenera instaluje pakiet i uruchamia usługę z `source/api/` na Pythonie 3.11
-- przeniesiono skrypt `rcl_styles.py` do `source/scripts/`
+- przeniesiono skrypt generujący style akapitów do `source/scripts/paragraph_styles.py`, a tabelę stylów do `style-akapitow.typ`
 
 ### Usunięto
 - plik `.env.example`; zmienne konfiguracji opisuje README
@@ -31,7 +31,7 @@ a wersjonowanie zgodne z Semantic Versioning.
 
 [1.1.0] - 2026-10-05
 ### Zmieniono
-- PDF dostępny jest wersją układu dziennika urzędowego (ten sam szablon, nagłówek i style RCL) w dużym druku, zamiast osobnego układu
+- PDF dostępny jest wersją układu dziennika urzędowego (ten sam szablon, nagłówek i style akapitów) w dużym druku, zamiast osobnego układu
 - uproszczono interfejs strony startowej
 
 ---

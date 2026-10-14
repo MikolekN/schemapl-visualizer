@@ -2,7 +2,7 @@
 schemaPL → PDF: an act typeset straight from its XML.
 
 The walk turns the act into the sequence of paragraphs its publication has,
-each with the RCL paragraph style Word gives it ("PKT", "Z_LIT/UST(§)", ...),
+each with the paragraph style Word gives it ("PKT", "Z_LIT/UST(§)", ...),
 its marker ("1)", "Art. 5.") and its place in the structure. The layout template
 ``dziennik.typ`` then draws them as published in the official journal, or -
 the accessible version - as the same document in large print, tagged for
@@ -149,13 +149,13 @@ SIGNATURE_ELEMENTS = {"organ-wydajacy": "NAZ_ORG_WYD", "organ-podpisujacy": "NAZ
                       "tekst-w-porozumieniu": 'TEKST"w porozumieniu:"',
                       "organ-w-porozumieniu": "NAZ_ORG_W_POROZUMIENIU"}
 
-# The cover letter of a bill: no RCL style, the template defines these.
+# The cover letter of a bill: no act template style, the layout defines these.
 BILL_COVER_STYLES = {"winieta": "PROJ_WINIETA", "kadencja": "PROJ_KADENCJA", "druk": "PROJ_DRUK",
                      "miejsce-i-data": "PROJ_MIEJSCE", "adresat-pisma-tytul-i-osoba": "PROJ_ADRESAT",
                      "adresat-pisma-stanowisko": "PROJ_ADRESAT", "kontynuacja-preambuly": "NIEART_TEKST"}
 
 # Table cell paragraphs. Most published cells are set in Word's default style
-# (KOMORKA: RCL_Normalny with the usual space below), column titles in the
+# (KOMORKA: Normalny with the usual space below), column titles in the
 # centred table style.
 TABLE_CELL_STYLES = {
     "tytul-kolumny": "TEKST_w_TABELI_WYŚRODKOWANY",
@@ -200,10 +200,10 @@ _STYLE_NAMES: set[str] | None = None
 
 
 def style_names() -> set[str]:
-    """The RCL styles the official template knows (keys of rcl-styles.typ)."""
+    """The styles the official template knows (keys of style-akapitow.typ)."""
     global _STYLE_NAMES
     if _STYLE_NAMES is None:
-        source = (TEMPLATE_DIR / "rcl-styles.typ").read_text(encoding="utf-8")
+        source = (TEMPLATE_DIR / "style-akapitow.typ").read_text(encoding="utf-8")
         _STYLE_NAMES = {key.replace('\\"', '"') for key in _STYLE_KEY.findall(source)}
     return _STYLE_NAMES
 
@@ -392,7 +392,7 @@ class ActTypesetter:
     def text_target(self, ctx: Context) -> Inline:
         """Where running text goes: the open paragraph, or a new plain one."""
         if self.current is None:
-            self.start(Paragraph("RCL_Normalny", depth=ctx.depth, section=ctx.section))
+            self.start(Paragraph("Normalny", depth=ctx.depth, section=ctx.section))
         return self.current.text
 
     # -- metadata ------------------------------------------------------------------
@@ -655,7 +655,7 @@ class ActTypesetter:
             for child in self.elements(element):
                 self.block(child, ctx)
             if not any(is_element(c) for c in element) and plain_text(element):
-                self.paragraph(element, "RCL_Normalny", ctx)
+                self.paragraph(element, "Normalny", ctx)
 
     def bookmark(self, element: etree._Element, ctx: Context) -> None:
         """The unit's entry in the PDF's bookmarks: a tree of the act's own units (not quoted ones)."""
@@ -977,7 +977,7 @@ class ActTypesetter:
                 self.block(child, replace(ctx, heading=ctx.heading))
 
     def style(self, base: str, ctx: Context) -> str:
-        """The RCL style name for a paragraph of type ``base`` in this context.
+        """The template style name for a paragraph of type ``base`` in this context.
 
         Amended text quoted inside a unit takes the "Z…/" family: the prefix names
         the unit quoting it (Z/ article or point, Z_LIT/ letter, Z_TIR/ tiret,

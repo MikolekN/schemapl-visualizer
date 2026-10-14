@@ -230,7 +230,7 @@
                 </zdanie>
             </p>
         </preambula>
-        <!--Błędy w eId poniżej są nieuniknione. RCL nalega na wpisywanie w eId całej ścieżki do jednostki. Akceptacja tego wymagania oznacza dodawanie zmyślonego ELI-DL i błąd w walidacji stworzonym regexem.-->
+        <!--Błędy w eId poniżej są nieuniknione. Wytyczne wymagają wpisywania w eId całej ścieżki do jednostki. Akceptacja tego wymagania oznacza dodawanie zmyślonego ELI-DL i błąd w walidacji stworzonym regexem.-->
         <artykul eId="10/2026/2887__art_1" gd:GUID="01a0dee5-d322-7059-832f-b7043aee57dd">
             <nr>1</nr>
             <ustep-n gd:GUID="01a0dee5-d322-7186-9167-12ffb475c960">

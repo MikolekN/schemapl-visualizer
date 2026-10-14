@@ -16,7 +16,7 @@ Formaty wyniku:
 - `html` – samodzielna, interaktywna strona: spis treści, zwijane jednostki,
   przypisy, metadane, wzory oraz wynik opcjonalnej walidacji XSD;
 - `pdf` – akt w układzie publikacji w Dzienniku Ustaw / Monitorze Polskim: style
-  akapitów szablonu RCL dla Worda, Times New Roman, nagłówek dziennika z godłem,
+  akapitów szablonu aktu prawnego dla Worda, Times New Roman, nagłówek dziennika z godłem,
   żywa pagina i przypisy, linki do przywoływanych aktów;
 - `pdf-accessible` – ten sam dokument w wersji łatwiejszej do czytania dla osób
   niedowidzących: duży druk (tekst 18 pt, cały układ powiększony razem z nim)
@@ -228,7 +228,7 @@ Nigdy nie commituj pliku `.env`: Git i Docker go pomijają.
 ## Wynik PDF
 
 `source/schemapl_visualizer/profiles/schemapl/pdf.py` przechodzi dokument
-schemaPL i zapisuje kod Typst: akapity aktu, każdy ze stylem akapitu RCL, który
+schemaPL i zapisuje kod Typst: akapity aktu, każdy ze stylem akapitu, który
 nadaje mu Word w publikacji (`PKT`, `Z_LIT/UST(§)`, ...), z oznaczeniem i miejscem
 w strukturze. Szablon Typst
 `source/schemapl_visualizer/pdf/templates/dziennik.typ` rysuje je — jak
@@ -237,11 +237,11 @@ a [Typst](https://typst.app) kompiluje PDF
 (`source/schemapl_visualizer/pdf/typst.py`). Wzory MathML stają się matematyką
 Typst (`source/schemapl_visualizer/pdf/mathml.py`).
 
-`source/schemapl_visualizer/pdf/templates/rcl-styles.typ` zawiera style akapitów
-szablonu RCL. Jest generowany z DOCX publikacji:
+`source/schemapl_visualizer/pdf/templates/style-akapitow.typ` zawiera style
+akapitów szablonu aktu prawnego dla Worda. Jest generowany z DOCX publikacji:
 
 ```console
-uv run python source/scripts/rcl_styles.py <publikacja.docx>
+uv run python source/scripts/paragraph_styles.py <publikacja.docx>
 ```
 
 ## Testowanie
@@ -299,7 +299,7 @@ schemapl-visualizer/
 │   │   └── profiles/
 │   │       └── schemapl/               # schemaPL: wspólne, HTML i PDF
 │   └── scripts/
-│       └── rcl_styles.py               # Generuje rcl-styles.typ
+│       └── paragraph_styles.py         # Generuje style-akapitow.typ
 ├── tests/                              # Testy biblioteki, polecenia i API HTTP
 │   └── data/                           # Przykładowe akty schemaPL
 ├── validation/                         # Walidacja usługi CAISE

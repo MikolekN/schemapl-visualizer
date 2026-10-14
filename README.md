@@ -16,8 +16,8 @@ The outputs are:
 - `html` – a self-contained, interactive page: a table of contents, collapsible
   units, footnotes, metadata, formulas, and the result of an optional XSD
   validation;
-- `pdf` – the act as published in Dziennik Ustaw / Monitor Polski: the RCL Word
-  template's paragraph styles, Times New Roman, the journal's masthead with the
+- `pdf` – the act as published in Dziennik Ustaw / Monitor Polski: the paragraph
+  styles of the Word template for acts, Times New Roman, the journal's masthead with the
   emblem, running header and footnotes, links to cited acts;
 - `pdf-accessible` – the same document made easier to read for visually impaired
   readers: large print (18 pt text, the whole layout scaled with it) in a
@@ -228,7 +228,7 @@ Never commit the `.env` file: it is ignored by Git and Docker.
 ## PDF Output
 
 `source/schemapl_visualizer/profiles/schemapl/pdf.py` walks the schemaPL
-document and writes Typst code: the paragraphs of the act, each with the RCL
+document and writes Typst code: the paragraphs of the act, each with the
 paragraph style Word gives it in the publication (`PKT`, `Z_LIT/UST(§)`, ...),
 its marker and its place in the structure. The Typst template
 `source/schemapl_visualizer/pdf/templates/dziennik.typ` draws them — as
@@ -237,11 +237,12 @@ published, or in its accessible version (the template input
 (`source/schemapl_visualizer/pdf/typst.py`). MathML formulas become Typst math
 (`source/schemapl_visualizer/pdf/mathml.py`).
 
-`source/schemapl_visualizer/pdf/templates/rcl-styles.typ` holds the RCL
-template's paragraph styles. It is generated from a publication DOCX:
+`source/schemapl_visualizer/pdf/templates/style-akapitow.typ` holds the
+paragraph styles of the Word template for acts. It is generated from a
+publication DOCX:
 
 ```console
-uv run python source/scripts/rcl_styles.py <publication.docx>
+uv run python source/scripts/paragraph_styles.py <publication.docx>
 ```
 
 ## Testing
@@ -298,7 +299,7 @@ schemapl-visualizer/
 │   │   └── profiles/
 │   │       └── schemapl/               # schemaPL: shared, HTML and PDF
 │   └── scripts/
-│       └── rcl_styles.py               # Regenerates rcl-styles.typ
+│       └── paragraph_styles.py         # Regenerates style-akapitow.typ
 ├── tests/                              # Library, command and HTTP API tests
 │   └── data/                           # Sample schemaPL acts
 ├── validation/                         # CAISE service validation
