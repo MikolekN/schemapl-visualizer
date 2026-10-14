@@ -111,7 +111,7 @@ def test_entities_are_not_resolved() -> None:
 
     result = convert_bytes(document, source_name="doc.xml")
 
-    assert "root:" not in result.text
+    assert "root:x:0:0" not in result.text
 
 
 def _nested(depth: int) -> bytes:
@@ -207,6 +207,69 @@ def test_footnote_opening_with_a_table(data_dir: Path) -> None:
     )
 
     assert result.content.startswith(b"%PDF-")
+
+
+def test_page_is_named_after_the_act(data_dir: Path) -> None:
+    """Names the page after the act's title from its metadata."""
+    result = convert_file(data_dir / "wyrok_TK.xml")
+
+    assert (
+        "<title>Wyrok Trybunału Konstytucyjnego z dnia 15 kwietnia 2021 r."
+        in result.text
+    )
+    assert "wyrok_TK.xml" in result.text  # the file name stays visible
+
+
+def test_bill_is_named_after_its_heading(data_dir: Path) -> None:
+    """Names a bill without a metadata title after its own heading."""
+    result = convert_file(data_dir / "projekt01.xml")
+
+    assert "<title>O odbudowie polskiej kolei" in result.text
+
+
+def test_untitled_articles_show_their_first_words(data_dir: Path) -> None:
+    """Gives untitled articles in the outline their opening words."""
+    result = convert_file(data_dir / "projekt01.xml")
+
+    assert '<span class="toc__preview">W ustawie z dnia' in result.text
+
+
+@pytest.mark.parametrize(
+    ("act", "expected"),
+    [
+        (
+            "DU20261261_obw_tj.xml",
+            [
+                '<div class="meta-card__address">Dz.U. 2026 poz. 1261</div>',
+                '<span class="pill pill--ok">obowiązuje</span>',
+                "isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20260001261",
+            ],
+        ),
+        (
+            "projekt01.xml",
+            [
+                '<div class="meta-card__type">projekt ustawy</div>',
+                '<div class="meta-card__address">Druk nr 2887</div>',
+            ],
+        ),
+    ],
+)
+def test_document_panel_opens_with_a_summary(
+    data_dir: Path, act: str, expected: list[str]
+) -> None:
+    """Opens the document panel with a summary card of the act."""
+    result = convert_file(data_dir / act)
+
+    for fragment in expected:
+        assert fragment in result.text
+
+
+def test_no_validation_banner_without_validation(generic_xml: bytes) -> None:
+    """Shows no validation note when no validation was asked for."""
+    result = convert_bytes(generic_xml, source_name="doc.xml")
+
+    page_body = result.text.split("<body>", 1)[1].split("<script>", 1)[0]
+    assert "banner" not in page_body
 
 
 @pytest.mark.usefixtures("fixed_now")

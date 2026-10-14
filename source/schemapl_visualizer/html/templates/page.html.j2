@@ -4,23 +4,71 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ title }}</title>
+<script>
+  /* Apply the reader's saved theme and text size before the first paint. */
+  (function () {
+    try {
+      var theme = localStorage.getItem("schemapl-theme");
+      if (theme === "light" || theme === "dark") document.documentElement.setAttribute("data-theme", theme);
+      if (localStorage.getItem("schemapl-toc") === "off") document.documentElement.setAttribute("data-toc", "off");
+      var scale = parseFloat(localStorage.getItem("schemapl-text-scale"));
+      if (scale >= 0.8 && scale <= 1.6) document.documentElement.style.setProperty("--text-scale", String(scale));
+    } catch (e) { /* storage unavailable: defaults apply */ }
+  })();
+</script>
 <style>
   :root {
-    --fg: #1c1c1e;
-    --muted: #6b7280;
-    --faint: #9ca3af;
-    --line: #e5e7eb;
+    color-scheme: light;
+    --fg: #1f2328;
+    --muted: #5f6b7a;
+    --faint: #98a2b3;
+    --line: #e4e7ec;
     --bg: #ffffff;
-    --panel: #f8fafc;
+    --panel: #f6f8fa;
+    --raised: #ffffff;
+    --toolbar-bg: rgba(255, 255, 255, .9);
+    --shadow: 0 10px 30px rgba(15, 23, 42, .14);
     --label: #7c3aed;
-    --accent: #2563eb;
+    --accent: #1d4ed8;
+    --accent-soft: #eef2ff;
     --chip-bg: #eef2ff;
     --chip-fg: #3730a3;
     --ok-bg: #ecfdf5; --ok-fg: #065f46; --ok-line: #a7f3d0;
     --warn-bg: #fffbeb; --warn-fg: #92400e; --warn-line: #fde68a;
     --info-bg: #eff6ff; --info-fg: #1e40af; --info-line: #bfdbfe;
+    --hit: #fde68a;
+    --hit-current: #f59e0b;
+    --flash: rgba(250, 204, 21, .35);
+    --text-scale: 1;
+    --measure: 46rem;
+    --toolbar-h: 3.25rem;
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --fg: #e6e8eb; --muted: #a3acb9; --faint: #6b7584; --line: #2b313a;
+    --bg: #14171c; --panel: #1b1f26; --raised: #20252d;
+    --toolbar-bg: rgba(20, 23, 28, .9); --shadow: 0 10px 30px rgba(0, 0, 0, .5);
+    --label: #c4a5ff; --accent: #8ab4ff; --accent-soft: #1e2a44; --chip-bg: #232a3d; --chip-fg: #c7d2fe;
+    --ok-bg: #0f2a20; --ok-fg: #a7f3d0; --ok-line: #1f5f45;
+    --warn-bg: #2d2410; --warn-fg: #fcd34d; --warn-line: #6b5413;
+    --info-bg: #13233d; --info-fg: #bfdbfe; --info-line: #284b7a;
+    --hit: #6b5a00; --hit-current: #d97706; --flash: rgba(250, 204, 21, .18);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --fg: #e6e8eb; --muted: #a3acb9; --faint: #6b7584; --line: #2b313a;
+      --bg: #14171c; --panel: #1b1f26; --raised: #20252d;
+      --toolbar-bg: rgba(20, 23, 28, .9); --shadow: 0 10px 30px rgba(0, 0, 0, .5);
+      --label: #c4a5ff; --accent: #8ab4ff; --accent-soft: #1e2a44; --chip-bg: #232a3d; --chip-fg: #c7d2fe;
+      --ok-bg: #0f2a20; --ok-fg: #a7f3d0; --ok-line: #1f5f45;
+      --warn-bg: #2d2410; --warn-fg: #fcd34d; --warn-line: #6b5413;
+      --info-bg: #13233d; --info-fg: #bfdbfe; --info-line: #284b7a;
+      --hit: #6b5a00; --hit-current: #d97706; --flash: rgba(250, 204, 21, .18);
+    }
   }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -28,78 +76,122 @@
     background: var(--bg);
     line-height: 1.5;
   }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  button { font: inherit; color: inherit; }
+  .skip-link {
+    position: absolute; left: .75rem; top: -3rem; z-index: 50; padding: .4rem .7rem;
+    background: var(--raised); border: 1px solid var(--line); border-radius: 6px; color: var(--accent);
+  }
+  .skip-link:focus { top: .5rem; }
+
+  /* toolbar: document name, search, view controls */
   .toolbar {
     position: sticky; top: 0; z-index: 10;
-    display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
-    padding: .6rem 1.25rem;
-    background: rgba(255,255,255,.92);
-    backdrop-filter: blur(6px);
+    display: flex; flex-wrap: wrap; gap: .5rem .75rem; align-items: center;
+    padding: .55rem 1.25rem;
+    background: var(--toolbar-bg);
+    backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
     font-size: .85rem;
   }
-  .toolbar .doc-name { font-weight: 600; }
-  .toolbar .spacer { flex: 1; }
-  .toolbar label { display: inline-flex; gap: .35rem; align-items: center; color: var(--muted); cursor: pointer; }
-  .toolbar button {
-    font: inherit; font-size: .8rem; padding: .25rem .6rem;
-    border: 1px solid var(--line); border-radius: 6px; background: #fff; cursor: pointer; color: var(--fg);
+  .progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none; }
+  .progress span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
+  .bar-heading { flex: 1 1 14rem; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+  .bar-title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-file { color: var(--muted); font-size: .75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tool {
+    font-size: .8rem; padding: .3rem .6rem; min-height: 2rem;
+    border: 1px solid var(--line); border-radius: 7px; background: var(--raised); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: .3rem;
   }
-  .toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+  .tool:hover { border-color: var(--accent); color: var(--accent); }
+  .tool:disabled { opacity: .45; cursor: default; border-color: var(--line); color: inherit; }
+  .tool--icon { width: 2rem; padding: 0; }
+  .tool svg { width: 1rem; height: 1rem; }
+  .tools { display: flex; gap: .35rem; align-items: center; flex-wrap: wrap; }
+  .search {
+    display: flex; align-items: center; gap: .25rem; flex: 0 1 19rem; min-width: 12rem;
+    border: 1px solid var(--line); border-radius: 7px; background: var(--raised); padding: 0 .2rem 0 .5rem;
+  }
+  .search:focus-within { border-color: var(--accent); }
+  .search svg { width: .95rem; height: .95rem; color: var(--faint); flex: none; }
+  .search input {
+    flex: 1; min-width: 0; border: 0; background: transparent; color: inherit;
+    font: inherit; font-size: .85rem; padding: .35rem .25rem; outline: none;
+  }
+  .search__count { color: var(--muted); font-size: .75rem; white-space: nowrap; }
+  .search .tool { border: 0; min-height: 1.7rem; width: 1.7rem; background: transparent; }
+  :root[data-toc="off"] .toc { display: none; }
+  .layout.sidebar-off .sidebar { display: none; }
+  #toc-toggle[aria-expanded="true"], #info-toggle[aria-expanded="true"] { color: var(--accent); border-color: var(--accent); }
 
   /* page layout: ToC + content + metadata sidebar */
-  .layout { display: flex; gap: 2rem; align-items: flex-start; max-width: 1400px; margin: 0 auto; padding: 1.25rem; }
+  .layout { display: flex; gap: 2rem; align-items: flex-start; max-width: 1440px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
   .content { flex: 1 1 auto; min-width: 0; }
+  #tree { max-width: var(--measure); margin: 0 auto; }
+  /* the generic tree view is data, not prose: it takes the full width */
+  #tree:has(> .node) { max-width: none; overflow-x: auto; }
   .sidebar {
-    flex: 0 0 300px; position: sticky; top: 3.1rem; max-height: calc(100vh - 4rem);
+    flex: 0 0 290px; position: sticky; top: calc(var(--toolbar-h) + 1rem); max-height: calc(100vh - var(--toolbar-h) - 2rem);
     overflow: auto; border-left: 1px solid var(--line); padding-left: 1rem; font-size: .82rem;
   }
-  .sidebar h2 { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--faint); margin: 1.1rem 0 .4rem; }
-  .sidebar section.info h2 { margin-top: 0; }
-  .sidebar code { background: var(--panel); padding: .05rem .35rem; border-radius: 4px; }
   .sidebar a { color: var(--accent); text-decoration: none; }
   .sidebar a:hover { text-decoration: underline; }
 
   /* table of contents (left panel) */
   .toc {
-    flex: 0 0 260px; position: sticky; top: 3.1rem; max-height: calc(100vh - 4rem);
+    flex: 0 0 270px; position: sticky; top: calc(var(--toolbar-h) + 1rem); max-height: calc(100vh - var(--toolbar-h) - 2rem);
     overflow: auto; overscroll-behavior: contain; font-size: .8rem;
     border-right: 1px solid var(--line); padding-right: .9rem;
   }
   .toc h2 { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--faint); margin: 0 0 .4rem; }
   .toc__link {
-    display: block; padding: .14rem .4rem; color: var(--fg); text-decoration: none;
+    display: block; padding: .18rem .45rem; color: var(--fg); text-decoration: none;
     border-left: 2px solid transparent; border-radius: 0 6px 6px 0; line-height: 1.35;
   }
   .toc__link:hover { background: var(--panel); }
-  .toc__link.active { border-left-color: var(--accent); color: var(--accent); background: var(--chip-bg); }
-  .toc__link--section { font-weight: 600; margin-top: .2rem; }
-  .toc__link--block { font-weight: 600; margin-top: .45rem; }
+  .toc__link.active { border-left-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .toc__link--section { font-weight: 600; margin-top: .25rem; }
+  .toc__link--block { font-weight: 600; margin-top: .5rem; }
   .toc__title { display: block; color: var(--muted); font-size: .74rem; }
-  .toc__link.active .toc__title { color: inherit; opacity: .85; }
-  .toc-d0 { padding-left: .4rem; }
+  .toc__preview {
+    display: block; color: var(--muted); font-size: .72rem; font-weight: 400;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .toc__link.active .toc__title, .toc__link.active .toc__preview { color: inherit; opacity: .85; }
+  .toc-d0 { padding-left: .45rem; }
   .toc-d1 { padding-left: 1.0rem; }
   .toc-d2 { padding-left: 1.6rem; }
   .toc-d3 { padding-left: 2.2rem; }
   .toc-d4 { padding-left: 2.8rem; }
   .toc-d5 { padding-left: 3.4rem; }
   .toc-d6 { padding-left: 4.0rem; }
-  .content [id] { scroll-margin-top: 3.4rem; }
-  #toc-toggle { display: none; }
+  .content [id] { scroll-margin-top: calc(var(--toolbar-h) + .75rem); }
 
   @media (max-width: 1100px) {
     .toc {
-      display: none; position: fixed; left: 0; top: 2.6rem; bottom: 0;
-      width: min(320px, 85vw); background: var(--bg); z-index: 20;
+      display: none; position: fixed; left: 0; top: var(--toolbar-h); bottom: 0;
+      width: min(340px, 88vw); background: var(--bg); z-index: 20;
       border-right: 1px solid var(--line); padding: 1rem; max-height: none;
-      box-shadow: 0 8px 28px rgba(0,0,0,.14);
+      box-shadow: var(--shadow);
     }
-    .toc.toc--open { display: block; }
-    #toc-toggle { display: inline-block; }
+    .toc.toc--open, :root[data-toc="off"] .toc.toc--open { display: block; }
   }
   @media (max-width: 860px) {
-    .layout { flex-direction: column; }
+    .layout { flex-direction: column; align-items: stretch; padding-top: 1rem; }
     .sidebar { flex-basis: auto; width: 100%; position: static; max-height: none;
       border-left: 0; border-top: 1px solid var(--line); padding: 1rem 0 0; }
+    .layout.sidebar-off .sidebar { display: block; }
+    #info-toggle { display: none; }
+  }
+  @media (max-width: 640px) {
+    .toolbar { padding: .5rem .75rem; }
+    .layout { padding-left: 1rem; padding-right: 1rem; }
+    .search { order: 3; flex: 1 1 100%; }
+    .bar-file, .tool .long { display: none; }
+    /* one row for the title and icons, one for the search */
+    .bar-heading { flex: 1 1 0; }
+    .tools .tool:not(.tool--icon) { display: none; }
   }
 
   .banner { padding: .6rem .85rem; border-radius: 8px; margin: 0 0 .5rem; font-size: .85rem; border: 1px solid; }
@@ -110,53 +202,124 @@
   .banner ul { margin: .4rem 0 0; padding-left: 1.1rem; }
   .banner li { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .76rem; }
 
-  /* metadata panel (key/value) */
-  .meta-row { display: flex; gap: .4rem; padding: .12rem 0; }
-  .meta-key { flex: 0 0 8rem; color: var(--muted); overflow-wrap: anywhere; }
-  .meta-val { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-  .meta-group { margin: .15rem 0; }
-  .meta-group > summary { cursor: pointer; color: var(--muted); }
-  .metadata .meta-group { margin-left: .25rem; }
-  .meta-item { padding: .12rem 0; overflow-wrap: anywhere; }
-  .meta-extra { color: var(--faint); }
+  /* document panel: a card with the essentials, then titled sections */
+  .meta-card {
+    display: flex; flex-direction: column; align-items: flex-start; gap: .3rem;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: .8rem .9rem .85rem; margin: 0 0 .4rem;
+  }
+  .meta-card__type { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .meta-card__address { font-size: 1.1rem; font-weight: 650; line-height: 1.3; color: var(--fg); }
+  .meta-card__note { color: var(--muted); }
+  .meta-card__links { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .35rem; }
+  .sidebar a.meta-link {
+    font-size: .74rem; font-weight: 500; padding: .18rem .6rem; border-radius: 6px;
+    border: 1px solid var(--line); background: var(--raised); color: var(--accent);
+  }
+  .sidebar a.meta-link:hover { border-color: var(--accent); text-decoration: none; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .4rem; font-size: .72rem; font-weight: 600;
+    padding: .1rem .6rem .1rem .5rem; border-radius: 999px; border: 1px solid;
+  }
+  .pill::before { content: ""; width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; }
+  .pill--ok { color: var(--ok-fg); background: var(--ok-bg); border-color: var(--ok-line); }
+  .pill--off { color: var(--muted); background: var(--bg); border-color: var(--line); }
+  .meta-section { padding: .75rem 0 .55rem; border-bottom: 1px solid var(--line); }
+  .meta-section h3 {
+    font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--faint); margin: 0 0 .45rem;
+  }
+  .meta-row { display: grid; grid-template-columns: minmax(6.5rem, 42%) 1fr; gap: .2rem .6rem; padding: .16rem 0; }
+  .meta-row--stacked { grid-template-columns: 1fr; gap: .05rem; }
+  .meta-key { color: var(--muted); overflow-wrap: anywhere; }
+  .meta-val { color: var(--fg); min-width: 0; overflow-wrap: anywhere; }
+  .meta-section--ids .meta-row { grid-template-columns: 1fr; gap: .05rem; }
+  .meta-section--ids .meta-val { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .74rem; }
+  .meta-group { margin: .1rem 0; }
+  .meta-group > summary {
+    cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: .4rem;
+    padding: .16rem 0; color: var(--fg); border-radius: 4px;
+  }
+  .meta-group > summary::-webkit-details-marker { display: none; }
+  .meta-group > summary::before {
+    content: "\25B8"; color: var(--faint); font-size: .8em; display: inline-block; transition: transform .12s;
+  }
+  .meta-group[open] > summary::before { transform: rotate(90deg); }
+  .meta-group > summary:hover { color: var(--accent); }
+  .meta-group > :not(summary) { margin-left: .95rem; }
+  .meta-group .meta-group > summary { color: var(--muted); }
+  .meta-item { padding: .2rem 0; overflow-wrap: anywhere; line-height: 1.45; }
+  .meta-item + .meta-item { border-top: 1px dashed var(--line); }
+  .meta-extra { color: var(--muted); }
+  .meta-organ { padding: .2rem 0 .3rem; }
+  .meta-organ + .meta-organ { border-top: 1px dashed var(--line); padding-top: .4rem; }
+  .meta-organ__name { font-weight: 600; color: var(--fg); }
+  .meta-organ > .meta-row, .meta-organ > .meta-group { margin-left: .8rem; }
+  .meta-terms { padding: .16rem 0 .3rem; }
+  .meta-terms .meta-key { display: block; margin-bottom: .3rem; }
+  .meta-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem; }
+  .meta-chips li {
+    background: var(--chip-bg); color: var(--chip-fg); border-radius: 999px;
+    padding: .06rem .6rem; font-size: .74rem; line-height: 1.5;
+  }
+  .generated { color: var(--faint); font-size: .74rem; margin: .8rem 0 0; }
 
   /* --- legal document content --- */
-  .content { font-family: Georgia, "Times New Roman", "Liberation Serif", serif; }
+  .content {
+    font-family: Charter, "Bitstream Charter", Cambria, "Sitka Text", "Liberation Serif", "Times New Roman", Georgia, serif;
+    font-size: calc(1.0625rem * var(--text-scale));
+    line-height: 1.65;
+    font-variant-numeric: lining-nums;
+    overflow-wrap: break-word;
+  }
   .doc-type { text-align: center; text-transform: uppercase; font-weight: 700; letter-spacing: .04em; margin-top: .5rem; }
   .doc-author { text-align: center; text-transform: uppercase; letter-spacing: .04em; margin: .1rem 0; }
   .doc-date { text-align: center; color: var(--muted); margin: .15rem 0; }
   .doc-signature { text-align: center; color: var(--muted); margin: .15rem 0; }
   .doc-designation { text-align: right; color: var(--muted); font-size: .85rem; }
-  .doc-title { text-align: center; font-weight: 700; font-size: 1.15rem; margin: .35rem 0 1.6rem; }
-  .heading { text-align: center; margin: 1.6rem 0 .9rem; }
+  .doc-title { text-align: center; font-weight: 700; font-size: 1.2em; line-height: 1.4; margin: .5rem 0 2rem; }
+  .heading { text-align: center; margin: 2.2rem 0 1rem; }
   .heading__marker { display: block; font-weight: 700; }
-  .heading__title { display: block; text-transform: uppercase; letter-spacing: .02em; font-size: .95rem; }
+  .heading__title { display: block; text-transform: uppercase; letter-spacing: .03em; font-size: .92em; }
   .wrapper { display: contents; }
-  .unit { display: flex; align-items: baseline; gap: .5rem; margin: .3rem 0; }
-  .unit__marker { flex: none; font-weight: 700; min-width: 1.5rem; }
+  .unit { display: flex; align-items: baseline; gap: .55rem; margin: .35rem 0; border-radius: 4px; }
+  .unit__marker { flex: none; font-weight: 700; min-width: 1.6rem; }
   .unit[class*="unit--artykul"] > .unit__marker,
   .unit[class*="unit--paragraf"] > .unit__marker,
   .unit[class*="unit--nie-ztp-artykul"] > .unit__marker,
-  .unit[class*="unit--nie-ztp-paragraf"] > .unit__marker { min-width: 3.4rem; }
+  .unit[class*="unit--nie-ztp-paragraf"] > .unit__marker { min-width: 3.6rem; }
+  .unit[class*="unit--artykul"], .unit[class*="unit--nie-ztp-artykul"] { margin: 1rem 0; }
   .unit__body { flex: 1 1 auto; min-width: 0; }
   .unit__body > .p:first-child { margin-top: 0; }
   /* state cues (stan-jednostki: uchylony / utracil-moc / uznany-za-niewazny) */
   [class*=" stan--"] { color: var(--muted); }
   .definicja { font-style: italic; }
 
-  /* collapsible units & sections (editorial + systematization) */
+  /* collapsible units & sections: the triangle shows where it helps */
   .unit.collapsible > .unit__marker { cursor: pointer; }
   .unit.collapsible > .unit__marker::before {
     content: "\25BE"; color: var(--faint); font-size: .7em; margin-right: .25em;
-    display: inline-block; transition: transform .12s;
+    display: inline-block; transition: transform .12s, opacity .12s; opacity: 0;
   }
+  .unit.collapsible > .unit__marker:hover::before,
+  .unit.collapsible > .unit__marker:focus-visible::before,
+  .unit.collapsed > .unit__marker::before { opacity: 1; }
   .unit.collapsed > .unit__marker::before { transform: rotate(-90deg); }
   .unit.collapsed > .unit__body { display: none; }
+  .unit.collapsed > .unit__marker::after { content: " \2026"; color: var(--faint); font-weight: 400; }
   .sect.collapsible > .heading { cursor: pointer; }
   .sect.collapsed > .heading { opacity: .65; }
   .sect.collapsed > .sect__body { display: none; }
   .common-part { margin: .3rem 0; }
   sup, sub { line-height: 0; }
+
+  /* where a jump lands: a short highlight */
+  @keyframes flash { from { background-color: var(--flash); } to { background-color: transparent; } }
+  .flash { animation: flash 1.8s ease-out; }
+
+  /* in-document search */
+  mark.hit { background: var(--hit); color: inherit; border-radius: 2px; padding: 0 1px; }
+  mark.hit--current { background: var(--hit-current); color: #111; box-shadow: 0 0 0 2px var(--hit-current); }
 
   /* amendment-instruction marker + hover popup (instrukcje nowelizacyjne) */
   .nowela { position: relative; cursor: help; }
@@ -172,10 +335,10 @@
   .nowela--block .nowela__popup { top: 1.7em; }
   .nowela__popup {
     display: none; position: absolute; left: 0; top: 1.3em; z-index: 30;
-    width: max-content; max-width: 22rem; background: #fff; color: var(--fg);
-    border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,.14);
+    width: max-content; max-width: 22rem; background: var(--raised); color: var(--fg);
+    border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow);
     padding: .5rem .6rem; font-size: .75rem; font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
-    white-space: normal;
+    white-space: normal; line-height: 1.45;
   }
   .nowela:hover .nowela__popup, .nowela:focus-within .nowela__popup { display: block; }
   .nowela__title { display: block; margin-bottom: .3rem; color: var(--accent); }
@@ -184,19 +347,41 @@
   .nowela__val { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 
   /* prose, quotations, references, footnotes */
-  .p { margin: .45rem 0; }
-  blockquote.cytat { margin: .5rem 0 .5rem 1rem; padding: .2rem 0 .2rem .8rem;
+  .p { margin: .5rem 0; }
+  blockquote.cytat { margin: .6rem 0 .6rem 1rem; padding: .2rem 0 .2rem .9rem;
     border-left: 3px solid var(--line); }
   .cytat--inline { font-style: italic; }
-  a.ref { color: var(--accent); text-decoration: none; }
-  a.ref:hover { text-decoration: underline; }
-  sup.fn-ref a { color: var(--accent); text-decoration: none; }
-  .footnotes { margin-top: 2rem; font-size: .85rem; color: var(--muted); }
+  a.ref { color: var(--accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent); text-underline-offset: .18em; }
+  a.ref:hover { text-decoration-color: currentColor; }
+  sup.fn-ref a { color: var(--accent); text-decoration: none; padding: 0 .1em; }
+  .footnotes { margin-top: 2.5rem; font-size: .88em; color: var(--muted); }
   .footnotes hr { border: 0; border-top: 1px solid var(--line); margin: 0 0 .75rem; }
-  .footnote { display: flex; gap: .4rem; margin: .35rem 0; }
+  .footnote { display: flex; gap: .45rem; margin: .4rem 0; border-radius: 4px; }
   .footnote__symbol { color: var(--accent); }
   .footnote__body { display: inline; }
   .footnote__back { text-decoration: none; color: var(--faint); }
+  .footnote__back:hover { color: var(--accent); }
+
+  /* footnote preview on hover, toast, back to top */
+  .fn-preview {
+    position: absolute; z-index: 40; max-width: min(28rem, calc(100vw - 1rem));
+    background: var(--raised); color: var(--fg); border: 1px solid var(--line); border-radius: 8px;
+    box-shadow: var(--shadow); padding: .6rem .75rem; font-size: .85rem; line-height: 1.5;
+    font-family: Charter, "Bitstream Charter", Cambria, "Sitka Text", "Liberation Serif", "Times New Roman", Georgia, serif;
+  }
+  .toast {
+    position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); z-index: 60;
+    background: var(--fg); color: var(--bg); padding: .45rem .9rem; border-radius: 8px; font-size: .85rem;
+    box-shadow: var(--shadow); opacity: 0; transition: opacity .2s; pointer-events: none;
+  }
+  .toast.toast--visible { opacity: 1; }
+  .to-top {
+    position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 15; width: 2.6rem; height: 2.6rem;
+    border-radius: 50%; border: 1px solid var(--line); background: var(--raised); color: var(--fg);
+    box-shadow: var(--shadow); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  }
+  .to-top:hover { color: var(--accent); border-color: var(--accent); }
+  .to-top svg { width: 1.1rem; height: 1.1rem; }
 
   /* --- generic fallback tree (elements without a dedicated renderer) --- */
   .node { margin: .15rem 0; }
@@ -217,23 +402,26 @@
   .empty { color: var(--faint); font-style: italic; font-size: .8rem; }
   .rich { }
   .inline > .node__label { font-size: .65rem; opacity: .7; margin-right: .15rem; }
-  .attrs { display: inline-flex; flex-wrap: wrap; gap: .25rem; }
+  .attrs { display: inline-flex; flex-wrap: wrap; gap: .25rem; min-width: 0; }
   .attr {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: .68rem; background: var(--chip-bg); color: var(--chip-fg);
-    padding: .02rem .35rem; border-radius: 4px; white-space: nowrap;
+    padding: .02rem .35rem; border-radius: 4px; overflow-wrap: anywhere;
   }
   .attr b { font-weight: 600; }
 
   /* special content */
-  figure.grafika, figure.grafika-wektorowa { margin: .5rem 0; }
-  figure.grafika img { max-width: 100%; height: auto; border: 1px solid var(--line); }
-  figure.grafika figcaption, figure.grafika-wektorowa figcaption { color: var(--muted); font-size: .78rem; }
+  figure.grafika, figure.grafika-wektorowa { margin: .75rem 0; }
+  figure.grafika img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+  figure.grafika figcaption, figure.grafika-wektorowa figcaption { color: var(--muted); font-size: .8em; }
   .grafika-wektorowa svg { max-width: 100%; height: auto; }
-  .math { margin: .35rem 0; }
+  .math { margin: .4rem 0; overflow-x: auto; }
   .math--inline { display: inline; }
-  table.tabela { border-collapse: collapse; margin: .5rem 0; }
-  table.tabela td, table.tabela th { border: 1px solid var(--line); padding: .3rem .5rem; vertical-align: top; }
+  .math--inline mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; vertical-align: middle; }
+  .table-scroll { overflow-x: auto; margin: .6rem 0; }
+  /* a wide table scrolls in its own box instead of widening the page */
+  table.tabela { border-collapse: collapse; margin: .6rem 0; font-size: .92em; display: block; max-width: 100%; overflow-x: auto; }
+  table.tabela td, table.tabela th { border: 1px solid var(--line); padding: .35rem .55rem; vertical-align: top; }
   table.tabela th { background: var(--panel); font-weight: 600; }
   table.tabela .text-block { margin: .15rem 0; }
   .cell-header { font-weight: 600; text-align: center; }
@@ -245,19 +433,19 @@
   .cell-list-4 { margin-left: 4rem; }
 
   /* math formulas with symbol descriptions (wzor-mat) */
-  figure.wzor-mat { margin: .6rem 0; }
+  figure.wzor-mat { margin: .75rem 0; }
   .wzor-mat__opis { display: flex; gap: .5rem; align-items: baseline; margin: .2rem 0; }
   .wzor-mat__symbol { flex: none; min-width: 2.5rem; }
   .wzor-mat__objasnienie { flex: 1; min-width: 0; }
   .wzor-mat__wprowadzenie { margin: .3rem 0; }
-  .opis-tabeli { font-size: .85rem; color: var(--muted); margin: .2rem 0 .6rem; }
+  .opis-tabeli { font-size: .85em; color: var(--muted); margin: .2rem 0 .6rem; }
 
   /* text blocks (podstawa-prawna, fragment, tytuły sekcji, podpisy, ...) */
-  .text-block { margin: .45rem 0; }
+  .text-block { margin: .5rem 0; }
   .unit-title { font-weight: 700; margin: .2rem 0 .35rem; }
-  .podstawa-prawna { margin: .8rem 0 1rem; }
+  .podstawa-prawna { margin: .8rem 0 1.2rem; }
   .podpis { text-align: right; margin: .35rem 0; }
-  .podpisujacy { margin: 1rem 0; }
+  .podpisujacy { margin: 1.2rem 0; }
   .podpisujacy .osoba { display: block; }
 
   /* the cover letter of a bill (projekt ustawy / kodeksu) */
@@ -266,11 +454,11 @@
   .druk { text-align: right; font-weight: 700; margin: 0; }
   .miejsce-i-data { text-align: right; margin: .8rem 0; }
   .adresat-pisma { text-align: right; font-weight: 700; margin: 0; }
-  .zalacznik-do { text-align: right; color: var(--muted); font-size: .9rem; }
+  .zalacznik-do { text-align: right; color: var(--muted); font-size: .9em; }
   .zalacznik-nr { text-align: right; font-weight: 700; margin: 1.2rem 0 .3rem; }
   .zalacznik-binarny { margin: .5rem 0; }
   .tytul-zalacznika, .tytul-uzasadnienia { text-align: center; font-weight: 700; margin: .8rem 0; }
-  .tytul-sekcji { font-weight: 700; margin: .9rem 0 .4rem; }
+  .tytul-sekcji { font-weight: 700; margin: 1rem 0 .4rem; }
   .tytul-tabeli { text-align: center; font-weight: 600; margin: .6rem 0 .25rem; }
   .uchylenie-OTJ { font-style: italic; }
   .sedzia { margin: .15rem 0; }
@@ -280,7 +468,7 @@
 
   /* block containers (preambula, uzasadnienie, załączniki, orzeczenie TK) */
   .block { margin: .6rem 0; }
-  .block--zalacznik, .block--uzasadnienie { border-top: 1px solid var(--line); margin-top: 1.6rem; padding-top: .8rem; }
+  .block--zalacznik, .block--uzasadnienie { border-top: 1px solid var(--line); margin-top: 2rem; padding-top: 1rem; }
   .block--preambula { font-style: italic; margin: 1rem 0; }
   .block--podpisy-blok { text-align: right; }
   .block--sekcja-uzasadnienia { margin: .8rem 0; }
@@ -303,9 +491,42 @@
 
   /* amendment content blocks and electronic signatures */
   .nowela-block { display: block; }
-  .e-podpis { margin-top: 1.5rem; font-size: .85rem; color: var(--muted); }
+  .e-podpis { margin-top: 1.5rem; font-size: .85em; color: var(--muted); }
   .e-podpis > summary { cursor: pointer; }
-  .render-error { color: #b91c1c; font-size: .8rem; font-family: ui-monospace, monospace; }
+
+  @media (max-width: 640px) {
+    /* deep nesting must fit a phone: the marker opens the first line
+       instead of hanging, and each level indents a little */
+    .unit { display: flow-root; }
+    .unit > .unit__marker,
+    .unit[class*="unit--artykul"] > .unit__marker, .unit[class*="unit--paragraf"] > .unit__marker,
+    .unit[class*="unit--nie-ztp-artykul"] > .unit__marker, .unit[class*="unit--nie-ztp-paragraf"] > .unit__marker {
+      float: left; min-width: 0; margin-right: .4rem; }
+    .unit__body .unit { margin-left: .7rem; }
+    blockquote.cytat { margin-left: .2rem; padding-left: .6rem; }
+    .node__body { margin-left: .4rem; padding-left: .5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* printing: the act alone, every unit open */
+  @media print {
+    :root { color-scheme: light; --fg: #000; --muted: #333; --faint: #666; --line: #bbb; --bg: #fff; --accent: #000; }
+    body { background: #fff; color: #000; }
+    .toolbar, .toc, .sidebar, .skip-link, .to-top, .fn-preview, .toast, .nowela__popup { display: none !important; }
+    .layout { display: block; max-width: none; padding: 0; }
+    #tree { max-width: none; }
+    .content { font-size: 11pt; line-height: 1.45; }
+    .unit.collapsed > .unit__body, .sect.collapsed > .sect__body, .node.collapsed > .node__body { display: block !important; }
+    .unit.collapsible > .unit__marker::before, .unit.collapsed > .unit__marker::after, .node.collapsible > .node__head::before { content: none; }
+    .sect.collapsed > .heading { opacity: 1; }
+    a.ref, sup.fn-ref a { color: inherit; text-decoration: none; }
+    mark.hit { background: none; box-shadow: none; }
+    .heading, .doc-title { break-after: avoid; }
+    .unit { break-inside: avoid-page; }
+  }
 </style>
 {% if needs_mathjax %}
 <script>
@@ -315,15 +536,42 @@
 {% endif %}
 </head>
 <body>
-<div class="toolbar">
-  <span class="doc-name">{{ source_name }}</span>
+<a class="skip-link" href="#tree">Przejdź do treści</a>
+<header class="toolbar" id="toolbar">
   {% if toc %}
-  <button type="button" id="toc-toggle">Spis treści</button>
+  <button type="button" class="tool tool--icon" id="toc-toggle" aria-controls="toc" aria-expanded="true" title="Spis treści" aria-label="Spis treści">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+  </button>
   {% endif %}
-  <span class="spacer"></span>
-  <button type="button" id="expand-all">Rozwiń wszystko</button>
-  <button type="button" id="collapse-all">Zwiń wszystko</button>
-</div>
+  <div class="bar-heading">
+    <span class="bar-title" title="{{ document_title or source_name }}">{{ document_title or source_name }}</span>
+    {% if document_title %}<span class="bar-file">{{ source_name }}</span>{% endif %}
+  </div>
+  <div class="search" role="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="search" type="search" placeholder="Szukaj w dokumencie" aria-label="Szukaj w dokumencie" aria-describedby="search-count" autocomplete="off" spellcheck="false">
+    <span class="search__count" id="search-count" aria-live="polite"></span>
+    <button type="button" class="tool" id="search-prev" title="Poprzednie wystąpienie (Shift+Enter)" aria-label="Poprzednie wystąpienie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
+    </button>
+    <button type="button" class="tool" id="search-next" title="Następne wystąpienie (Enter)" aria-label="Następne wystąpienie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+  </div>
+  <div class="tools">
+    <button type="button" class="tool" id="expand-all">Rozwiń<span class="long">&nbsp;wszystko</span></button>
+    <button type="button" class="tool" id="collapse-all">Zwiń<span class="long">&nbsp;wszystko</span></button>
+    <button type="button" class="tool tool--icon" id="text-smaller" title="Mniejszy tekst" aria-label="Mniejszy tekst">A&minus;</button>
+    <button type="button" class="tool tool--icon" id="text-larger" title="Większy tekst" aria-label="Większy tekst">A+</button>
+    <button type="button" class="tool tool--icon" id="info-toggle" aria-controls="sidebar" aria-expanded="true" title="Informacje o dokumencie" aria-label="Informacje o dokumencie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+    </button>
+    <button type="button" class="tool tool--icon" id="theme-toggle" title="Tryb jasny lub ciemny" aria-label="Przełącz tryb jasny lub ciemny">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg>
+    </button>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+</header>
 <div class="layout">
   {% if toc %}
   <nav class="toc" id="toc" aria-label="Spis treści">
@@ -331,178 +579,436 @@
     {{ toc|safe }}
   </nav>
   {% endif %}
-  <main class="content"><div id="tree">{{ body|safe }}</div></main>
-  <aside class="sidebar">
-    <section class="info">
-      <h2>Dokument</h2>
-      <div class="meta-row"><span class="meta-key">wygenerowano</span><span class="meta-val">{{ generated }}</span></div>
-    </section>
-
-    {% if not validated %}
-      <div class="banner banner--info">Walidacja XSD pominięta{% if schema_error %} ({{ schema_error }}){% endif %}.</div>
-    {% elif valid %}
+  <main class="content" tabindex="-1"><div id="tree">{{ body|safe }}</div></main>
+  <aside class="sidebar" id="sidebar" aria-label="Informacje o dokumencie">
+    {% if validated %}
+      {% if valid %}
       <div class="banner banner--ok">Dokument zgodny ze schematem XSD.</div>
-    {% else %}
+      {% else %}
       <div class="banner banner--warn">
         Dokument niezgodny ze schematem &mdash; {{ errors|length }} błąd(ów).
         <details><summary>Pokaż błędy</summary><ul>
           {% for e in errors %}<li>{{ e }}</li>{% endfor %}
         </ul></details>
       </div>
+      {% endif %}
+    {% elif schema_error %}
+      <div class="banner banner--info">Walidacja XSD pominięta ({{ schema_error }}).</div>
     {% endif %}
 
     {% if metadata %}
-    <section class="metadata">
-      <h2>Metadane</h2>
-      {{ metadata|safe }}
-    </section>
+    <div class="metadata">{{ metadata|safe }}</div>
     {% endif %}
+    <p class="generated">Wygenerowano {{ generated }}</p>
   </aside>
 </div>
+<button type="button" class="to-top" id="to-top" title="Na górę" aria-label="Na górę strony" hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<div class="fn-preview" id="fn-preview" role="tooltip" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
-  (function () {
-    var tree = document.getElementById("tree");
-    if (tree) {
-      tree.addEventListener("click", function (ev) {
-        // A reference to the act's own provision: jump there, opening collapsed units on the way.
-        var ref = ev.target.closest('a.ref[href^="#"]');
-        if (ref) {
-          var target = document.getElementById(decodeURIComponent(ref.getAttribute("href").slice(1)));
-          if (target) {
-            ev.preventDefault();
-            for (var p = target; p; p = p.parentElement) {
-              if (p.classList) p.classList.remove("collapsed");
-            }
-            target.scrollIntoView(); // respects scroll-margin-top
-            if (history.pushState) history.pushState(null, "", ref.getAttribute("href"));
-          }
-          return;
-        }
-        if (ev.target.closest(".nowela")) return;
-        var head = ev.target.closest(".node__head");
-        if (head && head.parentElement.classList.contains("collapsible")) {
-          head.parentElement.classList.toggle("collapsed"); return;
-        }
-        var marker = ev.target.closest(".unit__marker");
-        if (marker && marker.parentElement.classList.contains("collapsible")) {
-          marker.parentElement.classList.toggle("collapsed"); return;
-        }
-        var heading = ev.target.closest(".heading");
-        if (heading && heading.parentElement.classList.contains("collapsible")) {
-          heading.parentElement.classList.toggle("collapsed"); return;
-        }
-      });
-    }
-    function setAll(collapsed) {
-      var nodes = document.querySelectorAll(".node.collapsible, .unit.collapsible, .sect.collapsible");
-      for (var i = 0; i < nodes.length; i++) {
-        nodes[i].classList.toggle("collapsed", collapsed);
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var toolbar = document.getElementById("toolbar");
+  var tree = document.getElementById("tree");
+  var toc = document.getElementById("toc");
+  var store = {
+    get: function (key) { try { return localStorage.getItem(key); } catch (e) { return null; } },
+    set: function (key, value) { try { localStorage.setItem(key, value); } catch (e) { /* not kept */ } }
+  };
+  function idOf(link) { return decodeURIComponent(link.getAttribute("href").slice(1)); }
+
+  /* The toolbar wraps on narrow screens: keep its height in a variable. */
+  function measureToolbar() { root.style.setProperty("--toolbar-h", toolbar.offsetHeight + "px"); }
+  measureToolbar();
+  window.addEventListener("resize", measureToolbar);
+
+  var toast = document.getElementById("toast"), toastTimer = null;
+  function say(message) {
+    toast.textContent = message;
+    toast.classList.add("toast--visible");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove("toast--visible"); }, 1800);
+  }
+
+  /* --- collapsing ---------------------------------------------------- */
+  var TOGGLE_OF = { unit: ".unit__marker", sect: ".heading", node: ".node__head" };
+  function toggleOf(box) {
+    for (var kind in TOGGLE_OF) {
+      if (box.classList.contains(kind)) {
+        var el = box.querySelector(":scope > " + TOGGLE_OF[kind]);
+        if (el) return el;
       }
     }
-    var ea = document.getElementById("expand-all");
-    var ca = document.getElementById("collapse-all");
-    if (ea) ea.addEventListener("click", function () { setAll(false); });
-    if (ca) ca.addEventListener("click", function () { setAll(true); });
-  })();
-
-  /* Table of contents: jump-with-expand, scrollspy, mobile toggle. */
-  (function () {
-    var toc = document.getElementById("toc");
-    if (!toc) return;
-
-    var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
-    var byId = {};
-    var targets = [];
-    links.forEach(function (link) {
-      var id = decodeURIComponent(link.getAttribute("href").slice(1));
-      var el = document.getElementById(id);
-      if (el) { byId[id] = link; targets.push(el); }
+    return null;
+  }
+  function sync(box) {
+    var el = toggleOf(box);
+    if (el && el.hasAttribute("aria-expanded")) el.setAttribute("aria-expanded", String(!box.classList.contains("collapsed")));
+  }
+  function setCollapsed(box, collapsed) { box.classList.toggle("collapsed", collapsed); sync(box); }
+  function expandTo(el) {
+    for (var p = el; p && p !== document.body; p = p.parentElement) {
+      if (p.classList.contains("collapsed")) setCollapsed(p, false);
+    }
+  }
+  // Articles, sections and generic nodes are reachable with the keyboard.
+  var keyboardToggles = '.unit.collapsible[class*="artykul"] > .unit__marker, .unit.collapsible[class*="paragraf"] > .unit__marker, ' +
+    '.sect.collapsible > .heading, .node.collapsible > .node__head';
+  Array.prototype.forEach.call(tree.querySelectorAll(keyboardToggles), function (el) {
+    el.setAttribute("role", "button");
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("aria-expanded", "true");
+  });
+  tree.addEventListener("keydown", function (ev) {
+    if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches('[role="button"][aria-expanded]')) {
+      ev.preventDefault();
+      ev.target.click();
+    }
+  });
+  function setAll(collapsed) {
+    Array.prototype.forEach.call(document.querySelectorAll(".node.collapsible, .unit.collapsible, .sect.collapsible"), function (box) {
+      setCollapsed(box, collapsed);
     });
+  }
+  document.getElementById("expand-all").addEventListener("click", function () { setAll(false); });
+  document.getElementById("collapse-all").addEventListener("click", function () { setAll(true); });
 
-    // A collapsed ancestor would swallow the jump — expand the chain first.
-    function expandTo(el) {
-      for (var p = el; p; p = p.parentElement) {
-        if (p.classList) p.classList.remove("collapsed");
-      }
-    }
-    toc.addEventListener("click", function (ev) {
-      var link = ev.target.closest('a[href^="#"]');
-      if (!link) return;
-      var id = decodeURIComponent(link.getAttribute("href").slice(1));
-      var el = document.getElementById(id);
-      if (el) {
-        // Explicit jump: the default anchor action does nothing when the hash
-        // is unchanged, and the target may sit inside a collapsed unit.
+  /* --- jumps: references, ToC, footnotes ----------------------------- */
+  function flash(el) {
+    el.classList.remove("flash");
+    void el.offsetWidth; // restart the animation
+    el.classList.add("flash");
+  }
+  function jumpTo(el) {
+    expandTo(el);
+    el.scrollIntoView(); // respects scroll-margin-top
+    flash(el);
+  }
+  tree.addEventListener("click", function (ev) {
+    // A reference to the act's own provision: jump there, opening collapsed units on the way.
+    var ref = ev.target.closest('a.ref[href^="#"]');
+    if (ref) {
+      var target = document.getElementById(idOf(ref));
+      if (target) {
         ev.preventDefault();
-        expandTo(el);
-        el.scrollIntoView(); // respects scroll-margin-top
-        if (history.replaceState) history.replaceState(null, "", "#" + id);
+        jumpTo(target);
+        if (history.pushState) history.pushState(null, "", ref.getAttribute("href"));
       }
-      setActive(link);
-      pinned = link; // an explicit choice sticks until the user scrolls away
-      if (window.matchMedia("(max-width: 1100px)").matches) toc.classList.remove("toc--open");
-    });
-    if (location.hash) {
-      var initial = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-      if (initial) expandTo(initial);
+      return;
     }
+    var note = ev.target.closest('a[href^="#fn-"], a[href^="#fnref-"]');
+    if (note) {
+      var landing = document.getElementById(idOf(note));
+      if (landing) { ev.preventDefault(); hidePreview(); jumpTo(landing); }
+      return;
+    }
+    if (ev.target.closest(".nowela")) return;
+    var head = ev.target.closest(".node__head, .unit__marker, .heading");
+    if (head && head.parentElement.classList.contains("collapsible")) {
+      setCollapsed(head.parentElement, !head.parentElement.classList.contains("collapsed"));
+    }
+  });
+  if (location.hash) {
+    var initial = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (initial) { expandTo(initial); flash(initial); }
+  }
 
-    // Scrollspy: highlight the last target above the reading line. The line
-    // sits just below scroll-margin-top, so a jumped-to unit counts as current.
-    var active = null;
-    var pinned = null; // set by a ToC click, cleared by real user scrolling
-    ["wheel", "touchmove", "keydown"].forEach(function (type) {
-      window.addEventListener(type, function () { pinned = null; }, { passive: true });
-    });
-    function setActive(link) {
-      if (link === active) return;
-      if (active) active.classList.remove("active");
-      active = link;
-      if (active) {
-        active.classList.add("active");
-        var top = active.offsetTop, bottom = top + active.offsetHeight;
-        if (top < toc.scrollTop + 40 || bottom > toc.scrollTop + toc.clientHeight - 40) {
-          toc.scrollTop = top - toc.clientHeight / 2;
-        }
-      }
-    }
-    function highlight() {
-      if (pinned) return;
-      var line = window.scrollY + 60;
-      var current = null;
-      for (var i = 0; i < targets.length; i++) {
-        var el = targets[i];
-        if (el.offsetParent === null) continue; // hidden inside a collapsed unit
-        var top = el.getBoundingClientRect().top + window.scrollY;
-        if (top <= line) current = el; else break;
-      }
-      setActive(current ? byId[current.id] : (links.length ? links[0] : null));
-    }
-    var lastRun = 0, trailing = null;
-    function onScroll() {
-      var now = Date.now();
-      if (now - lastRun > 100) {
-        lastRun = now;
-        highlight();
-      } else if (!trailing) {
-        trailing = setTimeout(function () { trailing = null; lastRun = Date.now(); highlight(); }, 120);
-      }
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    window.addEventListener("hashchange", onScroll);
-    window.addEventListener("load", onScroll);
-    document.addEventListener("click", onScroll); // collapse/expand moves content
-    // Safety net for environments that throttle scroll events away.
-    var lastSeenY = -1;
-    setInterval(function () {
-      if (window.scrollY !== lastSeenY) { lastSeenY = window.scrollY; highlight(); }
-    }, 250);
-    highlight();
+  /* --- footnote preview ---------------------------------------------- */
+  var preview = document.getElementById("fn-preview");
+  var previewFor = null;
+  function showPreview(link) {
+    var note = document.getElementById(idOf(link));
+    if (!note || previewFor === link) return;
+    var body = note.querySelector(".footnote__body") || note;
+    preview.innerHTML = "";
+    preview.appendChild(body.cloneNode(true));
+    preview.hidden = false;
+    previewFor = link;
+    var r = link.getBoundingClientRect();
+    var left = Math.max(8, Math.min(r.left - 16, window.innerWidth - preview.offsetWidth - 8));
+    var top = r.bottom + 8;
+    if (top + preview.offsetHeight > window.innerHeight - 8) top = r.top - preview.offsetHeight - 8;
+    preview.style.left = (left + window.scrollX) + "px";
+    preview.style.top = (Math.max(8, top) + window.scrollY) + "px";
+  }
+  function hidePreview() { preview.hidden = true; previewFor = null; }
+  tree.addEventListener("mouseover", function (ev) {
+    var link = ev.target.closest('a[href^="#fn-"]');
+    if (link) showPreview(link); else if (previewFor && !ev.target.closest(".fn-preview")) hidePreview();
+  });
+  tree.addEventListener("focusin", function (ev) {
+    if (ev.target.matches('a[href^="#fn-"]')) showPreview(ev.target);
+  });
+  tree.addEventListener("focusout", hidePreview);
+  tree.addEventListener("mouseleave", hidePreview);
 
-    var toggle = document.getElementById("toc-toggle");
-    if (toggle) toggle.addEventListener("click", function () { toc.classList.toggle("toc--open"); });
-  })();
+  /* --- search within the document ------------------------------------ */
+  var search = document.getElementById("search");
+  var counter = document.getElementById("search-count");
+  var hits = [], current = -1, searchTimer = null;
+  // Case- and accent-insensitive, one character for one: "zrodlo" finds "źródło".
+  function fold(text) {
+    var out = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i].toLowerCase();
+      out += c === "ł" ? "l" : c.normalize("NFD")[0];
+    }
+    return out;
+  }
+  function clearHits() {
+    var parents = [];
+    hits.forEach(function (mark) {
+      var parent = mark.parentNode;
+      if (!parent) return;
+      parent.replaceChild(document.createTextNode(mark.textContent), mark);
+      parents.push(parent);
+    });
+    parents.forEach(function (parent) { parent.normalize(); });
+    hits = []; current = -1;
+  }
+  function textNodes() {
+    var nodes = [];
+    var walker = document.createTreeWalker(tree, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (node) {
+        if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        var parent = node.parentElement;
+        if (parent.closest("script, style, mjx-container, .nowela__popup")) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    return nodes;
+  }
+  function runSearch() {
+    clearHits();
+    var query = fold(search.value.trim());
+    if (query.length < 2) { counter.textContent = ""; return; }
+    textNodes().forEach(function (node) {
+      if (hits.length >= 2000) return;
+      var folded = fold(node.nodeValue), found = [], at = folded.indexOf(query);
+      while (at !== -1) { found.push(at); at = folded.indexOf(query, at + query.length); }
+      for (var i = found.length - 1; i >= 0; i--) {
+        var match = node.splitText(found[i]);
+        match.splitText(query.length);
+        var mark = document.createElement("mark");
+        mark.className = "hit";
+        match.parentNode.replaceChild(mark, match);
+        mark.appendChild(match);
+      }
+    });
+    hits = Array.prototype.slice.call(tree.querySelectorAll("mark.hit"));
+    if (!hits.length) { counter.textContent = "brak wyników"; return; }
+    show(0);
+  }
+  function show(index) {
+    if (!hits.length) return;
+    if (current >= 0 && hits[current]) hits[current].classList.remove("hit--current");
+    current = (index + hits.length) % hits.length;
+    var mark = hits[current];
+    mark.classList.add("hit--current");
+    expandTo(mark);
+    mark.scrollIntoView({ block: "center" });
+    counter.textContent = (current + 1) + " z " + hits.length + (hits.length >= 2000 ? "+" : "");
+  }
+  search.addEventListener("input", function () {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(runSearch, 220);
+  });
+  search.addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter") {
+      ev.preventDefault();
+      clearTimeout(searchTimer);
+      if (!hits.length) runSearch(); else show(current + (ev.shiftKey ? -1 : 1));
+    } else if (ev.key === "Escape") {
+      search.value = ""; clearHits(); counter.textContent = "";
+    }
+  });
+  document.getElementById("search-next").addEventListener("click", function () { if (hits.length) show(current + 1); else runSearch(); });
+  document.getElementById("search-prev").addEventListener("click", function () { if (hits.length) show(current - 1); else runSearch(); });
+  document.addEventListener("keydown", function (ev) {
+    var typing = ev.target.closest && ev.target.closest("input, textarea, select, [contenteditable]");
+    if (ev.key === "/" && !typing && !ev.ctrlKey && !ev.metaKey && !ev.altKey) { ev.preventDefault(); search.focus(); search.select(); }
+    if (ev.key === "Escape") { hidePreview(); if (toc) closeToc(); }
+  });
+
+  /* --- the document information panel ------------------------------- */
+  var layout = document.querySelector(".layout");
+  var sidebar = document.getElementById("sidebar");
+  var infoToggle = document.getElementById("info-toggle");
+  function showSidebar(on) {
+    layout.classList.toggle("sidebar-off", !on);
+    infoToggle.setAttribute("aria-expanded", String(on));
+  }
+  // Open where the act keeps room for it, or when it holds a validation result.
+  var savedSidebar = store.get("schemapl-sidebar");
+  showSidebar(sidebar.querySelector(".banner") ? true :
+    savedSidebar ? savedSidebar === "on" : window.innerWidth >= 1360);
+  infoToggle.addEventListener("click", function () {
+    var on = layout.classList.contains("sidebar-off");
+    showSidebar(on);
+    store.set("schemapl-sidebar", on ? "on" : "off");
+  });
+
+  /* --- view: text size and theme ------------------------------------- */
+  var SCALES = [0.875, 1, 1.125, 1.25, 1.4];
+  var smaller = document.getElementById("text-smaller"), larger = document.getElementById("text-larger");
+  function scaleIndex() {
+    var value = parseFloat(getComputedStyle(root).getPropertyValue("--text-scale")) || 1;
+    var best = 1;
+    SCALES.forEach(function (s, i) { if (Math.abs(s - value) < Math.abs(SCALES[best] - value)) best = i; });
+    return best;
+  }
+  function applyScale(index) {
+    index = Math.max(0, Math.min(SCALES.length - 1, index));
+    root.style.setProperty("--text-scale", String(SCALES[index]));
+    store.set("schemapl-text-scale", String(SCALES[index]));
+    smaller.disabled = index === 0;
+    larger.disabled = index === SCALES.length - 1;
+  }
+  smaller.addEventListener("click", function () { applyScale(scaleIndex() - 1); });
+  larger.addEventListener("click", function () { applyScale(scaleIndex() + 1); });
+  smaller.disabled = scaleIndex() === 0;
+  larger.disabled = scaleIndex() === SCALES.length - 1;
+  document.getElementById("theme-toggle").addEventListener("click", function () {
+    var dark = root.getAttribute("data-theme") === "dark" ||
+      (!root.hasAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    var next = dark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    store.set("schemapl-theme", next);
+    say(next === "dark" ? "Tryb ciemny" : "Tryb jasny");
+  });
+
+  /* --- reading progress and back to top ------------------------------ */
+  var bar = document.getElementById("progress-bar");
+  var toTop = document.getElementById("to-top");
+  function onScrollView() {
+    var range = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = "scaleX(" + (range > 0 ? Math.min(1, window.scrollY / range) : 0) + ")";
+    toTop.hidden = window.scrollY < 800;
+  }
+  window.addEventListener("scroll", onScrollView, { passive: true });
+  onScrollView();
+  // Safety net for environments that throttle scroll events away.
+  var lastViewY = -1;
+  setInterval(function () {
+    if (window.scrollY !== lastViewY) { lastViewY = window.scrollY; onScrollView(); }
+  }, 250);
+  toTop.addEventListener("click", function () {
+    var smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+  });
+
+  /* --- table of contents: jump-with-expand, scrollspy, hide or drawer - */
+  // Wide screens show the outline beside the act, and its button hides
+  // it; narrow ones keep it in a drawer the button opens.
+  var tocToggle = document.getElementById("toc-toggle");
+  var narrow = window.matchMedia("(max-width: 1100px)");
+  function syncTocToggle() {
+    if (!tocToggle) return;
+    var shown = narrow.matches ? toc.classList.contains("toc--open") : root.getAttribute("data-toc") !== "off";
+    tocToggle.setAttribute("aria-expanded", String(shown));
+  }
+  function closeToc() {
+    toc.classList.remove("toc--open");
+    syncTocToggle();
+  }
+  if (!toc) return;
+  var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
+  var byId = {};
+  var targets = [];
+  links.forEach(function (link) {
+    var el = document.getElementById(idOf(link));
+    if (el) { byId[el.id] = link; targets.push(el); }
+  });
+  var active = null;
+  var pinned = null; // set by a ToC click, cleared by real user scrolling
+  ["wheel", "touchmove", "keydown"].forEach(function (type) {
+    window.addEventListener(type, function () { pinned = null; }, { passive: true });
+  });
+  toc.addEventListener("click", function (ev) {
+    var link = ev.target.closest('a[href^="#"]');
+    if (!link) return;
+    var el = document.getElementById(idOf(link));
+    if (el) {
+      // Explicit jump: the default anchor action does nothing when the hash
+      // is unchanged, and the target may sit inside a collapsed unit.
+      ev.preventDefault();
+      jumpTo(el);
+      if (history.replaceState) history.replaceState(null, "", "#" + el.id);
+    }
+    setActive(link);
+    pinned = link; // an explicit choice sticks until the user scrolls away
+    if (window.matchMedia("(max-width: 1100px)").matches) closeToc();
+  });
+  function setActive(link) {
+    if (link === active) return;
+    if (active) { active.classList.remove("active"); active.removeAttribute("aria-current"); }
+    active = link;
+    if (active) {
+      active.classList.add("active");
+      active.setAttribute("aria-current", "location");
+      var top = active.offsetTop, bottom = top + active.offsetHeight;
+      if (top < toc.scrollTop + 40 || bottom > toc.scrollTop + toc.clientHeight - 40) {
+        toc.scrollTop = top - toc.clientHeight / 2;
+      }
+    }
+  }
+  // Scrollspy: highlight the last target above the reading line, just
+  // below the toolbar, so a jumped-to unit counts as current.
+  function highlight() {
+    if (pinned) return;
+    var line = window.scrollY + toolbar.offsetHeight + 16;
+    var currentTarget = null;
+    for (var i = 0; i < targets.length; i++) {
+      var el = targets[i];
+      if (el.offsetParent === null) continue; // hidden inside a collapsed unit
+      var top = el.getBoundingClientRect().top + window.scrollY;
+      if (top <= line) currentTarget = el; else break;
+    }
+    setActive(currentTarget ? byId[currentTarget.id] : (links.length ? links[0] : null));
+  }
+  var lastRun = 0, trailing = null;
+  function onScroll() {
+    var now = Date.now();
+    if (now - lastRun > 100) {
+      lastRun = now;
+      highlight();
+    } else if (!trailing) {
+      trailing = setTimeout(function () { trailing = null; lastRun = Date.now(); highlight(); }, 120);
+    }
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  window.addEventListener("hashchange", onScroll);
+  window.addEventListener("load", onScroll);
+  document.addEventListener("click", onScroll); // collapse/expand moves content
+  // Safety net for environments that throttle scroll events away.
+  var lastSeenY = -1;
+  setInterval(function () {
+    if (window.scrollY !== lastSeenY) { lastSeenY = window.scrollY; highlight(); }
+  }, 250);
+  highlight();
+  if (tocToggle) {
+    syncTocToggle();
+    tocToggle.addEventListener("click", function () {
+      if (narrow.matches) {
+        toc.classList.toggle("toc--open");
+      } else {
+        var hide = root.getAttribute("data-toc") !== "off";
+        if (hide) root.setAttribute("data-toc", "off"); else root.removeAttribute("data-toc");
+        store.set("schemapl-toc", hide ? "off" : "on");
+      }
+      syncTocToggle();
+    });
+    if (narrow.addEventListener) narrow.addEventListener("change", closeToc);
+    document.addEventListener("click", function (ev) {
+      if (toc.classList.contains("toc--open") && !ev.target.closest("#toc, #toc-toggle")) closeToc();
+    });
+  }
+})();
 </script>
 </body>
 </html>

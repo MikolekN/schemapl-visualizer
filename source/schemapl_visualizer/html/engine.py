@@ -75,6 +75,7 @@ class TocEntry:
     title: str
     kind: str
     depth: int
+    preview: str = ""
 
 
 @dataclass
@@ -83,6 +84,7 @@ class RenderState:
 
     footnotes: list[Footnote] = field(default_factory=list)
     metadata_html: Markup = field(default_factory=Markup)
+    title: str = ""
     uses_math: bool = False
     toc: list[TocEntry] = field(default_factory=list)
     used_ids: set[str] = field(default_factory=set)
@@ -209,11 +211,16 @@ def render_toc(entries: list[TocEntry]) -> Markup:
         marker = html_tag(
             "span", escape_text(entry.marker), css_class="toc__marker"
         )
-        title = (
-            html_tag("span", escape_text(entry.title), css_class="toc__title")
-            if entry.title
-            else Markup("")
-        )
+        if entry.title:
+            title = html_tag(
+                "span", escape_text(entry.title), css_class="toc__title"
+            )
+        elif entry.preview:
+            title = html_tag(
+                "span", escape_text(entry.preview), css_class="toc__preview"
+            )
+        else:
+            title = Markup("")
         links.append(
             html_tag(
                 "a",

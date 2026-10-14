@@ -15,6 +15,9 @@ a wersjonowanie zgodne z Semantic Versioning.
 - pliki `LICENSE`, `NOTICE` (audyt licencji zależności, fontów, danych i obrazów), `MANIFEST.in`, `public-info.yaml` i `README.pl.md`
 - test czasu wygenerowania strony HTML z zamrożonym zegarem (freezegun w grupie `test`)
 - `HEALTHCHECK` w obrazie kontenera
+- strona HTML: wyszukiwanie w treści (bez względu na wielkość liter i polskie znaki, także w zwiniętych jednostkach), tryb ciemny, zmiana wielkości tekstu, podgląd przypisów po najechaniu, pasek postępu czytania, przycisk powrotu na górę, podświetlenie miejsca po przejściu z odesłania lub spisu treści, obsługa zwijania z klawiatury, spis treści i panel informacji o dokumencie do ukrycia (wybór jest zapamiętywany), układ dla telefonów i wydruku
+- spis treści strony HTML pokazuje początek treści artykułów bez tytułu, a strona nosi tytuł aktu (z metadanych albo z nagłówka aktu) zamiast nazwy pliku
+- panel informacji o dokumencie zaczyna się kartą z rodzajem aktu, adresem publikacyjnym (albo numerem druku), oznaczeniem, czy akt obowiązuje, i odnośnikami do ELI, ISAP i druku sejmowego; metadane są pogrupowane w sekcje (daty, organy, hasła, powiązania, przebieg w czasie, publikacja, identyfikatory), a słowa kluczowe i nazwy własne pokazane jako etykiety
 
 ### Zmieniono
 - zmieniono nazwę projektu na `schemapl-visualizer`
@@ -37,6 +40,7 @@ a wersjonowanie zgodne z Semantic Versioning.
 
 ### Naprawiono
 - PDF nie powstawał, gdy przypis zaczynał się tabelą
+- w widoku ogólnym strony HTML długie atrybuty zachodziły na panel boczny; szerokie tabele i wzory przewijają się we własnym polu zamiast poszerzać stronę
 - strona HTML z kontenera podaje czas wygenerowania w strefie Europe/Warsaw zamiast UTC (`TZ` w obrazie)
 - dokument zagnieżdżony głębiej niż 100 poziomów elementów jest odrzucany wyjątkiem `DocumentTooDeepError` (w usłudze HTTP błąd 400) zamiast błędu 500 i wielotysięcznego wpisu w logu; parser znów stosuje ograniczenia libxml2 (bez `huge_tree`)
 

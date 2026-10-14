@@ -13,9 +13,13 @@ links.
 
 The outputs are:
 
-- `html` – a self-contained, interactive page: a table of contents,
-  collapsible units, footnotes, metadata, formulas, and the result of an
-  optional XSD validation;
+- `html` – a self-contained, interactive page: a table of contents that
+  previews untitled articles, collapsible units, footnotes with hover
+  previews, metadata, formulas, and the result of an optional XSD
+  validation. Readers can search the text (ignoring case and Polish
+  diacritics), hide the table of contents and the document panel, switch to
+  a dark theme and change the text size. The page works on phones and prints
+  as the act alone;
 - `pdf` – the act as published in Dziennik Ustaw / Monitor Polski: the
   paragraph styles of the Word template for acts, Times New Roman, the
   journal's masthead with the emblem, running header and footnotes, links to

@@ -13,8 +13,12 @@ linkami.
 
 Formaty wyniku:
 
-- `html` – samodzielna, interaktywna strona: spis treści, zwijane jednostki,
-  przypisy, metadane, wzory oraz wynik opcjonalnej walidacji XSD;
+- `html` – samodzielna, interaktywna strona: spis treści z początkiem treści
+  artykułów bez tytułu, zwijane jednostki, przypisy z podglądem po najechaniu,
+  metadane, wzory oraz wynik opcjonalnej walidacji XSD. Czytelnik może
+  przeszukiwać tekst (bez względu na wielkość liter i polskie znaki), ukryć
+  spis treści i panel informacji o dokumencie, włączyć tryb ciemny i zmienić
+  wielkość tekstu. Strona działa na telefonach, a wydruk zawiera sam akt;
 - `pdf` – akt w układzie publikacji w Dzienniku Ustaw / Monitorze Polskim:
   style akapitów szablonu aktu prawnego dla Worda, Times New Roman, nagłówek
   dziennika z godłem, żywa pagina i przypisy, linki do przywoływanych aktów;

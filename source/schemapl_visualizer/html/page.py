@@ -28,11 +28,13 @@ def render_full_page(
     validation: ValidationResult,
     uses_math: bool,
     source_name: str,
+    document_title: str = "",
 ) -> str:
     """The complete HTML page of a converted document."""
     template = _environment.get_template("page.html.j2")
     return template.render(
-        title=source_name,
+        title=document_title or source_name,
+        document_title=document_title,
         source_name=source_name,
         validated=validation.validated,
         valid=validation.is_valid,

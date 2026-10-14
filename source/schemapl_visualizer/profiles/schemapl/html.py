@@ -1327,9 +1327,15 @@ def render_document_header(
     if not str(inner).strip():
         # amending acts have empty rodzaj-aktu / data / tytul
         return Markup("")
-    return html_tag(
-        "div", inner, css_class=DOCUMENT_HEADER_CLASS[element_name(element)]
-    )
+    css_class = DOCUMENT_HEADER_CLASS[element_name(element)]
+    if (
+        css_class == "doc-title"
+        and not state.title
+        and not state.anchor_suppression
+    ):
+        title = plain_text(element).lstrip("- " + EN_DASH)
+        state.title = title[:1].upper() + title[1:]
+    return html_tag("div", inner, css_class=css_class)
 
 
 def collect_metadata(element: etree._Element, state: RenderState) -> Markup:
@@ -1339,18 +1345,219 @@ def collect_metadata(element: etree._Element, state: RenderState) -> Markup:
     shown in the text) are added to the notes at the end instead.
     """
     events, _ = _time_index(element, state)
-    entries = []
+    fields: dict[str, etree._Element] = {}
+    sections: dict[str, list[Markup]] = {}
     for child in element:
         if not is_element(child):
             continue
-        if element_name(child) == "AparatOdnosnikow":
+        name = element_name(child)
+        if name == "AparatOdnosnikow":
             for note in child:
                 if is_element(note) and element_name(note) == "odnosnik":
                     collect_footnote(note, state, placed=False)
             continue
-        entries.append(_metadata_entry(child, events))
-    state.metadata_html = join(entries)
+        if name == "Tytul" and not state.title:
+            state.title = plain_text(child)
+        fields.setdefault(name, child)
+        if name in _META_CARD_FIELDS:
+            continue
+        sections.setdefault(_META_SECTION_OF.get(name, "Inne"), []).append(
+            _metadata_section_entry(child, events)
+        )
+    state.metadata_html = _metadata_card(fields) + join(
+        _metadata_section(title, join(sections[title]))
+        for title in [*_META_SECTIONS, "Inne"]
+        if title in sections
+    )
     return Markup("")
+
+
+_META_SECTIONS = {
+    "Daty": (
+        "DataAktu",
+        "DataProjektu",
+        "DataWersjiProjektu",
+        "DataOgloszenia",
+        "DataWejsciaWZycie",
+        "DatyWejsciaWZycieCzesciowe",
+        "DataStanuPrawnegoTJ",
+        "DataObowiazywaniaWersji",
+        "DatyObowiazywaniaWersji",
+        "DataOstatniejZmiany",
+        "Status",
+    ),
+    "Organy": ("Organy", "OrganyInicjujace"),
+    "Hasła": ("SlowaKluczowe", "NazwyWlasne"),
+    "Powiązania": ("Relacje", "AktyUE", "DrukiSejmowe"),
+    "Przebieg w czasie": ("DaneCzasowe",),
+    "Publikacja": (
+        "Tytul",
+        "TytulyPoprzednie",
+        "Wydawnictwo",
+        "Rok",
+        "NrDziennika",
+        "Pozycja",
+        "Kadencja",
+        "NumerDruku",
+        "TekstyAktu",
+    ),
+    "Identyfikatory": (
+        "ELIaktu",
+        "ELIDL",
+        "ELIDLrezultatProjektu",
+        "ELIDLdotyczyAktu",
+        "GUIDwersji",
+        "AdresISAP",
+        "LinkDruku",
+    ),
+}
+_META_SECTION_OF = {
+    name: title for title, names in _META_SECTIONS.items() for name in names
+}
+_META_CARD_FIELDS = {"Rodzaj", "AdresWyswietlany", "CzyObowiazuje"}
+_JOURNALS = {"DU": "Dz.U.", "MP": "M.P."}
+_ISAP_ADDRESS = re.compile(r"W(DU|MP)\d{11}")
+
+
+def _field_text(fields: dict[str, etree._Element], name: str) -> str:
+    """The text of a simple metadata field, empty when it is missing."""
+    element = fields.get(name)
+    return plain_text(element) if element is not None else ""
+
+
+def _metadata_section_entry(
+    element: etree._Element, events: dict[str, etree._Element]
+) -> Markup:
+    """A field as its section shows it.
+
+    A field that is the section's whole subject (organs, relations, time
+    data) opens straight into its contents instead of one more group.
+    """
+    name = element_name(element)
+    if name == "Relacje":
+        return _metadata_relations(element, events, wrapped=False)
+    if name == "DaneCzasowe":
+        return _metadata_time(element, events, wrapped=False)
+    if name in ("Organy", "OrganyInicjujace"):
+        return join(
+            _metadata_entry(child, events)
+            for child in element
+            if is_element(child)
+        )
+    return _metadata_entry(element, events)
+
+
+def _metadata_section(title: str, inner: Markup) -> Markup:
+    """A titled section of the panel; nothing when it would be empty."""
+    if not str(inner).strip():
+        return Markup("")
+    css = "meta-section"
+    if title == "Identyfikatory":
+        css += " meta-section--ids"
+    return html_tag(
+        "section", html_tag("h3", escape_text(title)) + inner, css_class=css
+    )
+
+
+def _metadata_card(fields: dict[str, etree._Element]) -> Markup:
+    """The panel's head: the act's type, address, status and links."""
+    parts: list[Markup] = []
+    kind = _field_text(fields, "Rodzaj")
+    if kind:
+        parts.append(
+            html_tag(
+                "div",
+                escape_text(ACT_TYPE_LABELS.get(kind, kind)),
+                css_class="meta-card__type",
+            )
+        )
+    address = _publication_address(fields)
+    if address:
+        parts.append(
+            html_tag(
+                "div", escape_text(address), css_class="meta-card__address"
+            )
+        )
+    term = _field_text(fields, "Kadencja")
+    if term and not _field_text(fields, "AdresWyswietlany"):
+        parts.append(
+            html_tag(
+                "div",
+                escape_text(f"Sejm {term}. kadencji"),
+                css_class="meta-card__note",
+            )
+        )
+    in_force = _field_text(fields, "CzyObowiazuje")
+    if in_force:
+        parts.append(
+            html_tag(
+                "span",
+                escape_text(_IN_FORCE_LABELS.get(in_force, in_force)),
+                css_class="pill pill--"
+                + ("ok" if in_force == "IN_FORCE" else "off"),
+            )
+        )
+    links = _metadata_links(fields)
+    if links:
+        parts.append(
+            html_tag("div", join(links), css_class="meta-card__links")
+        )
+    if not parts:
+        return Markup("")
+    return html_tag("div", join(parts), css_class="meta-card")
+
+
+def _publication_address(fields: dict[str, etree._Element]) -> str:
+    """Where the act was published, or the number of a bill's print."""
+    shown = _field_text(fields, "AdresWyswietlany")
+    if shown:
+        return shown
+    print_number = _field_text(fields, "NumerDruku")
+    if print_number:
+        return f"Druk nr {print_number}"
+    journal = _JOURNALS.get(_field_text(fields, "Wydawnictwo"))
+    year, item = _field_text(fields, "Rok"), _field_text(fields, "Pozycja")
+    if not (journal and year and item):
+        return ""
+    issue = _field_text(fields, "NrDziennika")
+    number = f"nr {issue} poz. {item}" if issue else f"poz. {item}"
+    return f"{journal} {year} {number}"
+
+
+def _metadata_links(fields: dict[str, etree._Element]) -> list[Markup]:
+    """Buttons to the act elsewhere: ELI, ISAP, the Sejm's print."""
+    eli_field = fields.get("ELIaktu")
+    eli = ""
+    if eli_field is not None:
+        eli = plain_text(child_named(eli_field, "ELI")) or plain_text(
+            eli_field
+        )
+    isap = _field_text(fields, "AdresISAP")
+    print_link = _field_text(fields, "LinkDruku")
+    targets = (
+        ("ELI", _eli_href(eli) if eli else None),
+        ("ELI DL", _eli_href(_field_text(fields, "ELIDL")) or None),
+        (
+            "ISAP",
+            "https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=" + isap
+            if _ISAP_ADDRESS.fullmatch(isap)
+            else None,
+        ),
+        (
+            "Druk w Sejmie",
+            print_link if print_link.startswith("https://") else None,
+        ),
+    )
+    return [
+        html_tag(
+            "a",
+            escape_text(label),
+            css_class="meta-link",
+            attributes={"href": href, "rel": "noopener"},
+        )
+        for label, href in targets
+        if href
+    ]
 
 
 _META_LABELS = {
@@ -1574,12 +1781,19 @@ def _metadata_value_html(name: str, text: str) -> Markup:
     return escape_text(_format_meta_value(name, text))
 
 
+# Longer values (a title) go under their label, not beside it.
+_STACKED_VALUE_LENGTH = 40
+
+
 def _metadata_row(label: str, value: Markup) -> Markup:
     key = html_tag("span", escape_text(label), css_class="meta-key")
+    css = "meta-row"
+    if len(value.striptags()) > _STACKED_VALUE_LENGTH:
+        css += " meta-row--stacked"
     return html_tag(
         "div",
         key + html_tag("span", value, css_class="meta-val"),
-        css_class="meta-row",
+        css_class=css,
     )
 
 
@@ -1660,9 +1874,15 @@ def _eli_display(eli: str) -> str:
 
 
 def _metadata_relations(
-    element: etree._Element, events: dict[str, etree._Element]
+    element: etree._Element,
+    events: dict[str, etree._Element],
+    *,
+    wrapped: bool = True,
 ) -> Markup:
-    """<Relacje>: the act's relations by kind (Zmienia, Uchyla...)."""
+    """<Relacje>: the act's relations by kind (Zmienia, Uchyla...).
+
+    ``wrapped`` puts the kinds in one more group named after the field.
+    """
     by_kind: dict[str, list[Markup]] = {}
     for relation in element:
         if is_element(relation) and element_name(relation) == "Relacja":
@@ -1675,6 +1895,8 @@ def _metadata_relations(
         )
         for kind, items in by_kind.items()
     ]
+    if not wrapped:
+        return join(groups)
     return _metadata_group(_meta_label(element), join(groups))
 
 
@@ -1719,11 +1941,15 @@ def _metadata_relation(
 
 
 def _metadata_time(
-    element: etree._Element, events: dict[str, etree._Element]
+    element: etree._Element,
+    events: dict[str, etree._Element],
+    *,
+    wrapped: bool = True,
 ) -> Markup:
     """<DaneCzasowe>: the act's events and periods.
 
-    Each event lists the units it concerns.
+    Each event lists the units it concerns. ``wrapped`` puts it all in
+    one more group named after the field.
     """
     sections: list[Markup] = []
     periods: list[Markup] = []
@@ -1738,6 +1964,8 @@ def _metadata_time(
             )
             sections.append(_metadata_group(_meta_label(child), items))
     sections.append(_metadata_group("Okresy", join(periods)))
+    if not wrapped:
+        return join(sections)
     return _metadata_group(_meta_label(element), join(sections))
 
 
@@ -1857,21 +2085,31 @@ def _metadata_organ(
     rows = []
     if headline:
         rows.append(
-            html_tag("div", escape_text(headline), css_class="meta-item")
+            html_tag(
+                "div", escape_text(headline), css_class="meta-organ__name"
+            )
         )
     rows.extend(rest)
-    return join(rows)
+    return html_tag("div", join(rows), css_class="meta-organ")
 
 
 def _metadata_term_list(element: etree._Element) -> Markup:
-    """Keyword-style lists shown as one comma-separated row."""
+    """Keyword-style lists shown as chips under their label."""
     terms = [
         (child.text or "").strip() for child in element if is_element(child)
     ]
     terms = [term for term in terms if term]
     if not terms:
         return Markup("")
-    return _metadata_row(_meta_label(element), escape_text(", ".join(terms)))
+    label = html_tag(
+        "span", escape_text(_meta_label(element)), css_class="meta-key"
+    )
+    chips = html_tag(
+        "ul",
+        join(html_tag("li", escape_text(term)) for term in terms),
+        css_class="meta-chips",
+    )
+    return html_tag("div", label + chips, css_class="meta-terms")
 
 
 def render_numbered_unit(
@@ -1892,6 +2130,7 @@ def render_numbered_unit(
                     title=plain_text(child_named(element, "tytul")),
                     kind="article",
                     depth=state.toc_depth,
+                    preview=_first_words(element),
                 )
             )
     elif (element.get("eId") or "").strip() in _links(element, state).eids:
@@ -1917,6 +2156,17 @@ def render_numbered_unit(
         css_class=classes,
         attributes=attributes or None,
     )
+
+
+_PREVIEW_LENGTH = 120
+
+
+def _first_words(element: etree._Element) -> str:
+    """The start of the unit's first paragraph, for the outline."""
+    text = plain_text(next(element.iter(f"{{{SCHEMAPL}}}p"), None))
+    if len(text) <= _PREVIEW_LENGTH:
+        return text
+    return text[:_PREVIEW_LENGTH].rsplit(" ", 1)[0]
 
 
 def render_chapter_section(

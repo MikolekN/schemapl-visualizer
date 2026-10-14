@@ -102,6 +102,7 @@ def _to_html(
         validation=validation,
         uses_math=state.uses_math,
         source_name=source_name,
+        document_title=state.title,
     )
     return ConversionResult(
         page.encode("utf-8"), "text/html; charset=utf-8", "html"
