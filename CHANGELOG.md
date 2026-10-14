@@ -6,7 +6,7 @@ a wersjonowanie zgodne z Semantic Versioning.
 
 ---
 
-[Unreleased]
+[2.0.0] - 2026-10-14
 ### Dodano
 - polecenie `schemapl-visualizer` (także `python -m schemapl_visualizer`) zastępujące `convert.py`
 - testy jednostkowe biblioteki, poleceń i usługi HTTP z przykładowymi aktami w `tests/data/`
@@ -18,6 +18,8 @@ a wersjonowanie zgodne z Semantic Versioning.
 
 ### Zmieniono
 - zmieniono nazwę projektu na `schemapl-visualizer`
+- przeniesiono repozytorium do nowej przestrzeni: `caise/services/nlp-lex/rcl/67-wizualizacja-aktow-prawnych`
+- strona startowa i dokumentacja API noszą tytuł usługi „Wizualizacja aktów prawnych”
 - przeniesiono kod do układu `source/`: pakiet `schemapl_visualizer` (biblioteka i polecenie) oraz usługa HTTP w `source/api/`
 - pogrupowano pakiet na `html/`, `pdf/` i `profiles/schemapl/`
 - konfigurację usługi (`RUN_LOCAL`, `SERVICE_USER`, `SERVICE_PASSWORD`, `LOG_LEVEL`, `REF_SERVICE_FIELD`, `DOCX_SERVICE_FIELD`) wczytuje pydantic-settings ze zmiennych środowiskowych lub pliku `.env` w katalogu uruchomienia
