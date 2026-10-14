@@ -13,7 +13,6 @@ from typing import Annotated
 from urllib.parse import quote
 
 import uvicorn
-from d2xconverter import DOCX_MEDIA_TYPE, load_docx_service
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import HTMLResponse, Response
@@ -45,14 +44,7 @@ PORT = 8000
 configure_logging(settings.log_level)
 log = logging.getLogger(__name__)
 
-_docx_service = load_docx_service(settings)
 _ref_service = load_ref_service(settings)
-log.info(
-    "DOCX → XML: %s (%s), pole %r",
-    _docx_service.url,
-    _docx_service.describe_auth(),
-    _docx_service.field_name,
-)
 log.info(
     "wyszukiwanie odesłań: %s (%s), pole %r",
     _ref_service.url,
@@ -108,15 +100,6 @@ async def _resolve_validator(
     if not uploads:
         return None
     return load_validator_from_uploads(uploads)
-
-
-async def _docx_to_xml(request: Request, data: bytes, filename: str) -> bytes:
-    return await run_in_threadpool(
-        _docx_service.send,
-        data,
-        filename=filename,
-        authorization=request.headers.get("authorization"),
-    )
 
 
 async def _extract_refs(request: Request, xml: bytes, filename: str) -> bytes:
@@ -210,7 +193,7 @@ def index(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(
         request=request,
         name="main.html",
-        context={"docx_media_type": DOCX_MEDIA_TYPE, "version": __version__},
+        context={"version": __version__},
     )
 
 
@@ -257,7 +240,7 @@ async def convert_no_refs(
 
 
 @app.post("/convert/file")
-async def convert_any(
+async def convert_form(
     request: Request,
     file: Annotated[UploadFile, File()],
     schema_file: Annotated[list[UploadFile] | None, File()] = None,
@@ -267,9 +250,9 @@ async def convert_any(
 ) -> Response:
     """Formularz strony startowej.
 
-    Plik XML albo DOCX (rozpoznany po zawartości), wynik do wyboru
-    (HTML, PDF, PDF dostępny albo XML), odesłania na życzenie, walidacja
-    względem przesłanego schematu na życzenie (tylko dla HTML).
+    Plik XML, wynik do wyboru (HTML, PDF, PDF dostępny albo XML),
+    odesłania na życzenie, walidacja względem przesłanego schematu na
+    życzenie (tylko dla HTML).
     """
     validator = None
     if walidacja and output == "html":
@@ -283,12 +266,6 @@ async def convert_any(
     if not data:
         return _error_response("Przesłany plik jest pusty.")
     xml_name = f"{Path(source_name).stem or 'dokument'}.xml"
-    # a DOCX is a ZIP archive; anything else is taken for XML
-    if data[:2] == b"PK":
-        try:
-            data = await _docx_to_xml(request, data, source_name)
-        except UpstreamError as exc:
-            return _failed("Konwersja DOCX → XML nie powiodła się", exc)
     if odeslania:
         try:
             data = await _extract_refs(request, data, xml_name)
@@ -302,41 +279,6 @@ async def convert_any(
             headers=_attachment("attachment", xml_name),
         )
     return await _convert_xml(data, xml_name, validator, output)
-
-
-@app.post("/convert/docx")
-async def convert_docx(
-    request: Request,
-    file: Annotated[UploadFile, File()],
-    schema_file: Annotated[list[UploadFile] | None, File()] = None,
-    output: Annotated[str, Form()] = "html",
-) -> Response:
-    """DOCX → XML z odesłaniami, potem HTML, PDF albo XML."""
-    try:
-        validator = await _resolve_validator(schema_file)
-    except SchemaUploadError as exc:
-        return _failed("Nie udało się wczytać schematu", exc)
-
-    source_name = file.filename or "dokument.docx"
-    data = await file.read()
-    try:
-        xml = await _docx_to_xml(request, data, source_name)
-    except UpstreamError as exc:
-        return _failed("Konwersja DOCX → XML nie powiodła się", exc)
-
-    xml_name = f"{Path(source_name).stem or 'dokument'}.xml"
-    try:
-        xml = await _extract_refs(request, xml, xml_name)
-    except UpstreamError as exc:
-        return _failed("Wyszukiwanie odesłań nie powiodło się", exc)
-
-    if output == "xml":
-        return Response(
-            content=xml,
-            media_type="application/xml",
-            headers=_attachment("attachment", xml_name),
-        )
-    return await _convert_xml(xml, xml_name, validator, output)
 
 
 if __name__ == "__main__":

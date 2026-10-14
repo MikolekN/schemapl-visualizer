@@ -74,7 +74,6 @@ Zasoby wczytywane w przeglądarce, niedołączane do usługi:
 
 Usługi CAISE wywoływane przez API (osobne utwory, niedołączane):
 
-  * konwerter DOCX → XML (acts-docx-to-xml-converter),
   * ekstraktor odesłań (reference-extractor).
 
 Zależności budowania (nie trafiają do obrazu uruchomieniowego):

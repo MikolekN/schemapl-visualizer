@@ -9,7 +9,7 @@ from upstream import UpstreamError
 
 from schemapl_visualizer import PdfError
 
-DOCX = b"PK\x03\x04 a DOCX is a ZIP archive"
+ZIP_ARCHIVE = b"PK\x03\x04 a ZIP archive"
 
 
 @pytest.fixture
@@ -20,18 +20,6 @@ def ref_service(mocker: MockerFixture, math_act: bytes) -> MockType:
         The mock.
     """
     service = mocker.patch.object(main, "_ref_service")
-    service.send.return_value = math_act
-    return service
-
-
-@pytest.fixture
-def docx_service(mocker: MockerFixture, math_act: bytes) -> MockType:
-    """Replaces the DOCX converter with a mock returning the math act.
-
-    Returns:
-        The mock.
-    """
-    service = mocker.patch.object(main, "_docx_service")
     service.send.return_value = math_act
     return service
 
@@ -53,6 +41,20 @@ def test_index(api_client: testclient.TestClient) -> None:
     assert response.status_code == 200
     assert 'action="/convert/file"' in response.text
     assert f"wersja {main.__version__}" in response.text
+    assert "docx" not in response.text.lower()
+
+
+def test_documented_endpoints(api_client: testclient.TestClient) -> None:
+    """Documents only the XML conversions the service offers."""
+    response = api_client.get("/openapi.json")
+
+    assert sorted(response.json()["paths"]) == [
+        "/",
+        "/convert",
+        "/convert/file",
+        "/convert/no-refs",
+    ]
+    assert "docx" not in response.text.lower()
 
 
 def test_logo(api_client: testclient.TestClient) -> None:
@@ -176,9 +178,7 @@ def test_validation(
     assert "wiersz" in response.text
 
 
-@pytest.mark.parametrize(
-    "path", ["/convert", "/convert/no-refs", "/convert/docx"]
-)
+@pytest.mark.parametrize("path", ["/convert", "/convert/no-refs"])
 def test_unusable_schema_upload(
     api_client: testclient.TestClient, path: str
 ) -> None:
@@ -228,17 +228,19 @@ def test_form_with_references_and_validation(
     assert ref_service.send.call_args.kwargs["filename"] == "doc.xml"
 
 
-def test_form_converts_docx(
-    api_client: testclient.TestClient, docx_service: MockType
+def test_form_refuses_a_zip_archive(
+    api_client: testclient.TestClient, mocker: MockerFixture
 ) -> None:
-    """Sends a DOCX to the converter and continues with its XML."""
+    """Refuses a ZIP archive as malformed XML, calling no service."""
+    send = mocker.patch("upstream.HttpFileService.send")
+
     response = _post(
-        api_client, "/convert/file", DOCX, filename="ustawa.docx", output="pdf"
+        api_client, "/convert/file", ZIP_ARCHIVE, filename="akt.zip"
     )
 
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "application/pdf"
-    assert docx_service.send.call_args.kwargs["filename"] == "ustawa.docx"
+    assert response.status_code == 400
+    assert "Niepoprawny XML" in response.text
+    send.assert_not_called()
 
 
 @pytest.mark.parametrize(
@@ -276,52 +278,3 @@ def test_form_rejects_an_empty_file(api_client: testclient.TestClient) -> None:
 
     assert response.status_code == 400
     assert "pusty" in response.text
-
-
-def test_form_docx_failure(
-    api_client: testclient.TestClient, docx_service: MockType
-) -> None:
-    """Explains a failed DOCX conversion."""
-    docx_service.send.side_effect = UpstreamError("down")
-
-    response = _post(api_client, "/convert/file", DOCX, filename="ustawa.docx")
-
-    assert response.status_code == 400
-    assert "Konwersja DOCX → XML nie powiodła się" in response.text
-
-
-@pytest.mark.usefixtures("docx_service")
-@pytest.mark.parametrize(("output", "status"), [("xml", 200), ("html", 200)])
-def test_docx_endpoint(
-    api_client: testclient.TestClient,
-    ref_service: MockType,
-    output: str,
-    status: int,
-) -> None:
-    """Converts a DOCX with references looked up."""
-    response = _post(
-        api_client,
-        "/convert/docx",
-        DOCX,
-        filename="ustawa.docx",
-        output=output,
-    )
-
-    assert response.status_code == status
-    assert ref_service.send.call_args.kwargs["filename"] == "ustawa.xml"
-
-
-@pytest.mark.parametrize("failing", ["docx", "refs"])
-def test_docx_endpoint_failures(
-    api_client: testclient.TestClient,
-    docx_service: MockType,
-    ref_service: MockType,
-    failing: str,
-) -> None:
-    """Explains which upstream step failed."""
-    service = docx_service if failing == "docx" else ref_service
-    service.send.side_effect = UpstreamError("down")
-
-    response = _post(api_client, "/convert/docx", DOCX, filename="ustawa.docx")
-
-    assert response.status_code == 400

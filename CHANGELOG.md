@@ -6,6 +6,12 @@ a wersjonowanie zgodne z Semantic Versioning.
 
 ---
 
+[Unreleased]
+### Usunięto
+- przyjmowanie plików DOCX: endpoint `POST /convert/docx` i rozpoznawanie DOCX w `POST /convert/file`; usługa przyjmuje wyłącznie XML
+
+---
+
 [2.0.0] - 2026-10-14
 ### Dodano
 - polecenie `schemapl-visualizer` (także `python -m schemapl_visualizer`) zastępujące `convert.py`

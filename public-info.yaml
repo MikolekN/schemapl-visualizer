@@ -31,5 +31,4 @@ spec:
   lifecycle: "production"
   owner: "user:default/caise_platform_admin"
   dependsOn:
-    - "service:default/acts-docx-to-xml-converter"
     - "service:default/reference-extractor"
