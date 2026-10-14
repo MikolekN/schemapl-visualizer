@@ -62,7 +62,7 @@ log.info(
 
 BASE_DIR = Path(__file__).resolve().parent
 
-app = FastAPI(title="schemaPL visualizer", version=__version__)
+app = FastAPI(title="Wizualizacja aktów prawnych", version=__version__)
 
 templates = Jinja2Templates(directory=BASE_DIR / "template")
 app.mount(

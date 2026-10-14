@@ -6,7 +6,7 @@ kind: "Component"
 
 metadata:
   name: "schemapl-visualizer"
-  title: "#67: Wizualizacja aktów prawnych schemaPL"
+  title: "#67: Wizualizacja aktów prawnych"
 
   description: "Wizualizacja aktów prawnych przetwarza akt prawny zapisany w XML zgodnym ze schematem schemaPL na interaktywny HTML lub PDF – w układzie dziennika urzędowego albo w wersji dostępnej dla osób niedowidzących."
 

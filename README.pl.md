@@ -67,7 +67,7 @@ Zainstaluj pakiet z prywatnego GitLab Package Registry. Zastąp `<token>`
 swoim tokenem GitLab:
 
 ```bash
-pip install schemapl-visualizer --extra-index-url "https://gitlab-ci-token:<token>@projects.task.gda.pl/api/v4/projects/2556/packages/pypi/simple"
+pip install schemapl-visualizer --extra-index-url "https://gitlab-ci-token:<token>@projects.task.gda.pl/api/v4/projects/2941/packages/pypi/simple"
 ```
 
 Instaluje to bibliotekę Python i polecenie `schemapl-visualizer`.
@@ -88,7 +88,7 @@ Sklonuj repozytorium, przejdź do jego katalogu i zsynchronizuj zablokowane
 środowisko deweloperskie:
 
 ```bash
-git clone https://projects.task.gda.pl/caise/services/nlp-lex/schemapl-visualizer.git
+git clone https://projects.task.gda.pl/caise/services/nlp-lex/rcl/67-wizualizacja-aktow-prawnych.git
 cd schemapl-visualizer
 uv sync --locked --extra service
 ```
@@ -183,7 +183,7 @@ docker run --rm --publish 127.0.0.1:8000:8000 --env-file .env schemapl-visualize
 ```
 
 Opublikowany obraz:
-`containers.projects.task.gda.pl/caise/services/nlp-lex/schemapl-visualizer:latest`
+`containers.projects.task.gda.pl/caise/services/nlp-lex/rcl/67-wizualizacja-aktow-prawnych:latest`
 
 #### Dane wejściowe
 
