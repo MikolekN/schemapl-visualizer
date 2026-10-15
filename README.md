@@ -93,7 +93,7 @@ Clone the repository, enter its directory, and synchronize the locked
 development environment:
 
 ```bash
-git clone https://projects.task.gda.pl/caise/services/nlp-lex/rcl/67-wizualizacja-aktow-prawnych.git
+git clone https://projects.task.gda.pl/caise/services/nlp-lex/rcl/schemapl-visualizer.git
 cd schemapl-visualizer
 uv sync --locked --extra service
 ```
@@ -188,7 +188,7 @@ docker run --rm --publish 127.0.0.1:8000:8000 --env-file .env schemapl-visualize
 ```
 
 Published image:
-`containers.projects.task.gda.pl/caise/services/nlp-lex/rcl/67-wizualizacja-aktow-prawnych:latest`
+`containers.projects.task.gda.pl/caise/services/nlp-lex/rcl/schemapl-visualizer:latest`
 
 #### Input
 

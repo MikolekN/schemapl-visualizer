@@ -66,9 +66,9 @@ dev = [
 ]
 
 [project.urls]
-repository = "https://projects.task.gda.pl/caise/services/nlp-lex/rcl/67-wizualizacja-aktow-prawnych"
+repository = "https://projects.task.gda.pl/caise/services/nlp-lex/rcl/schemapl-visualizer"
 documentation = "https://projects.task.gda.pl/caise/caise-documentation/-/wikis/services/usluga_67"
-container = "https://containers.projects.task.gda.pl/caise/services/nlp-lex/rcl/67-wizualizacja-aktow-prawnych:latest"
+container = "https://containers.projects.task.gda.pl/caise/services/nlp-lex/rcl/schemapl-visualizer:latest"
 package = "https://projects.task.gda.pl/api/v4/projects/2941/packages/pypi"
 service = "https://schemapl-visualizer.lex.nlp.caise.pl"
 

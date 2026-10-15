@@ -21,7 +21,7 @@ a wersjonowanie zgodne z Semantic Versioning.
 
 ### Zmieniono
 - zmieniono nazwę projektu na `schemapl-visualizer`
-- przeniesiono repozytorium do nowej przestrzeni: `caise/services/nlp-lex/rcl/67-wizualizacja-aktow-prawnych`
+- przeniesiono repozytorium do nowej przestrzeni: `caise/services/nlp-lex/rcl/schemapl-visualizer`
 - strona startowa i dokumentacja API noszą tytuł usługi „Wizualizacja aktów prawnych”
 - przeniesiono kod do układu `source/`: pakiet `schemapl_visualizer` (biblioteka i polecenie) oraz usługa HTTP w `source/api/`
 - pogrupowano pakiet na `html/`, `pdf/` i `profiles/schemapl/`
