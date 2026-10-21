@@ -9,7 +9,8 @@ command, or as the `schemapl_visualizer` Python library. The XML is always
 the source: HTML and PDF are both made from it, and PDF never goes through
 HTML. Before converting, the HTTP service can send the XML to the CAISE
 reference extractor, which marks the act's references so that they become
-links.
+links, and it accepts a DOCX, which the CAISE DOCX → XML converter turns into
+XML first.
 
 The outputs are:
 
@@ -146,7 +147,7 @@ library.
 ### How to Get Started?
 
 The HTTP service reads its configuration from environment variables, which
-tell it how to reach the CAISE reference extractor.
+tell it how to reach the CAISE reference extractor and DOCX → XML converter.
 When the service is run from a checkout, the variables can also come from a
 `.env` file in the directory it is started from; variables set in the
 environment take precedence. The container image contains no `.env` file:
@@ -158,6 +159,7 @@ pass the variables with `--env-file` or `--env`.
 | `SERVICE_USER` | none | User for the upstream services (HTTP Basic). |
 | `SERVICE_PASSWORD` | none | Password for the upstream services. |
 | `REF_SERVICE_FIELD` | `file` | Form field the reference extractor expects the XML in. |
+| `DOCX_SERVICE_FIELD` | `docxFile` | Form field the DOCX → XML converter expects the DOCX in. |
 | `LOG_LEVEL` | `INFO` | `DEBUG` adds the request and response headers of upstream calls (the Authorization value stays hidden). |
 
 An `Authorization` header sent by the client is forwarded to the upstream
@@ -172,9 +174,10 @@ Start the service from the repository root:
 uv run uvicorn main:app --app-dir source/api --host 127.0.0.1 --port 8000
 ```
 
-The start page at <http://127.0.0.1:8000/> has a single form: an XML file to
-drop or choose, the result as tiles (HTML, PDF, PDF dostępny, XML), the
-reference lookup and the XSD validation as options. The conversion runs on the page: its progress, any error, then the
+The start page at <http://127.0.0.1:8000/> has a single form: a file to drop
+or choose (XML or DOCX, told apart by its content), the result as tiles (HTML,
+PDF, PDF dostępny, XML), the reference lookup and the XSD validation as
+options. The conversion runs on the page: its progress, any error, then the
 result to open or download. Without JavaScript the form posts as usual and the
 browser shows the result. Swagger UI is available at
 <http://127.0.0.1:8000/docs>.
@@ -290,6 +293,7 @@ schemapl-visualizer/
 │   │   ├── main.py                            # HTTP endpoints and application.
 │   │   ├── upstream.py                        # Calls to other CAISE services.
 │   │   ├── refextractor.py                    # Reference extractor client.
+│   │   ├── d2xconverter.py                    # DOCX → XML converter client.
 │   │   └── logs.py                            # Service log configuration.
 │   ├── schemapl_visualizer/                   # The Python package.
 │   │   ├── __init__.py                        # Public API.
@@ -370,9 +374,10 @@ uv run python source/scripts/paragraph_styles.py <publication.docx>
 | Endpoint | Input | Response |
 | --- | --- | --- |
 | `GET /` | None | HTML upload page |
-| `POST /convert/file` | Form: XML `file`, `output` (`html`, `pdf`, `pdf-accessible`, `xml`), `odeslania` (`true` to look up references), `walidacja` (`true` to validate) with `schema_file` (any number of `.xsd` files or a `.zip`) | The result; `xml` returns the XML with its references marked as a download |
+| `POST /convert/file` | Form: `file` (XML or DOCX), `output` (`html`, `pdf`, `pdf-accessible`, `xml`), `odeslania` (`true` to look up references), `walidacja` (`true` to validate) with `schema_file` (any number of `.xsd` files or a `.zip`) | The result; `xml` returns the intermediate XML as a download |
 | `POST /convert` | Form: XML `file`, `output`, optional `schema_file` | The result, with references looked up |
 | `POST /convert/no-refs` | Form: XML `file`, `output`, optional `schema_file` | The result, without references |
+| `POST /convert/docx` | Form: DOCX `file`, `output` (also `xml`), optional `schema_file` | The result, with references looked up |
 
 Validation runs for HTML only, the one result that shows it. PDF is available
 for schemaPL documents; other XML is shown as HTML by a generic view. A

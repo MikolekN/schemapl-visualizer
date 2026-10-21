@@ -9,7 +9,8 @@ Może być używany jako usługa HTTP oparta na FastAPI, jako polecenie
 Źródłem jest zawsze XML: z niego powstają zarówno HTML, jak i PDF, a PDF nigdy
 nie powstaje z HTML. Przed konwersją usługa HTTP może wysłać XML do
 ekstraktora odesłań CAISE, który oznacza odesłania aktu, tak że stają się
-linkami.
+linkami. Usługa przyjmuje też DOCX, który konwerter DOCX → XML CAISE najpierw
+zamienia na XML.
 
 Formaty wyniku:
 
@@ -142,7 +143,7 @@ biblioteka Python.
 ### Jak zacząć?
 
 Usługa HTTP odczytuje konfigurację ze zmiennych środowiskowych, które mówią
-jej, jak łączyć się z ekstraktorem odesłań CAISE.
+jej, jak łączyć się z ekstraktorem odesłań i konwerterem DOCX → XML CAISE.
 Uruchomiona z kopii repozytorium może je też wczytać z pliku `.env`
 w katalogu, z którego jest uruchamiana; zmienne ustawione w środowisku mają
 pierwszeństwo. Obraz kontenera nie zawiera pliku `.env`: przekaż zmienne
@@ -154,6 +155,7 @@ przez `--env-file` lub `--env`.
 | `SERVICE_USER` | brak | Użytkownik usług zewnętrznych (HTTP Basic). |
 | `SERVICE_PASSWORD` | brak | Hasło do usług zewnętrznych. |
 | `REF_SERVICE_FIELD` | `file` | Pole formularza, w którym ekstraktor odesłań oczekuje XML. |
+| `DOCX_SERVICE_FIELD` | `docxFile` | Pole formularza, w którym konwerter DOCX → XML oczekuje DOCX. |
 | `LOG_LEVEL` | `INFO` | `DEBUG` dodaje nagłówki żądań i odpowiedzi usług zewnętrznych (wartość Authorization pozostaje ukryta). |
 
 Nagłówek `Authorization` wysłany przez klienta jest przekazywany do usług
@@ -169,8 +171,9 @@ uv run uvicorn main:app --app-dir source/api --host 127.0.0.1 --port 8000
 ```
 
 Strona startowa pod adresem <http://127.0.0.1:8000/> ma jeden formularz: plik
-XML do upuszczenia lub wybrania, wynik jako kafelki (HTML, PDF, PDF dostępny,
-XML) oraz wyszukiwanie odesłań i walidację XSD jako opcje. Konwersja odbywa się na stronie: jej postęp,
+do upuszczenia lub wybrania (XML albo DOCX, rozpoznany po zawartości), wynik
+jako kafelki (HTML, PDF, PDF dostępny, XML) oraz wyszukiwanie odesłań
+i walidację XSD jako opcje. Konwersja odbywa się na stronie: jej postęp,
 ewentualny błąd, a potem wynik do otwarcia lub pobrania. Bez JavaScriptu
 formularz wysyła się zwyczajnie, a przeglądarka pokazuje wynik. Swagger UI
 jest dostępny pod adresem <http://127.0.0.1:8000/docs>.
@@ -287,6 +290,7 @@ schemapl-visualizer/
 │   │   ├── main.py                            # Endpointy HTTP i aplikacja.
 │   │   ├── upstream.py                        # Wywołania innych usług CAISE.
 │   │   ├── refextractor.py                    # Klient ekstraktora odesłań.
+│   │   ├── d2xconverter.py                    # Klient konwertera DOCX → XML.
 │   │   └── logs.py                            # Konfiguracja logów usługi.
 │   ├── schemapl_visualizer/                   # Pakiet Python.
 │   │   ├── __init__.py                        # Publiczne API.
@@ -366,9 +370,10 @@ uv run python source/scripts/paragraph_styles.py <publikacja.docx>
 | Endpoint | Dane wejściowe | Odpowiedź |
 | --- | --- | --- |
 | `GET /` | Brak | Strona HTML z formularzem |
-| `POST /convert/file` | Formularz: `file` XML, `output` (`html`, `pdf`, `pdf-accessible`, `xml`), `odeslania` (`true`, aby wyszukać odesłania), `walidacja` (`true`, aby walidować) z `schema_file` (dowolna liczba plików `.xsd` lub `.zip`) | Wynik; `xml` zwraca XML z oznaczonymi odesłaniami do pobrania |
+| `POST /convert/file` | Formularz: `file` (XML lub DOCX), `output` (`html`, `pdf`, `pdf-accessible`, `xml`), `odeslania` (`true`, aby wyszukać odesłania), `walidacja` (`true`, aby walidować) z `schema_file` (dowolna liczba plików `.xsd` lub `.zip`) | Wynik; `xml` zwraca pośredni XML do pobrania |
 | `POST /convert` | Formularz: `file` XML, `output`, opcjonalnie `schema_file` | Wynik z wyszukanymi odesłaniami |
 | `POST /convert/no-refs` | Formularz: `file` XML, `output`, opcjonalnie `schema_file` | Wynik bez odesłań |
+| `POST /convert/docx` | Formularz: `file` DOCX, `output` (także `xml`), opcjonalnie `schema_file` | Wynik z wyszukanymi odesłaniami |
 
 Walidacja działa tylko dla HTML, jedynego wyniku, który ją pokazuje. PDF jest
 dostępny dla dokumentów schemaPL; inny XML jest pokazywany jako HTML w widoku
