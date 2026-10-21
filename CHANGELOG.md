@@ -46,7 +46,6 @@ a wersjonowanie zgodne z Semantic Versioning.
 
 ### Usunięto
 - plik `.env.example`; zmienne konfiguracji opisuje README
-- przyjmowanie plików DOCX: endpoint `POST /convert/docx` i rozpoznawanie DOCX w `POST /convert/file`; usługa przyjmuje wyłącznie XML
 
 ---
 

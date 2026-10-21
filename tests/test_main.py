@@ -55,6 +55,19 @@ def test_index(api_client: testclient.TestClient) -> None:
     assert f"wersja {main.__version__}" in response.text
 
 
+def test_documented_endpoints(api_client: testclient.TestClient) -> None:
+    """Documents the XML and DOCX conversions the service offers."""
+    response = api_client.get("/openapi.json")
+
+    assert sorted(response.json()["paths"]) == [
+        "/",
+        "/convert",
+        "/convert/docx",
+        "/convert/file",
+        "/convert/no-refs",
+    ]
+
+
 def test_logo(api_client: testclient.TestClient) -> None:
     """Serves the CAISE logo."""
     response = api_client.get("/tmp/caise.png")  # noqa: S108 - URL path
