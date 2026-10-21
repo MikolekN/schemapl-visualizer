@@ -122,7 +122,7 @@
   <form class="card" id="form" action="/convert/file" method="post" enctype="multipart/form-data">
     <section class="step">
       <h2><span class="step-number" aria-hidden="true">1</span>Plik z aktem</h2>
-      <input class="file-input" id="file" type="file" name="file" accept=".xml,text/xml,application/xml" required>
+      <input class="file-input" id="file" type="file" name="file" accept=".xml,.docx,text/xml,application/xml,{{ docx_media_type }}" required>
       <label class="drop" id="drop" for="file">
         <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 18v-6M9.5 14.5 12 12l2.5 2.5"/></svg>
         <span id="drop-text"><strong>Upuść tutaj plik XML</strong>albo kliknij, aby go wybrać</span>
@@ -220,6 +220,10 @@
   var status = document.getElementById("status");
   var controller = null, timer = null, resultUrl = null;
 
+  function kind(file) {
+    if (!file) return null;
+    return /\.docx$/i.test(file.name) ? "DOCX" : "XML";
+  }
   function size(bytes) {
     if (bytes < 1024) return bytes + " B";
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + " kB";
@@ -231,14 +235,15 @@
     return div.innerHTML;
   }
 
-  // XML is a result only with the references looked up: otherwise it is the file as sent
+  // XML is a result only when something happens to the file: DOCX -> XML, or the references found
   function refresh() {
     var file = input.files[0];
+    var type = kind(file);
     if (file) {
-      dropText.innerHTML = "<strong>" + escapeText(file.name) + '<span class="badge">XML</span></strong>' +
+      dropText.innerHTML = "<strong>" + escapeText(file.name) + '<span class="badge">' + type + "</span></strong>" +
         size(file.size) + " · kliknij, aby wybrać inny plik";
     }
-    var xmlPossible = refs.checked;
+    var xmlPossible = type === "DOCX" || refs.checked;
     xmlTile.disabled = !xmlPossible;
     if (!xmlPossible && xmlTile.checked) document.getElementById("out-html").checked = true;
     // validation shows only in the HTML view: the option is there for HTML only
@@ -280,6 +285,7 @@
 
   function steps() {
     var list = [];
+    if (kind(input.files[0]) === "DOCX") list.push("DOCX → XML");
     if (refs.checked) list.push("wyszukiwanie odesłań");
     if (!validate.disabled && validate.checked && schemaInput.files.length) list.push("walidacja XSD");
     var output = form.querySelector('input[name="output"]:checked').value;
@@ -316,7 +322,8 @@
     function tick() {
       var seconds = Math.round((Date.now() - started) / 1000);
       show("working", '<h3><span class="spinner" aria-hidden="true"></span>Trwa konwersja…</h3>' +
-        "<p>" + escapeText(plan) + '</p><p><span id="elapsed" aria-hidden="true">' + seconds + " s</span></p>" +
+        "<p>" + escapeText(plan) + '</p><p><span id="elapsed" aria-hidden="true">' + seconds + " s</span>" +
+        (kind(input.files[0]) === "DOCX" ? " · konwersja DOCX zwykle trwa do minuty" : "") + "</p>" +
         '<div class="actions"><button type="button" class="secondary" id="cancel">Anuluj</button></div>');
       document.getElementById("cancel").onclick = function () { controller.abort(); };
     }
