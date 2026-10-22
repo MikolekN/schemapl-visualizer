@@ -342,8 +342,10 @@
     breakable: not k.niedzielic,
     stroke: k.ramki.pairs().map(((bok, ramka)) => (bok, _ramki.at(ramka, default: none))).to-dict(),
     {
-      // large print leaves narrow columns: a long word is divided rather than cut off
+      // large print leaves narrow columns: a long word is divided rather than cut
+      // off, and words held together ("poz.~986") may part
       set text(hyphenate: true) if _dostepny
+      show "\u{a0}": it => if _dostepny { " " } else { it }
       // Word keeps the space around a cell's paragraphs; Typst would drop it
       if k.pierwszy != none { v(_przed(k.pierwszy)) }
       k.tresc
@@ -515,6 +517,9 @@
   )
   show heading: it => it.body
   show heading.where(outlined: false): none // bookmarks only (after the rule above: applied first)
+  // a line of dots to fill in is drawn for the official line: in large print it
+  // may break between its dots rather than run off the page
+  show regex("[.…]{4,}"): it => if _dostepny { it.text.clusters().join("\u{200B}") } else { it }
   show math.equation: set text(font: _fonty-matematyczne)
   // Word's superscript: two thirds of the size, raised by a third
   set super(typographic: false, size: 0.6em, baseline: -0.33em)
