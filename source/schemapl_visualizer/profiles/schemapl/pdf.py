@@ -397,9 +397,16 @@ class Lead:
 class ActTypesetter:
     """Walks one schemaPL document, producing its PDF's Typst code."""
 
-    def __init__(self, root: etree._Element) -> None:
-        """Start an empty walk of ``root``."""
+    def __init__(
+        self, root: etree._Element, *, notes_in_headings: bool = False
+    ) -> None:
+        """Start an empty walk of ``root``.
+
+        ``notes_in_headings`` sets a heading's notes in the heading, as
+        any other note, instead of after it.
+        """
         self.root = root
+        self.notes_in_headings = notes_in_headings
         self.items: list[Item] = []
         self.current: Paragraph | None = None
         self.open_quote: str = ""
@@ -819,6 +826,10 @@ class ActTypesetter:
                         section=None,
                     )
                 )
+                # its notes follow <nr> ("Załącznik nr 1⁶⁾")
+                for part in self.elements(child):
+                    if is_annotation(part):
+                        self.inline_element(part, text, annex_ctx)
                 if child is heading_lines[-1]:
                     self.raw("]")
             elif name == "tytul-zalacznika":
@@ -969,12 +980,14 @@ class ActTypesetter:
             "sedzia",
         ):
             self.paragraph(element, "NIEART_TEKST", ctx)
-        elif element.find(".//*") is not None or plain_text(element):
+        elif _has_own_text(element):
+            # anything else holding text (<tekst-zwykly> in an annex):
+            # running text, its notes and references inline
+            self.paragraph(element, "Normalny", ctx)
+        elif element.find(".//*") is not None:
             # anything else: keep its content, never lose text
             for child in self.elements(element):
                 self.block(child, ctx)
-            if not any(is_element(c) for c in element) and plain_text(element):
-                self.paragraph(element, "Normalny", ctx)
 
     def bookmark(self, element: etree._Element, ctx: Context) -> None:
         """The unit's entry in the PDF's bookmarks.
@@ -1528,12 +1541,17 @@ class ActTypesetter:
                         section=ctx.section,
                     )
                 )
-                title = [
-                    c
-                    for c in self.elements(child)
-                    if element_name(c) in ("p", "uchylenie-OTJ")
-                ]
-                for part in title:
+                # the title's lines (<p>, <specjalny>...); a note's call
+                # goes on the line before it ("Rozdział 3⁵⁾")
+                for part in self.elements(child):
+                    if is_annotation(part):
+                        self.inline_element(part, self.text_target(ctx), ctx)
+                        continue
+                    if (
+                        element_name(part) == "nr"
+                        or element_namespace(part) != SCHEMAPL
+                    ):
+                        continue
                     self.start(
                         Paragraph(
                             title_style,
@@ -1806,7 +1824,7 @@ class ActTypesetter:
         In a heading only its call stands: Typst does not divide a
         heading between pages, and a note longer than the page's rest
         would carry the heading away from it - the note itself follows
-        the heading.
+        the heading (unless ``notes_in_headings``).
         """
         symbol = (
             element.get("symbol")
@@ -1824,7 +1842,7 @@ class ActTypesetter:
         if self.current is not None:
             self.current.has_note = True
         body = self.note_body(element, ctx)
-        if self.open_headings:
+        if self.open_headings and not self.notes_in_headings:
             out.atom(call("odsylacz", label, symbol=symbol))
             self.heading_notes.append(
                 call("przypis-naglowka", symbol, label, body=body)
@@ -1968,6 +1986,17 @@ def _has_content(element: etree._Element) -> bool:
     return bool(plain_text(element)) or element.find(".//*") is not None
 
 
+def _has_own_text(element: etree._Element) -> bool:
+    """Text of the element itself, not only of its children.
+
+    Mixed content: "3)<odnosnik>…</odnosnik> bioodpady…".
+    """
+    return any(
+        (text or "").strip()
+        for text in (element.text, *(child.tail for child in element))
+    )
+
+
 def _section_rank(element: etree._Element) -> int:
     """How many systematization units with a heading enclose an element.
 
@@ -2071,14 +2100,16 @@ TEMPLATES: dict[str, tuple[str, tuple[str, ...], dict[str, str]]] = {
 
 
 def typst_source(
-    root: etree._Element, variant: str
+    root: etree._Element, variant: str, *, notes_in_headings: bool = False
 ) -> tuple[str, tuple[str, ...], dict[str, str]]:
     """The act's PDF as Typst code, with the standards and inputs.
 
     The PDF standards it must meet and the template's inputs.
+    ``notes_in_headings``: see ActTypesetter.
     """
     template, standards, inputs = TEMPLATES[variant]
-    return ActTypesetter(root).source(template), standards, inputs
+    typesetter = ActTypesetter(root, notes_in_headings=notes_in_headings)
+    return typesetter.source(template), standards, inputs
 
 
 def handles(root: etree._Element) -> bool:

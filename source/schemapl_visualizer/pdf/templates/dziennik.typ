@@ -37,12 +37,20 @@
 
 #let _gora = 74.9pt // top margin: the first baseline lands where Word puts it
 
+// Each journal's masthead as published (baselines in page coordinates): the
+// title's lines, the line under them, the rule, and how much lower than in
+// Dziennik Ustaw the date, the position and the text stand. Monitor Polski sets
+// its title in two lines and condenses the line under it to fit the rule
+// (``szerokosc-2``); its announcements start no higher than its other acts.
 #let _dzienniki = (
-  DU: (naglowek: "Dziennik Ustaw", wiersz-1: "DZIENNIK USTAW", wiersz-2: "RZECZYPOSPOLITEJ POLSKIEJ",
-       styl-1: "Tytuł DU 1", styl-2: "Tytuł DU 2"),
-  MP: (naglowek: "Monitor Polski", wiersz-1: "MONITOR POLSKI",
-       wiersz-2: "DZIENNIK URZĘDOWY RZECZYPOSPOLITEJ POLSKIEJ",
-       styl-1: "Tytuł MP 1", styl-2: "Tytuł MP 2"),
+  DU: (naglowek: "Dziennik Ustaw", wiersz-1: ("DZIENNIK USTAW",), linie-1: (85pt,),
+       wiersz-2: "RZECZYPOSPOLITEJ POLSKIEJ", linia-2: 126.3pt, szerokosc-2: none,
+       styl-1: "Tytuł DU 1", styl-2: "Tytuł DU 2", kreska: 138pt, grubosc-kreski: 0.96pt,
+       nizej: 0pt, obwieszczenie-wyzej: 6pt),
+  MP: (naglowek: "Monitor Polski", wiersz-1: ("MONITOR", "POLSKI"), linie-1: (85pt, 125pt),
+       wiersz-2: "DZIENNIK URZĘDOWY RZECZYPOSPOLITEJ POLSKIEJ", linia-2: 161.6pt, szerokosc-2: 397.2pt,
+       styl-1: "Tytuł MP 1", styl-2: "Tytuł MP 2", kreska: 172.8pt, grubosc-kreski: 1pt,
+       nizej: 34.2pt, obwieszczenie-wyzej: 0pt),
 )
 
 // The cover letter of a bill: not part of the act template.
@@ -334,8 +342,10 @@
     breakable: not k.niedzielic,
     stroke: k.ramki.pairs().map(((bok, ramka)) => (bok, _ramki.at(ramka, default: none))).to-dict(),
     {
-      // large print leaves narrow columns: a long word is divided rather than cut off
+      // large print leaves narrow columns: a long word is divided rather than cut
+      // off, and words held together ("poz.~986") may part
       set text(hyphenate: true) if _dostepny
+      show "\u{a0}": it => if _dostepny { " " } else { it }
       // Word keeps the space around a cell's paragraphs; Typst would drop it
       if k.pierwszy != none { v(_przed(k.pierwszy)) }
       k.tresc
@@ -383,19 +393,30 @@
   numbering: if symbol == none { "1)" } else { (..n) => symbol + ")" },
 )
 // A heading's footnote: the heading carries its call (``odsylacz``) and the note
-// stands, unseen and taking no room, right after it - Typst does not divide a
-// heading between pages, and a note longer than the page's rest would carry the
-// heading away from it.
+// stands, taking no room, right after it - Typst does not divide a heading
+// between pages, and a note longer than the page's rest would carry the heading
+// away from it. Only the note's own call is left out: hiding the whole note
+// would hide its entry too and break the tags of a table after the heading.
 #let przypis-naglowka(symbol, etykieta, tresc) = block(
   height: 0pt,
   above: 0pt,
   below: 0pt,
-  box(width: 0pt, hide(przypis(symbol, etykieta, tresc))),
+  box(width: 0pt, {
+    show footnote: none
+    przypis(symbol, etykieta, tresc)
+  }),
 )
 
 // A note as printed at the foot of the page: its marker raised in the hanging indent.
+// The paragraph takes the note's first run of text only: Typst drops the blocks
+// of a paragraph, so the note's points, paragraphs and tables follow it.
 #let _wpis-przypisu(numer, tresc) = {
   let s = _styl("ODNOŚNIK")
+  let czesci = if tresc.func() == [].func() { tresc.children } else { (tresc,) }
+  let blok = czesci.position(czesc => czesc.func() == block)
+  let (tekst, dalej) = if blok == none { (tresc, none) } else {
+    (czesci.slice(0, blok).join(), czesci.slice(blok).join())
+  }
   set text(size: s.size)
   par(
     justify: not _dostepny,
@@ -403,8 +424,9 @@
     hanging-indent: -s.first,
     first-line-indent: 0pt,
     spacing: 0pt,
-    [#box(width: -s.first, super(size: 6pt * _skala, numer))#tresc],
+    [#box(width: -s.first, super(size: 6pt * _skala, numer))#tekst],
   )
+  dalej
 }
 
 // In large print the room under the rule is part of it: a note continued from
@@ -438,22 +460,34 @@
   let na-linii(baseline, rozmiar, tresc) = place(top + left, dy: baseline - rozmiar - _gora, tresc)
   // the first line is set without the style's tracking, as the published mastheads are
   let wiersz(s, tekst, tracking) = pad(left: s.left, box(width: 500pt, text(size: s.size, tracking: tracking, tekst)))
+  // a line condensed to the given width
+  let sciesniony(s, tekst, szerokosc) = pad(left: s.left, context {
+    let linia = text(size: s.size, tracking: s.tracking, tekst)
+    scale(x: szerokosc / measure(linia).width * 100%, origin: bottom + left, reflow: true, linia)
+  })
   set text(font: _fonty-urzedowe, top-edge: 1em, bottom-edge: 0em)
   place(top + left, dx: 3pt, dy: 53pt - _gora, _godlo)
-  na-linii(85pt, s1.size, wiersz(s1, dziennik.wiersz-1, 0pt))
-  na-linii(126.3pt, s2.size, wiersz(s2, dziennik.wiersz-2, s2.tracking))
-  place(top + left, dx: s1.left - 1pt, dy: 138pt - _gora, line(length: 100% - s1.left + 1pt, stroke: 0.96pt))
+  for (tekst, baseline) in dziennik.wiersz-1.zip(dziennik.linie-1) {
+    na-linii(baseline, s1.size, wiersz(s1, tekst, 0pt))
+  }
+  na-linii(dziennik.linia-2, s2.size, if dziennik.szerokosc-2 == none {
+    wiersz(s2, dziennik.wiersz-2, s2.tracking)
+  } else { sciesniony(s2, dziennik.wiersz-2, dziennik.szerokosc-2) })
+  place(top + left, dx: s1.left - 1pt, dy: dziennik.kreska - _gora,
+        line(length: 100% - s1.left + 1pt, stroke: dziennik.grubosc-kreski))
   if miejsce-data != none {
-    na-linii(176.2pt, rozmiar, block(width: 100%, align(center, text(size: rozmiar, miejsce-data))))
+    na-linii(176.2pt + dziennik.nizej, rozmiar, block(width: 100%, align(center, text(size: rozmiar, miejsce-data))))
   }
   if pozycja != none {
-    na-linii(204.3pt, rozmiar, block(width: 100%, align(center, text(size: rozmiar, pozycja))))
+    na-linii(204.3pt + dziennik.nizej, rozmiar, block(width: 100%, align(center, text(size: rozmiar, pozycja))))
   }
-  // an announcement's text starts higher (its masthead uses the "TJ" styles). A
-  // block, not spacing: after spacing at the top of the page, Typst would move a
-  // title whose footnote outruns the page onward, leaving the note behind. The
-  // document's first paragraph has no space above it (``akapit``), as in Word.
-  block(width: 100%, height: 243.3pt - _gora - if obwieszczenie { 6pt } else { 0pt }, above: 0pt, below: 0pt)
+  // an announcement in Dziennik Ustaw starts higher (its masthead uses the "TJ"
+  // styles). A block, not spacing: after spacing at the top of the page, Typst
+  // would move a title whose footnote outruns the page onward, leaving the note
+  // behind. The document's first paragraph has no space above it (``akapit``), as
+  // in Word.
+  let wyzej = if obwieszczenie { dziennik.obwieszczenie-wyzej } else { 0pt }
+  block(width: 100%, height: 243.3pt + dziennik.nizej - _gora - wyzej, above: 0pt, below: 0pt)
 }
 
 // The whole document: page, fonts, header, footnotes, then the masthead and the body.
@@ -483,6 +517,9 @@
   )
   show heading: it => it.body
   show heading.where(outlined: false): none // bookmarks only (after the rule above: applied first)
+  // a line of dots to fill in is drawn for the official line: in large print it
+  // may break between its dots rather than run off the page
+  show regex("[.…]{4,}"): it => if _dostepny { it.text.clusters().join("\u{200B}") } else { it }
   show math.equation: set text(font: _fonty-matematyczne)
   // Word's superscript: two thirds of the size, raised by a third
   set super(typographic: false, size: 0.6em, baseline: -0.33em)

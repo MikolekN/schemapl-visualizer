@@ -2370,12 +2370,20 @@ def render_unit_heading(element: etree._Element, state: RenderState) -> Markup:
 def render_attachment_number(
     element: etree._Element, state: RenderState
 ) -> Markup:
-    """<zalacznik-nr>: the "Załącznik nr X" line atop an attachment."""
+    """<zalacznik-nr>: the "Załącznik nr X" line atop an attachment.
+
+    Its notes stand inside <nr> or after it ("Załącznik nr 1⁶⁾").
+    """
     number = number_of(element)
     label = f"Załącznik nr {number}" if number else "Załącznik"
+    notes = join(
+        render_element(child, state, inline=True)
+        for child in element
+        if is_element(child) and is_annotation(child)
+    )
     return html_tag(
         "div",
-        _superscripts_html(label) + _nr_annotations(element, state),
+        _superscripts_html(label) + _nr_annotations(element, state) + notes,
         css_class="zalacznik-nr",
     )
 
