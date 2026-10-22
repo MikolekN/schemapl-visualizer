@@ -166,6 +166,13 @@
     <section class="step">
       <h2><span class="step-number" aria-hidden="true">3</span>Opcje dodatkowe</h2>
       <div class="option">
+        <input id="experimental" type="checkbox" name="eksperymentalny" value="true" aria-describedby="experimental-hint">
+        <div>
+          <label for="experimental">Użyj eksperymentalnego konwertera DOCX</label>
+          <p class="hint" id="experimental-hint">Plik DOCX zamieni na XML eksperymentalna wersja konwertera zamiast zwykłej.</p>
+        </div>
+      </div>
+      <div class="option">
         <input id="refs" type="checkbox" name="odeslania" value="true" checked aria-describedby="refs-hint">
         <div>
           <label for="refs">Wyszukaj odesłania do aktów</label>
@@ -207,6 +214,8 @@
   var input = document.getElementById("file");
   var drop = document.getElementById("drop");
   var dropText = document.getElementById("drop-text");
+  var experimental = document.getElementById("experimental");
+  var experimentalHint = document.getElementById("experimental-hint");
   var refs = document.getElementById("refs");
   var validate = document.getElementById("validate");
   var validateHint = document.getElementById("validate-hint");
@@ -243,6 +252,11 @@
       dropText.innerHTML = "<strong>" + escapeText(file.name) + '<span class="badge">' + type + "</span></strong>" +
         size(file.size) + " · kliknij, aby wybrać inny plik";
     }
+    // the experimental converter only reads DOCX
+    experimental.disabled = type !== "DOCX";
+    experimentalHint.textContent = experimental.disabled
+      ? "Dotyczy tylko plików DOCX."
+      : "Plik DOCX zamieni na XML eksperymentalna wersja konwertera zamiast zwykłej.";
     var xmlPossible = type === "DOCX" || refs.checked;
     xmlTile.disabled = !xmlPossible;
     if (!xmlPossible && xmlTile.checked) document.getElementById("out-html").checked = true;
@@ -285,7 +299,7 @@
 
   function steps() {
     var list = [];
-    if (kind(input.files[0]) === "DOCX") list.push("DOCX → XML");
+    if (kind(input.files[0]) === "DOCX") list.push(experimental.checked ? "DOCX → XML (eksperymentalnie)" : "DOCX → XML");
     if (refs.checked) list.push("wyszukiwanie odesłań");
     if (!validate.disabled && validate.checked && schemaInput.files.length) list.push("walidacja XSD");
     var output = form.querySelector('input[name="output"]:checked').value;

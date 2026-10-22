@@ -13,6 +13,7 @@ VARIABLES = (
     "SERVICE_PASSWORD",
     "REF_SERVICE_FIELD",
     "DOCX_SERVICE_FIELD",
+    "DOCX_EXPERIMENTAL_SERVICE_FIELD",
     "LOG_LEVEL",
 )
 
@@ -33,6 +34,7 @@ def test_defaults() -> None:
     assert settings.password is None
     assert settings.ref_service_field == "file"
     assert settings.docx_service_field == "docxFile"
+    assert settings.docx_experimental_service_field == "documentFile"
     assert settings.log_level == "INFO"
 
 
@@ -42,6 +44,7 @@ def test_environment_variables(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("SERVICE_USER", "user")
     monkeypatch.setenv("SERVICE_PASSWORD", "secret")
     monkeypatch.setenv("DOCX_SERVICE_FIELD", "plik")
+    monkeypatch.setenv("DOCX_EXPERIMENTAL_SERVICE_FIELD", "dokument")
 
     settings = Settings(_env_file=None)
 
@@ -50,6 +53,7 @@ def test_environment_variables(monkeypatch: pytest.MonkeyPatch) -> None:
     assert settings.password == "secret"  # noqa: S105 - test value
     assert "secret" not in repr(settings)
     assert settings.docx_service_field == "plik"
+    assert settings.docx_experimental_service_field == "dokument"
 
 
 def test_empty_variables_keep_defaults(

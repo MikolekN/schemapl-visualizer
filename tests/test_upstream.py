@@ -244,6 +244,27 @@ def test_load_docx_service() -> None:
     assert (service.username, service.password) == ("user", "secret")
 
 
+@pytest.mark.parametrize(
+    ("run_local", "url"),
+    [
+        (
+            True,
+            "https://d2xconverter-experimental.lex.nlp.caise.pl/v1/convert",
+        ),
+        (False, "http://s04c-d2xconverter-experimental:8080/v1/convert"),
+    ],
+)
+def test_load_experimental_docx_service(run_local: bool, url: str) -> None:
+    """Configures the experimental DOCX converter from the settings."""
+    settings = Settings(_env_file=None, run_local=run_local)
+
+    service = load_docx_service(settings, experimental=True)
+
+    assert service.url == url
+    assert service.field_name == "documentFile"
+    assert service.media_type == DOCX_MEDIA_TYPE
+
+
 def test_only_http_addresses_are_opened(urlopen: MockType) -> None:
     """Refuses addresses that are not http or https."""
     with pytest.raises(UpstreamError, match="nieobsługiwany adres"):

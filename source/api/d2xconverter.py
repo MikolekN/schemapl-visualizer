@@ -22,15 +22,44 @@ SERVICE = Deployment(
     "po nazwie usługi, bez uwierzytelnienia",
 )
 
+# The experimental version of the converter, called instead of the
+# usual one when the request asks for it. Its endpoint takes the file
+# in another form field (DOCX_EXPERIMENTAL_SERVICE_FIELD).
+EXPERIMENTAL_LOCAL = Deployment(
+    "local",
+    "https://d2xconverter-experimental.lex.nlp.caise.pl/v1/convert",
+    "przez internet, wymaga poświadczeń",
+)
 
-def load_docx_service(settings: Settings) -> HttpFileService:
-    """The DOCX → XML converter this process should call."""
+EXPERIMENTAL_SERVICE = Deployment(
+    "service",
+    "http://s04c-d2xconverter-experimental:8080/v1/convert",
+    "po nazwie usługi, bez uwierzytelnienia",
+)
+
+
+def load_docx_service(
+    settings: Settings, *, experimental: bool = False
+) -> HttpFileService:
+    """The DOCX → XML converter this process should call.
+
+    ``experimental``: its experimental version instead.
+    """
+    local, service = (
+        (EXPERIMENTAL_LOCAL, EXPERIMENTAL_SERVICE)
+        if experimental
+        else (LOCAL, SERVICE)
+    )
     deployment = resolve_deployment(
-        LOCAL, SERVICE, run_local=settings.run_local
+        local, service, run_local=settings.run_local
     )
     return HttpFileService(
         url=deployment.url,
-        field_name=settings.docx_service_field,
+        field_name=(
+            settings.docx_experimental_service_field
+            if experimental
+            else settings.docx_service_field
+        ),
         media_type=DOCX_MEDIA_TYPE,
         username=settings.service_user,
         password=settings.password,

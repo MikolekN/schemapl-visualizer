@@ -36,6 +36,22 @@ def docx_service(mocker: MockerFixture, math_act: bytes) -> MockType:
     return service
 
 
+@pytest.fixture
+def docx_experimental_service(
+    mocker: MockerFixture, math_act: bytes
+) -> MockType:
+    """Replaces the experimental DOCX converter with a mock.
+
+    It returns the math act.
+
+    Returns:
+        The mock.
+    """
+    service = mocker.patch.object(main, "_docx_experimental_service")
+    service.send.return_value = math_act
+    return service
+
+
 def _post(
     client: testclient.TestClient,
     path: str,
@@ -53,6 +69,61 @@ def test_index(api_client: testclient.TestClient) -> None:
     assert response.status_code == 200
     assert 'action="/convert/file"' in response.text
     assert f"wersja {main.__version__}" in response.text
+    assert 'name="eksperymentalny"' in response.text
+
+
+@pytest.mark.usefixtures("ref_service")
+@pytest.mark.parametrize("path", ["/convert/file", "/convert/docx"])
+def test_experimental_docx_converter(
+    api_client: testclient.TestClient,
+    docx_service: MockType,
+    docx_experimental_service: MockType,
+    path: str,
+) -> None:
+    """Sends a DOCX to the experimental converter when asked."""
+    response = _post(
+        api_client,
+        path,
+        DOCX,
+        filename="ustawa.docx",
+        output="xml",
+        eksperymentalny="true",
+    )
+
+    assert response.status_code == 200
+    sent = docx_experimental_service.send.call_args.kwargs
+    assert sent["filename"] == "ustawa.docx"
+    docx_service.send.assert_not_called()
+
+
+def test_experimental_option_leaves_xml_alone(
+    api_client: testclient.TestClient, docx_experimental_service: MockType
+) -> None:
+    """Calls no converter for an XML file, experimental or not."""
+    response = _post(
+        api_client, "/convert/file", b"<akt/>", eksperymentalny="true"
+    )
+
+    assert response.status_code == 200
+    docx_experimental_service.send.assert_not_called()
+
+
+def test_experimental_docx_failure(
+    api_client: testclient.TestClient, docx_experimental_service: MockType
+) -> None:
+    """Names the experimental converter when it fails."""
+    docx_experimental_service.send.side_effect = UpstreamError("down")
+
+    response = _post(
+        api_client,
+        "/convert/file",
+        DOCX,
+        filename="ustawa.docx",
+        eksperymentalny="true",
+    )
+
+    assert response.status_code == 400
+    assert "nie powiodła się (konwerter eksperymentalny)" in response.text
 
 
 def test_documented_endpoints(api_client: testclient.TestClient) -> None:

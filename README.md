@@ -10,7 +10,7 @@ the source: HTML and PDF are both made from it, and PDF never goes through
 HTML. Before converting, the HTTP service can send the XML to the CAISE
 reference extractor, which marks the act's references so that they become
 links, and it accepts a DOCX, which the CAISE DOCX → XML converter turns into
-XML first.
+XML first (on request, the converter's experimental version instead).
 
 The outputs are:
 
@@ -160,6 +160,7 @@ pass the variables with `--env-file` or `--env`.
 | `SERVICE_PASSWORD` | none | Password for the upstream services. |
 | `REF_SERVICE_FIELD` | `file` | Form field the reference extractor expects the XML in. |
 | `DOCX_SERVICE_FIELD` | `docxFile` | Form field the DOCX → XML converter expects the DOCX in. |
+| `DOCX_EXPERIMENTAL_SERVICE_FIELD` | `documentFile` | Form field the experimental DOCX → XML converter expects the DOCX in. |
 | `LOG_LEVEL` | `INFO` | `DEBUG` adds the request and response headers of upstream calls (the Authorization value stays hidden). |
 
 An `Authorization` header sent by the client is forwarded to the upstream
@@ -176,8 +177,8 @@ uv run uvicorn main:app --app-dir source/api --host 127.0.0.1 --port 8000
 
 The start page at <http://127.0.0.1:8000/> has a single form: a file to drop
 or choose (XML or DOCX, told apart by its content), the result as tiles (HTML,
-PDF, PDF dostępny, XML), the reference lookup and the XSD validation as
-options. The conversion runs on the page: its progress, any error, then the
+PDF, PDF dostępny, XML), the experimental DOCX converter, the reference
+lookup and the XSD validation as options. The conversion runs on the page: its progress, any error, then the
 result to open or download. Without JavaScript the form posts as usual and the
 browser shows the result. Swagger UI is available at
 <http://127.0.0.1:8000/docs>.
@@ -374,10 +375,10 @@ uv run python source/scripts/paragraph_styles.py <publication.docx>
 | Endpoint | Input | Response |
 | --- | --- | --- |
 | `GET /` | None | HTML upload page |
-| `POST /convert/file` | Form: `file` (XML or DOCX), `output` (`html`, `pdf`, `pdf-accessible`, `xml`), `odeslania` (`true` to look up references), `walidacja` (`true` to validate) with `schema_file` (any number of `.xsd` files or a `.zip`) | The result; `xml` returns the intermediate XML as a download |
+| `POST /convert/file` | Form: `file` (XML or DOCX), `output` (`html`, `pdf`, `pdf-accessible`, `xml`), `odeslania` (`true` to look up references), `walidacja` (`true` to validate) with `schema_file` (any number of `.xsd` files or a `.zip`), `eksperymentalny` (`true` to convert a DOCX with the experimental converter) | The result; `xml` returns the intermediate XML as a download |
 | `POST /convert` | Form: XML `file`, `output`, optional `schema_file` | The result, with references looked up |
 | `POST /convert/no-refs` | Form: XML `file`, `output`, optional `schema_file` | The result, without references |
-| `POST /convert/docx` | Form: DOCX `file`, `output` (also `xml`), optional `schema_file` | The result, with references looked up |
+| `POST /convert/docx` | Form: DOCX `file`, `output` (also `xml`), optional `schema_file`, `eksperymentalny` (`true` for the experimental converter) | The result, with references looked up |
 
 Validation runs for HTML only, the one result that shows it. PDF is available
 for schemaPL documents; other XML is shown as HTML by a generic view. A

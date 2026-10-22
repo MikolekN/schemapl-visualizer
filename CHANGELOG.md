@@ -7,6 +7,9 @@ a wersjonowanie zgodne z Semantic Versioning.
 ---
 
 [2.0.1] - 2026-10-22
+### Dodano
+- eksperymentalny konwerter DOCX → XML (`d2xconverter-experimental`) do wyboru zamiast zwykłego: opcja na stronie startowej i pole `eksperymentalny` w `POST /convert/file` i `POST /convert/docx`; pole formularza ustawia `DOCX_EXPERIMENTAL_SERVICE_FIELD` (domyślnie `documentFile`)
+
 ### Naprawiono
 - przypis z kilkoma akapitami, punktami lub tabelą (np. przypis do tytułu ustawy z wykazem wdrażanych dyrektyw) był w PDF ucinany po pierwszym akapicie
 - PDF dostępny nie powstawał (błąd struktury tabeli PDF/UA albo błąd wewnętrzny Typsta), gdy pod nagłówkiem z przypisem stała tabela; gdy Typst mimo to zgłosi błąd wewnętrzny, PDF jest składany ponownie z przypisami nagłówków w samych nagłówkach

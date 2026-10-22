@@ -48,13 +48,19 @@ configure_logging(settings.log_level)
 log = logging.getLogger(__name__)
 
 _docx_service = load_docx_service(settings)
+_docx_experimental_service = load_docx_service(settings, experimental=True)
 _ref_service = load_ref_service(settings)
-log.info(
-    "DOCX → XML: %s (%s), pole %r",
-    _docx_service.url,
-    _docx_service.describe_auth(),
-    _docx_service.field_name,
-)
+for _label, _service in (
+    ("DOCX → XML", _docx_service),
+    ("DOCX → XML (eksperymentalny)", _docx_experimental_service),
+):
+    log.info(
+        "%s: %s (%s), pole %r",
+        _label,
+        _service.url,
+        _service.describe_auth(),
+        _service.field_name,
+    )
 log.info(
     "wyszukiwanie odesłań: %s (%s), pole %r",
     _ref_service.url,
@@ -112,9 +118,17 @@ async def _resolve_validator(
     return load_validator_from_uploads(uploads)
 
 
-async def _docx_to_xml(request: Request, data: bytes, filename: str) -> bytes:
+def _docx_failure(*, experimental: bool) -> str:
+    what = "Konwersja DOCX → XML nie powiodła się"
+    return f"{what} (konwerter eksperymentalny)" if experimental else what
+
+
+async def _docx_to_xml(
+    request: Request, data: bytes, filename: str, *, experimental: bool
+) -> bytes:
+    service = _docx_experimental_service if experimental else _docx_service
     return await run_in_threadpool(
-        _docx_service.send,
+        service.send,
         data,
         filename=filename,
         authorization=request.headers.get("authorization"),
@@ -271,12 +285,14 @@ async def convert_any(
     output: Annotated[str, Form()] = "html",
     odeslania: Annotated[bool, Form()] = False,
     walidacja: Annotated[bool, Form()] = False,
+    eksperymentalny: Annotated[bool, Form()] = False,
 ) -> Response:
     """Formularz strony startowej.
 
     Plik XML albo DOCX (rozpoznany po zawartości), wynik do wyboru
     (HTML, PDF, PDF dostępny albo XML), odesłania na życzenie, walidacja
-    względem przesłanego schematu na życzenie (tylko dla HTML).
+    względem przesłanego schematu na życzenie (tylko dla HTML), DOCX
+    przez eksperymentalny konwerter na życzenie.
     """
     validator = None
     if walidacja and output == "html":
@@ -293,9 +309,11 @@ async def convert_any(
     # a DOCX is a ZIP archive; anything else is taken for XML
     if data[:2] == b"PK":
         try:
-            data = await _docx_to_xml(request, data, source_name)
+            data = await _docx_to_xml(
+                request, data, source_name, experimental=eksperymentalny
+            )
         except UpstreamError as exc:
-            return _failed("Konwersja DOCX → XML nie powiodła się", exc)
+            return _failed(_docx_failure(experimental=eksperymentalny), exc)
     if odeslania:
         try:
             data = await _extract_refs(request, data, xml_name)
@@ -317,8 +335,12 @@ async def convert_docx(
     file: Annotated[UploadFile, File()],
     schema_file: Annotated[list[UploadFile] | None, File()] = None,
     output: Annotated[str, Form()] = "html",
+    eksperymentalny: Annotated[bool, Form()] = False,
 ) -> Response:
-    """DOCX → XML z odesłaniami, potem HTML, PDF albo XML."""
+    """DOCX → XML z odesłaniami, potem HTML, PDF albo XML.
+
+    ``eksperymentalny``: DOCX przez eksperymentalny konwerter.
+    """
     try:
         validator = await _resolve_validator(schema_file)
     except SchemaUploadError as exc:
@@ -327,9 +349,11 @@ async def convert_docx(
     source_name = file.filename or "dokument.docx"
     data = await file.read()
     try:
-        xml = await _docx_to_xml(request, data, source_name)
+        xml = await _docx_to_xml(
+            request, data, source_name, experimental=eksperymentalny
+        )
     except UpstreamError as exc:
-        return _failed("Konwersja DOCX → XML nie powiodła się", exc)
+        return _failed(_docx_failure(experimental=eksperymentalny), exc)
 
     xml_name = f"{Path(source_name).stem or 'dokument'}.xml"
     try:

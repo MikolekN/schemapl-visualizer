@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     # Form field names the upstream services expect the file under.
     ref_service_field: str = "file"
     docx_service_field: str = "docxFile"
+    docx_experimental_service_field: str = "documentFile"
 
     # DEBUG adds the request and response headers of upstream calls.
     log_level: str = "INFO"
