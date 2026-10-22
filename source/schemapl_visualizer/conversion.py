@@ -6,6 +6,7 @@ engine, PDF by a PDF profile and Typst.
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from functools import partial
 from pathlib import Path
@@ -15,9 +16,11 @@ from lxml import etree
 from .html.engine import RenderState, render_document_body, render_toc
 from .html.page import render_full_page
 from .parsing import DocumentTooDeepError, parse_xml
-from .pdf.typst import compile_pdf
+from .pdf.typst import PdfError, compile_pdf
 from .profiles import select_pdf_profile, select_profile
 from .validation import SchemaValidator, ValidationResult
+
+log = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -122,11 +125,20 @@ def _to_pdf(
         message = "PDF output is available for schemaPL documents only."
         raise UnsupportedDocumentError(message)
     source, standards, inputs = profile.typst_source(root, variant)
-    return ConversionResult(
-        compile_pdf(source, standards=standards, inputs=inputs),
-        "application/pdf",
-        extension,
-    )
+    try:
+        content = compile_pdf(source, standards=standards, inputs=inputs)
+    except PdfError as exc:
+        if not str(exc).startswith("internal error"):
+            raise
+        # Typst can lose the call of a heading's note set after the
+        # heading while tagging the PDF; the notes then go in the
+        # headings themselves
+        log.warning("Typst failed (%s); notes set in the headings", exc)
+        source, standards, inputs = profile.typst_source(
+            root, variant, notes_in_headings=True
+        )
+        content = compile_pdf(source, standards=standards, inputs=inputs)
+    return ConversionResult(content, "application/pdf", extension)
 
 
 OUTPUT_FORMATS = {

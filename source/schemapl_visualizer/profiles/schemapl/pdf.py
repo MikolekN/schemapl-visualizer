@@ -397,9 +397,16 @@ class Lead:
 class ActTypesetter:
     """Walks one schemaPL document, producing its PDF's Typst code."""
 
-    def __init__(self, root: etree._Element) -> None:
-        """Start an empty walk of ``root``."""
+    def __init__(
+        self, root: etree._Element, *, notes_in_headings: bool = False
+    ) -> None:
+        """Start an empty walk of ``root``.
+
+        ``notes_in_headings`` sets a heading's notes in the heading, as
+        any other note, instead of after it.
+        """
         self.root = root
+        self.notes_in_headings = notes_in_headings
         self.items: list[Item] = []
         self.current: Paragraph | None = None
         self.open_quote: str = ""
@@ -1817,7 +1824,7 @@ class ActTypesetter:
         In a heading only its call stands: Typst does not divide a
         heading between pages, and a note longer than the page's rest
         would carry the heading away from it - the note itself follows
-        the heading.
+        the heading (unless ``notes_in_headings``).
         """
         symbol = (
             element.get("symbol")
@@ -1835,7 +1842,7 @@ class ActTypesetter:
         if self.current is not None:
             self.current.has_note = True
         body = self.note_body(element, ctx)
-        if self.open_headings:
+        if self.open_headings and not self.notes_in_headings:
             out.atom(call("odsylacz", label, symbol=symbol))
             self.heading_notes.append(
                 call("przypis-naglowka", symbol, label, body=body)
@@ -2093,14 +2100,16 @@ TEMPLATES: dict[str, tuple[str, tuple[str, ...], dict[str, str]]] = {
 
 
 def typst_source(
-    root: etree._Element, variant: str
+    root: etree._Element, variant: str, *, notes_in_headings: bool = False
 ) -> tuple[str, tuple[str, ...], dict[str, str]]:
     """The act's PDF as Typst code, with the standards and inputs.
 
     The PDF standards it must meet and the template's inputs.
+    ``notes_in_headings``: see ActTypesetter.
     """
     template, standards, inputs = TEMPLATES[variant]
-    return ActTypesetter(root).source(template), standards, inputs
+    typesetter = ActTypesetter(root, notes_in_headings=notes_in_headings)
+    return typesetter.source(template), standards, inputs
 
 
 def handles(root: etree._Element) -> bool:
