@@ -383,19 +383,30 @@
   numbering: if symbol == none { "1)" } else { (..n) => symbol + ")" },
 )
 // A heading's footnote: the heading carries its call (``odsylacz``) and the note
-// stands, unseen and taking no room, right after it - Typst does not divide a
-// heading between pages, and a note longer than the page's rest would carry the
-// heading away from it.
+// stands, taking no room, right after it - Typst does not divide a heading
+// between pages, and a note longer than the page's rest would carry the heading
+// away from it. Only the note's own call is left out: hiding the whole note
+// would hide its entry too and break the tags of a table after the heading.
 #let przypis-naglowka(symbol, etykieta, tresc) = block(
   height: 0pt,
   above: 0pt,
   below: 0pt,
-  box(width: 0pt, hide(przypis(symbol, etykieta, tresc))),
+  box(width: 0pt, {
+    show footnote: none
+    przypis(symbol, etykieta, tresc)
+  }),
 )
 
 // A note as printed at the foot of the page: its marker raised in the hanging indent.
+// The paragraph takes the note's first run of text only: Typst drops the blocks
+// of a paragraph, so the note's points, paragraphs and tables follow it.
 #let _wpis-przypisu(numer, tresc) = {
   let s = _styl("ODNOŚNIK")
+  let czesci = if tresc.func() == [].func() { tresc.children } else { (tresc,) }
+  let blok = czesci.position(czesc => czesc.func() == block)
+  let (tekst, dalej) = if blok == none { (tresc, none) } else {
+    (czesci.slice(0, blok).join(), czesci.slice(blok).join())
+  }
   set text(size: s.size)
   par(
     justify: not _dostepny,
@@ -403,8 +414,9 @@
     hanging-indent: -s.first,
     first-line-indent: 0pt,
     spacing: 0pt,
-    [#box(width: -s.first, super(size: 6pt * _skala, numer))#tresc],
+    [#box(width: -s.first, super(size: 6pt * _skala, numer))#tekst],
   )
+  dalej
 }
 
 // In large print the room under the rule is part of it: a note continued from

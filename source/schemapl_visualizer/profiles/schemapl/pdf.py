@@ -969,12 +969,14 @@ class ActTypesetter:
             "sedzia",
         ):
             self.paragraph(element, "NIEART_TEKST", ctx)
-        elif element.find(".//*") is not None or plain_text(element):
+        elif _has_own_text(element):
+            # anything else holding text (<tekst-zwykly> in an annex):
+            # running text, its notes and references inline
+            self.paragraph(element, "Normalny", ctx)
+        elif element.find(".//*") is not None:
             # anything else: keep its content, never lose text
             for child in self.elements(element):
                 self.block(child, ctx)
-            if not any(is_element(c) for c in element) and plain_text(element):
-                self.paragraph(element, "Normalny", ctx)
 
     def bookmark(self, element: etree._Element, ctx: Context) -> None:
         """The unit's entry in the PDF's bookmarks.
@@ -1528,12 +1530,17 @@ class ActTypesetter:
                         section=ctx.section,
                     )
                 )
-                title = [
-                    c
-                    for c in self.elements(child)
-                    if element_name(c) in ("p", "uchylenie-OTJ")
-                ]
-                for part in title:
+                # the title's lines (<p>, <specjalny>...); a note's call
+                # goes on the line before it ("Rozdział 3⁵⁾")
+                for part in self.elements(child):
+                    if is_annotation(part):
+                        self.inline_element(part, self.text_target(ctx), ctx)
+                        continue
+                    if (
+                        element_name(part) == "nr"
+                        or element_namespace(part) != SCHEMAPL
+                    ):
+                        continue
                     self.start(
                         Paragraph(
                             title_style,
@@ -1966,6 +1973,17 @@ def _has_content(element: etree._Element) -> bool:
     Amending acts have empty header elements.
     """
     return bool(plain_text(element)) or element.find(".//*") is not None
+
+
+def _has_own_text(element: etree._Element) -> bool:
+    """Text of the element itself, not only of its children.
+
+    Mixed content: "3)<odnosnik>…</odnosnik> bioodpady…".
+    """
+    return any(
+        (text or "").strip()
+        for text in (element.text, *(child.tail for child in element))
+    )
 
 
 def _section_rank(element: etree._Element) -> int:
