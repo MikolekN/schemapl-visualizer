@@ -819,6 +819,10 @@ class ActTypesetter:
                         section=None,
                     )
                 )
+                # its notes follow <nr> ("Załącznik nr 1⁶⁾")
+                for part in self.elements(child):
+                    if is_annotation(part):
+                        self.inline_element(part, text, annex_ctx)
                 if child is heading_lines[-1]:
                     self.raw("]")
             elif name == "tytul-zalacznika":
