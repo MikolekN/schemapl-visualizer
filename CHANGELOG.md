@@ -6,6 +6,16 @@ a wersjonowanie zgodne z Semantic Versioning.
 
 ---
 
+[2.0.1] - 2026-10-22
+### Naprawiono
+- przypis z kilkoma akapitami, punktami lub tabelą (np. przypis do tytułu ustawy z wykazem wdrażanych dyrektyw) był w PDF ucinany po pierwszym akapicie
+- PDF dostępny nie powstawał (błąd struktury tabeli PDF/UA albo błąd wewnętrzny Typsta), gdy pod nagłówkiem z przypisem stała tabela; gdy Typst mimo to zgłosi błąd wewnętrzny, PDF jest składany ponownie z przypisami nagłówków w samych nagłówkach
+- przypis w oznaczeniu załącznika („Załącznik nr 1⁶⁾”) nie pojawiał się w HTML ani w PDF
+- przypis w nagłówku rozdziału i dalsze wiersze tytułu rozdziału (`specjalny`) nie trafiały do PDF
+- w PDF ginął tekst akapitu załącznika (`tekst-zwykly`) po znaku przypisu, a sam przypis drukował się jako zwykły akapit
+- winieta Monitora Polskiego jak w opublikowanych numerach: tytuł w dwóch wierszach, „DZIENNIK URZĘDOWY RZECZYPOSPOLITEJ POLSKIEJ” w jednym zwężonym wierszu; wcześniej wiersz wychodził poza stronę i nachodził na linię
+- w PDF dostępnym długie linie kropek do wypełnienia i ciągi wyrazów połączonych twardymi spacjami w wąskich komórkach tabel wychodziły poza stronę
+
 [2.0.0] - 2026-10-14
 ### Dodano
 - polecenie `schemapl-visualizer` (także `python -m schemapl_visualizer`) zastępujące `convert.py`
@@ -43,13 +53,6 @@ a wersjonowanie zgodne z Semantic Versioning.
 - w widoku ogólnym strony HTML długie atrybuty zachodziły na panel boczny; szerokie tabele i wzory przewijają się we własnym polu zamiast poszerzać stronę
 - strona HTML z kontenera podaje czas wygenerowania w strefie Europe/Warsaw zamiast UTC (`TZ` w obrazie)
 - dokument zagnieżdżony głębiej niż 100 poziomów elementów jest odrzucany wyjątkiem `DocumentTooDeepError` (w usłudze HTTP błąd 400) zamiast błędu 500 i wielotysięcznego wpisu w logu; parser znów stosuje ograniczenia libxml2 (bez `huge_tree`)
-- przypis z kilkoma akapitami, punktami lub tabelą (np. przypis do tytułu ustawy z wykazem wdrażanych dyrektyw) był w PDF ucinany po pierwszym akapicie
-- PDF dostępny nie powstawał (błąd struktury tabeli PDF/UA albo błąd wewnętrzny Typsta), gdy pod nagłówkiem z przypisem stała tabela; gdy Typst mimo to zgłosi błąd wewnętrzny, PDF jest składany ponownie z przypisami nagłówków w samych nagłówkach
-- przypis w oznaczeniu załącznika („Załącznik nr 1⁶⁾”) nie pojawiał się w HTML ani w PDF
-- przypis w nagłówku rozdziału i dalsze wiersze tytułu rozdziału (`specjalny`) nie trafiały do PDF
-- w PDF ginął tekst akapitu załącznika (`tekst-zwykly`) po znaku przypisu, a sam przypis drukował się jako zwykły akapit
-- winieta Monitora Polskiego jak w opublikowanych numerach: tytuł w dwóch wierszach, „DZIENNIK URZĘDOWY RZECZYPOSPOLITEJ POLSKIEJ” w jednym zwężonym wierszu; wcześniej wiersz wychodził poza stronę i nachodził na linię
-- w PDF dostępnym długie linie kropek do wypełnienia i ciągi wyrazów połączonych twardymi spacjami w wąskich komórkach tabel wychodziły poza stronę
 
 ### Usunięto
 - plik `.env.example`; zmienne konfiguracji opisuje README
